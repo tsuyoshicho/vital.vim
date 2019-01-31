@@ -11,7 +11,7 @@ _test-body: &test-body
   working_directory: ~/repo
   steps:
     - checkout
-    - apk add git gcc make
+    - run: apk add git gcc make
     - run: git clone --depth 1 --branch v1.5.4 --single-branch https://github.com/thinca/vim-themis /tmp/vim-themis
     - run: git clone --depth 1 https://github.com/Shougo/vimproc.vim /tmp/vimproc
     - run: (cd /tmp/vimproc && make)
