@@ -8,6 +8,7 @@ workflows:
       - latest
 
 _test-body: &test-body
+  machine: true
   working_directory: ~/repo
   steps:
     - checkout
