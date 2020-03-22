@@ -1,0 +1,23 @@
+name: "deploy vim help to gh-pages"
+on:
+  push:
+    branches:
+      - master
+jobs:
+  ghpages:
+    name: Convert and deploy vim help
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+        with:
+          persist-credentials: false
+      - name: generate html
+        uses: tsuyoshicho/action-vimhelp-html-generate@v1
+        env:
+          FOLDER: build
+      - name: deploy gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
