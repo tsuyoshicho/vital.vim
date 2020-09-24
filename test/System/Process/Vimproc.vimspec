@@ -24,21 +24,19 @@ Describe System.Process.Vimproc
 
     Context [Windows]
       Describe .execute({args}[, {options}])
-        if empty($APPVEYOR)
-          " NOTE:
-          " Not sure but 'sleep' doesn't properly works in AppVeyor?
-          " The code below worked on Windows 10 + PowerShell
-          It DOES NOT throws an exception when {options.timeout} is specified
-            " timeout 1 second = 1000 millisoconds
-            let options.timeout = 1
-            " sleep command 100 seconds wait
-            let args = s:cmd + ['sleep', '100']
-            let result = Process.execute(args, options)
-            " While the execution time reachs the timeout, the success is 0.
-            Assert Equals(result.success, 0)
-            Assert Equals(result.status, 15)
-          End
-        endif
+        " NOTE:
+        " Not sure but 'sleep' doesn't properly works in GitHub Workflow?
+        " The code below worked on Windows 10 + PowerShell
+        " It DOES NOT throws an exception when {options.timeout} is specified
+        "   " timeout 1 second = 1000 millisoconds
+        "   let options.timeout = 1
+        "   " sleep command 100 seconds wait
+        "   let args = s:cmd + ['sleep', '100']
+        "   let result = Process.execute(args, options)
+        "   " While the execution time reachs the timeout, the success is 0.
+        "   Assert Equals(result.success, 0)
+        "   Assert Equals(result.status, 15)
+        " End
 
         It DOES NOT throws an exception when {options.background} is specified
           let options.background = 1
