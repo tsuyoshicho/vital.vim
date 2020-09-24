@@ -39,9 +39,9 @@ jobs:
           sudo apt-get update
       - name: Setup lua
         if: matrix.type == 'macvim'
-        uses: xpol/setup-lua@master
-        with:
-          lua-version: ${{ env.LUA_VERSION }}
+        run: |
+          brew update
+          brew install lua
       - name: Setup pip
         run: |
           sudo pip3 install -U pip
@@ -69,7 +69,7 @@ jobs:
       - name: Setup MacVim
         if: matrix.type == 'macvim'
         run: |
-          echo "set luadll=${GITHUB_WORKSPACE}/.lua/lib/liblua.dylib" > ${GITHUB_WORKSPACE}/.themisrc
+          echo "set luadll=$(brew --prefix lua)/lib/liblua.dylib" > ${GITHUB_WORKSPACE}/.themisrc
       - name: Run test
         env:
           THEMIS_VIM: ${{ steps.vim.outputs.executable }}
