@@ -484,7 +484,7 @@ Describe Async.Promise
   Describe .all()
     It should wait all and resolve with all the resolved values as array
       let l = l:
-      let p1 = Wait(10).then({-> 10})
+      let p1 = Wait(50).then({-> 10})
       let p2 = Wait(200).then({-> 20})
       let p3 = Wait(100).then({-> extend(l, {'ongoing' : v:true})}).then({-> 30})
       let result = []
