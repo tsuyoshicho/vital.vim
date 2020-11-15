@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Web/URI/HTTP</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Web/URI/HTTP</h1>
+<a href="./../../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../../vital/Web/URI/HTTP.html" name="vital/Web/URI/HTTP.txt">vital/Web/URI/HTTP.txt</a>                http scheme handler for Web.URI
+
+Maintainer: tyru &lt;tyru.exe@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP-contents" name="Vital.Web.URI.HTTP-contents">Vital.Web.URI.HTTP-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP-introduction">Vital.Web.URI.HTTP-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP-interface">Vital.Web.URI.HTTP-interface</a>
+  Functions                     <a class="Identifier" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP-functions">Vital.Web.URI.HTTP-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP-introduction" name="Vital.Web.URI.HTTP-introduction">Vital.Web.URI.HTTP-introduction</a>
+
+<a class="String" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP" name="Vital.Web.URI.HTTP">Vital.Web.URI.HTTP</a> is a http scheme handler for <a class="Identifier" href="./../../../vital/Web/URI.html#Vital.Web.URI">Vital.Web.URI</a>.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP-interface" name="Vital.Web.URI.HTTP-interface">Vital.Web.URI.HTTP-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP-functions" name="Vital.Web.URI.HTTP-functions">Vital.Web.URI.HTTP-functions</a>
+
+canonicalize(<span class="Special">{uri}</span>)             <a class="String" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP.canonicalize()" name="Vital.Web.URI.HTTP.canonicalize()">Vital.Web.URI.HTTP.canonicalize()</a>
+        Canonicalizes <span class="Special">{uri}</span>. <span class="Special">{uri}</span> is a <a class="Identifier" href="./../../../vital/Web/URI.html#Vital.Web.URI-URI">Vital.Web.URI-URI</a> object.
+
+        * Set '/' to its path if its path is empty
+        * If its port is the same as a default port of http scheme (80),
+          make the URI's port empty
+
+        For example, the following four URIs are equivalent:
+        * <span class="String"><a href="http://example.com">http://example.com</a></span>
+        * <span class="String"><a href="http://example.com/">http://example.com/</a></span>
+        * <span class="String"><a href="http://example.com:/">http://example.com:/</a></span>
+        * <span class="String"><a href="http://example.com:80/">http://example.com:80/</a></span>
+        This function canonicalizes them to <span class="String"><a href="http://example.com/">http://example.com/</a></span> .
+
+        ref. <span class="String"><a href="https://tools.ietf.org/html/rfc3986#section-6.2.3">https://tools.ietf.org/html/rfc3986#section-6.2.3</a></span>
+
+default_port()
+                                        <a class="String" href="./../../../vital/Web/URI/HTTP.html#Vital.Web.URI.HTTP.default_port()" name="Vital.Web.URI.HTTP.default_port()">Vital.Web.URI.HTTP.default_port()</a>
+        Returns a string of a default port of http scheme (&quot;80&quot;).
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../../index.html">main help file</a> - <a href="./../../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

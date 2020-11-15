@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Vim/Buffer</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Vim/Buffer</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Vim/Buffer.html" name="vital/Vim/Buffer.txt">vital/Vim/Buffer.txt</a>  Vim's buffer related stuff in general.
+
+Maintainers: thinca &lt;thinca+vim@gmail.com&gt;
+             ujihisa &lt;ujihisa at gmail com&gt;
+             lambdalisue &lt;lambdalisue@hashnote.net&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                        <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-contents" name="Vital.Vim.Buffer-contents">Vital.Vim.Buffer-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-introduction">Vital.Vim.Buffer-introduction</a>
+USAGE                           <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-usage">Vital.Vim.Buffer-usage</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-interface">Vital.Vim.Buffer-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-functions">Vital.Vim.Buffer-functions</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                    <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-introduction" name="Vital.Vim.Buffer-introduction">Vital.Vim.Buffer-introduction</a>
+
+<a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer" name="Vital.Vim.Buffer">Vital.Vim.Buffer</a> is a Vim's buffer library.
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                           <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-usage" name="Vital.Vim.Buffer-usage">Vital.Vim.Buffer-usage</a>
+
+<span class="helpExample">        let B = V.import('Vim.Buffer')</span>
+<span class="helpExample">        echo B.is_cmdwin() &quot; 1 if you are in command-line-window.</span>
+<span class="helpExample">        </span>
+<span class="helpExample">        &quot; Open A.txt via split. show 1 if the A.txt is newly loaded</span>
+<span class="helpExample">        echo B.open('A.txt', {'opener': 'split'})</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                       <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-interface" name="Vital.Vim.Buffer-interface">Vital.Vim.Buffer-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                       <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer-functions" name="Vital.Vim.Buffer-functions">Vital.Vim.Buffer-functions</a>
+
+is_cmdwin()                             <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.is_cmdwin()" name="Vital.Vim.Buffer.is_cmdwin()">Vital.Vim.Buffer.is_cmdwin()</a>
+        Return a boolean (0/1) which indicate whether a current buffer is in
+        <a href="https://www.google.com/search?q=vim+%22command-line-window%22&lr=lang_en"><span class="MissingTag">command-line-window</span></a> or not. <span class="Todo">Note</span> that most of buffer manipulation
+        does not work in the window.
+
+get_last_selected()                     <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.get_last_selected()" name="Vital.Vim.Buffer.get_last_selected()">Vital.Vim.Buffer.get_last_selected()</a>
+        Get the last selected text in visual mode.
+        This is almost the same as
+
+<span class="helpExample">                :normal! gvy</span>
+
+        without changing unnamed register.
+        But this function can work even in <a href="https://www.google.com/search?q=vim+%22textlock%22&lr=lang_en"><span class="MissingTag">textlock</span></a>.
+
+open(<span class="Special">{buffer}</span> [, <span class="Special">{options}</span>])            <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.open()" name="Vital.Vim.Buffer.open()">Vital.Vim.Buffer.open()</a>
+        Open a <span class="Special">{buffer}</span> and return a boolean which indicates whether the buffer
+        has been newly loaded or not.
+
+        If 0 or an empty string has been specified to <span class="Special">{buffer}</span>, the function
+        opens a new unnamed buffer. In this case, the return value is always 1.
+
+        If a number has been specified to <span class="Special">{buffer}</span>, the <span class="Special">{buffer}</span> is assumed as a
+        buffer number and an existing buffer will be opened.
+
+        If a string has been specified to <span class="Special">{buffer}</span>, the <span class="Special">{buffer}</span> is assumed as a
+        buffer name and an existing buffer which is identified by the name or
+        a new buffer will be opened.
+
+        In <span class="Special">{options}</span>, the following attributes are allowed
+
+        &quot;opener&quot;        A string or funcref used to open a buffer.
+                        When a string has specified, the string is used in a
+                        <a href="https://www.google.com/search?q=vim+%22execute%22&lr=lang_en"><span class="MissingTag">execute</span></a> command to open a buffer.
+                        When a funcref has specified, the funcref is called
+                        with <span class="Special">{buffer}</span> as a dictionary function of <span class="Special">{options}</span>
+                        and the funcref will have a responsibility to open a
+                        buffer.
+                        The default value is &quot;enew&quot; or &quot;edit&quot;, depends on a
+                        value of <span class="Special">{buffer}</span>.
+
+        &quot;mods&quot;          A command modifiers like <a href="https://www.google.com/search?q=vim+%22vertical%22&lr=lang_en"><span class="MissingTag">vertical</span></a> or <a href="https://www.google.com/search?q=vim+%22botright%22&lr=lang_en"><span class="MissingTag">botright</span></a>.
+                        It is used as a prefix of &quot;opener&quot; when opening a
+                        buffer.
+
+        &quot;cmdarg&quot;        A command argument (<a href="https://www.google.com/search?q=vim+%22++opt%22&lr=lang_en"><span class="MissingTag">++opt</span></a>) used to open a new named
+                        buffer. <span class="Todo">Note</span> that it may not affect properties of an
+                        existing buffer or unnamed buffer due to the
+                        limitation of Vim's builtin command.
+
+        For backward compatibility, an &quot;opener&quot; is allowed to directly be
+        assigned to the <span class="Special">{options}</span> attribute.
+
+<span class="helpExample">        &quot; Open 'foo' with a default opener</span>
+<span class="helpExample">        call s:Buffer.open('foo')</span>
+
+<span class="helpExample">        &quot; Open 'foo' with 'split'</span>
+<span class="helpExample">        call s:Buffer.open('foo', {'opener': 'split'})</span>
+
+<span class="helpExample">        &quot; Open 'foo' with 'split' (deprecated)</span>
+<span class="helpExample">        call s:Buffer.open('foo', 'split')</span>
+
+<span class="helpExample">        &quot; Open 'foo' with 'botright split ++enc=utf8 ++ff=dos'</span>
+<span class="helpExample">        call s:Buffer.open('foo', {</span>
+<span class="helpExample">              \ 'opener': 'split',</span>
+<span class="helpExample">              \ 'mods': 'botright',</span>
+<span class="helpExample">              \ 'cmdarg': '++enc=utf8 ++ff=dos',</span>
+<span class="helpExample">              \})</span>
+
+<span class="helpExample">        &quot; Open 'foo' with 'botright split ++enc=utf8 ++ff=dos'</span>
+<span class="helpExample">        function! s:opener(buffer) abort dict</span>
+<span class="helpExample">          execute self.mods 'split' self.cmdarg a:buffer</span>
+<span class="helpExample">        endfunction</span>
+<span class="helpExample">        call s:Buffer.open('foo', {</span>
+<span class="helpExample">              \ 'opener': function('s:opener'),</span>
+<span class="helpExample">              \ 'mods': 'botright',</span>
+<span class="helpExample">              \ 'cmdarg': '++enc=utf8 ++ff=dos',</span>
+<span class="helpExample">              \})</span>
+
+
+read_content(<span class="Special">{content}</span>[, <span class="Special">{options}</span>])    <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.read_content()" name="Vital.Vim.Buffer.read_content()">Vital.Vim.Buffer.read_content()</a>
+        Insert <span class="Special">{content}</span> (<a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>) below the cursor of the current buffer.
+        It uses <a href="https://www.google.com/search?q=vim+%22:read%22&lr=lang_en"><span class="MissingTag">:read</span></a> command internally to allow automatic fileencoding
+        detection of Vim (See <a href="https://www.google.com/search?q=vim+%22fileencodings%22&lr=lang_en"><span class="MissingTag">fileencodings</span></a>).
+        The following attributes are allowed in <span class="Special">{options}</span>:
+
+        <a href="https://www.google.com/search?q=vim+%22'tempfile'%22&lr=lang_en"><span class="MissingTag">'tempfile'</span></a>
+        A name of temporary file.
+        <span class="Todo">Note</span> that the file will be removed automatically.
+        A default value is a result <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> of <a href="https://www.google.com/search?q=vim+%22tempname()%22&lr=lang_en"><span class="MissingTag">tempname()</span></a>.
+        <a href="https://www.google.com/search?q=vim+%22'fileformat'%22&lr=lang_en"><span class="MissingTag">'fileformat'</span></a>
+        To overrides <a href="https://www.google.com/search?q=vim+%22'fileformat'%22&lr=lang_en"><span class="MissingTag">'fileformat'</span></a>. See <a href="https://www.google.com/search?q=vim+%22++ff%22&lr=lang_en"><span class="MissingTag">++ff</span></a>.
+        A default value is ''.
+        <a href="https://www.google.com/search?q=vim+%22'encoding'%22&lr=lang_en"><span class="MissingTag">'encoding'</span></a>
+        To overrides <a href="https://www.google.com/search?q=vim+%22'fileencoding'%22&lr=lang_en"><span class="MissingTag">'fileencoding'</span></a>. See <a href="https://www.google.com/search?q=vim+%22++enc%22&lr=lang_en"><span class="MissingTag">++enc</span></a>.
+        A default value is ''.
+        <a href="https://www.google.com/search?q=vim+%22'binary'%22&lr=lang_en"><span class="MissingTag">'binary'</span></a>
+        To sets <a href="https://www.google.com/search?q=vim+%22'binary'%22&lr=lang_en"><span class="MissingTag">'binary'</span></a>. See <a href="https://www.google.com/search?q=vim+%22++bin%22&lr=lang_en"><span class="MissingTag">++bin</span></a>.
+        A default value is 0.
+        <a href="https://www.google.com/search?q=vim+%22'nobin'%22&lr=lang_en"><span class="MissingTag">'nobin'</span></a>
+        To resets <a href="https://www.google.com/search?q=vim+%22'binary'%22&lr=lang_en"><span class="MissingTag">'binary'</span></a>. See <a href="https://www.google.com/search?q=vim+%22++nobin%22&lr=lang_en"><span class="MissingTag">++nobin</span></a>.
+        A default value is 0.
+        <a href="https://www.google.com/search?q=vim+%22'bad'%22&lr=lang_en"><span class="MissingTag">'bad'</span></a>
+        To specifies behavior for bad characters. See <a href="https://www.google.com/search?q=vim+%22++bad%22&lr=lang_en"><span class="MissingTag">++bad</span></a>.
+        A default value is ''.
+        <a href="https://www.google.com/search?q=vim+%22'edit'%22&lr=lang_en"><span class="MissingTag">'edit'</span></a>
+        To keep option values as if editing a file. See <a href="https://www.google.com/search?q=vim+%22++edit%22&lr=lang_en"><span class="MissingTag">++edit</span></a>.
+        A default value is 0.
+        <a href="https://www.google.com/search?q=vim+%22'line'%22&lr=lang_en"><span class="MissingTag">'line'</span></a>
+        To append content after the specified linenum.
+        A default value is '' which append content after the cursor line.
+        <a href="https://www.google.com/search?q=vim+%22'lockmarks'%22&lr=lang_en"><span class="MissingTag">'lockmarks'</span></a>
+        Use <a href="https://www.google.com/search?q=vim+%22lockmarks%22&lr=lang_en"><span class="MissingTag">lockmarks</span></a> to execute command so that the marks are not adjusted
+        during the operation.
+        A default value is 0.
+
+edit_content(<span class="Special">{content}</span>[, <span class="Special">{options}</span>])    <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Bufer.edit_content()" name="Vital.Vim.Bufer.edit_content()">Vital.Vim.Bufer.edit_content()</a>
+        Replace content of the current buffer to <span class="Special">{content}</span>. It is similar to
+        <a href="https://www.google.com/search?q=vim+%22:edit%22&lr=lang_en"><span class="MissingTag">:edit</span></a> command, mean that <a href="https://www.google.com/search?q=vim+%22fileformat%22&lr=lang_en"><span class="MissingTag">fileformat</span></a>, <a href="https://www.google.com/search?q=vim+%22fileencoding%22&lr=lang_en"><span class="MissingTag">fileencoding</span></a>, and <a href="https://www.google.com/search?q=vim+%22binary%22&lr=lang_en"><span class="MissingTag">binary</span></a>
+        options of the current buffer will be overwritten in default behavior.
+        It calls <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.read_content()">Vital.Vim.Buffer.read_content()</a> with options.edit=1 in default
+        so developers can change the behavior of internal <a href="https://www.google.com/search?q=vim+%22:read%22&lr=lang_en"><span class="MissingTag">:read</span></a> command as
+        <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.read_content()">Vital.Vim.Buffer.read_content()</a>.
+
+parse_cmdarg([<span class="Special">{cmdarg}</span>])                <a class="String" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.parse_cmdarg" name="Vital.Vim.Buffer.parse_cmdarg">Vital.Vim.Buffer.parse_cmdarg</a>
+        Parse <span class="Special">{cmdarg}</span> which is used as <span class="Special">[++opt]</span> in <a href="https://www.google.com/search?q=vim+%22:read%22&lr=lang_en"><span class="MissingTag">:read</span></a> or <a href="https://www.google.com/search?q=vim+%22:edit%22&lr=lang_en"><span class="MissingTag">:edit</span></a> command
+        and return a <span class="Special">{options}</span> dictionary which can directly be used in
+        <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.read_content()">Vital.Vim.Buffer.read_content()</a> or
+        <a href="https://www.google.com/search?q=vim+%22Vital.Vim.Buffer.edit_content()%22&lr=lang_en"><span class="MissingTag">Vital.Vim.Buffer.edit_content()</span></a>.
+        If <span class="Special">{cmdarg}</span> is not specified, <a href="https://www.google.com/search?q=vim+%22v:cmdarg%22&lr=lang_en"><span class="MissingTag">v:cmdarg</span></a> is used instead.
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

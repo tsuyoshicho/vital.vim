@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Deprecated/Lua/Prelude</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Deprecated/Lua/Prelude</h1>
+<a href="./../../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html" name="vital/Lua/Prelude.txt">vital/Lua/Prelude.txt</a>         crucial functions for lua integration
+
+Maintainer: ujihisa &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-contents" name="Vital.Deprecated.Lua.Prelude-contents">Vital.Deprecated.Lua.Prelude-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-introduction">Vital.Deprecated.Lua.Prelude-introduction</a>
+  USAGE                         <a class="Identifier" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-usage">Vital.Deprecated.Lua.Prelude-usage</a>
+INTERFACE                       <a class="Identifier" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-interface">Vital.Deprecated.Lua.Prelude-interface</a>
+  Functions                       <a class="Identifier" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-functions">Vital.Deprecated.Lua.Prelude-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-introduction" name="Vital.Deprecated.Lua.Prelude-introduction">Vital.Deprecated.Lua.Prelude-introduction</a>
+
+<a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude" name="Vital.Deprecated.Lua.Prelude">Vital.Deprecated.Lua.Prelude</a> provides
+
+* common way to make your own function available both from Vim script and from
+  Lua.
+* automatic loading of corresponding files; this loads a Lua file
+  autoload/foo.lua when you use a Vim script file autoload/foo.vim which both
+  can be used from Lua/Vim.
+* useful functions defined in Deprecated.Lua.Prelude, like from_lua() and to_lua().
+* easy way to call Lua function from Vim script.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                                   <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-usage" name="Vital.Deprecated.Lua.Prelude-usage">Vital.Deprecated.Lua.Prelude-usage</a>
+
+When you write function &quot;f&quot; it can be used from both (vim or lua) code. You
+can write bridge function below:
+
+sample.vim
+
+<span class="helpExample">        let s:V = vital#sample#new()</span>
+<span class="helpExample">        let s:P = s:V.import('Deprecated.Lua.Prelude')</span>
+<span class="helpExample">        &quot; s:LuaP is namespace of Vital.Deprecated.Lua.Prelude</span>
+<span class="helpExample">        let s:LuaP = s:P.lua_namespace()</span>
+<span class="helpExample">        &quot; s:sfile will be namespace</span>
+<span class="helpExample">        let s:sfile = expand('&lt;sfile&gt;:p')</span>
+
+<span class="helpExample">        function! s:init_context()</span>
+<span class="helpExample">          &quot; load and evaluate sample.lua</span>
+<span class="helpExample">          call luaeval('dofile(_A)', s:P.luafile_of(s:sfile))</span>
+<span class="helpExample">        endfunction</span>
+<span class="helpExample">        call s:init_context()</span>
+
+<span class="helpExample">        function! s:f(x, y)</span>
+<span class="helpExample">          return luaeval('_G[_A[0]].vim.f(_A[1], _A[2])', [s:sfile, a:x, a:y])</span>
+<span class="helpExample">        endfunction</span>
+
+sample.lua
+
+<span class="helpExample">        local public = {lua = {}, vim = {}}</span>
+<span class="helpExample">        -- You can call Vital.Deprecated.Lua.Prelude functions via table P</span>
+<span class="helpExample">        local P = _G[vim.eval('s:LuaP')].lua</span>
+
+<span class="helpExample">        function public.lua.f(x, y)</span>
+<span class="helpExample">          ...</span>
+<span class="helpExample">        end</span>
+<span class="helpExample">        ...</span>
+<span class="helpExample">        function public.vim.f(x, y)</span>
+<span class="helpExample">          -- type conversion and call public.lua.f</span>
+<span class="helpExample">          ...</span>
+<span class="helpExample">        end</span>
+<span class="helpExample">        ...</span>
+
+<span class="helpExample">        -- Make your namespace</span>
+<span class="helpExample">        _G[vim.eval('s:sfile')] = public</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-interface" name="Vital.Deprecated.Lua.Prelude-interface">Vital.Deprecated.Lua.Prelude-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude-functions" name="Vital.Deprecated.Lua.Prelude-functions">Vital.Deprecated.Lua.Prelude-functions</a>
+
+luafile_of(<span class="Special">{sfile}</span>)                           <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude.luafile_of()" name="Vital.Deprecated.Lua.Prelude.luafile_of()">Vital.Deprecated.Lua.Prelude.luafile_of()</a>
+
+        Only as a vim interface; Lua script can't call this function directly.
+        Convert vim script filename to lua script filename. Lua script file
+        must be placed on the same directory of vim script file.
+
+map(<span class="Special">{list}</span>, <span class="Special">{f}</span>)                                     <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude.map()" name="Vital.Deprecated.Lua.Prelude.map()">Vital.Deprecated.Lua.Prelude.map()</a>
+
+        Only as a lua interface; Vim script can't call this function directly.
+
+<span class="helpExample">        map({10, 20, 30}, function(e) return e + 1 end)</span>
+<span class="helpExample">        # == {11, 21, 31}</span>
+
+
+to_lua(<span class="Special">{vobj}</span>)                                    <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude.to_lua()" name="Vital.Deprecated.Lua.Prelude.to_lua()">Vital.Deprecated.Lua.Prelude.to_lua()</a>
+
+        Only as a lua interface; Vim script can't call this function directly.
+        TODO
+
+from_lua(<span class="Special">{lobj}</span>)                                <a class="String" href="./../../../vital/Deprecated/Lua/Prelude.html#Vital.Deprecated.Lua.Prelude.from_lua()" name="Vital.Deprecated.Lua.Prelude.from_lua()">Vital.Deprecated.Lua.Prelude.from_lua()</a>
+
+        Only as a lua interface; Vim script can't call this function directly.
+        TODO
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../../index.html">main help file</a> - <a href="./../../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/LazyList</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/LazyList</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Data/LazyList.html" name="vital/Data/LazyList.txt">vital/Data/LazyList.txt</a>       lazy list including file io.
+
+Maintainer: ujihisa &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                        <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-contents" name="Vital.Data.LazyList-contents">Vital.Data.LazyList-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-introduction">Vital.Data.LazyList-introduction</a>
+  USAGE                         <a class="Identifier" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-usage">Vital.Data.LazyList-usage</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-interface">Vital.Data.LazyList-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-functions">Vital.Data.LazyList-functions</a>
+INTERNAL                        <a class="Identifier" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-internal">Vital.Data.LazyList-internal</a>
+  DATA STRUCTURE                  <a class="Identifier" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-datastructure">Vital.Data.LazyList-datastructure</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                    <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-introduction" name="Vital.Data.LazyList-introduction">Vital.Data.LazyList-introduction</a>
+
+<a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList" name="Vital.Data.LazyList">Vital.Data.LazyList</a> is TODO
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                           <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-usage" name="Vital.Data.LazyList-usage">Vital.Data.LazyList-usage</a>
+
+<span class="helpExample">        let s:L = vital#{plugin-name}#new().import('Data.LazyList')</span>
+<span class="helpExample">        let xs = s:L.file_readlines('/tmp/a.txt')</span>
+<span class="helpExample">        let xs = s:L.map(xs, 'split(v:val, &quot;:&quot;)')</span>
+<span class="helpExample">        let xs = s:L.filter(xs, 'v:val[1] &lt; 3')</span>
+<span class="helpExample">        echo s:L.take(3, xs)</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                       <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-interface" name="Vital.Data.LazyList-interface">Vital.Data.LazyList-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                       <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-functions" name="Vital.Data.LazyList-functions">Vital.Data.LazyList-functions</a>
+
+from_list(<span class="Special">{list}</span>)               <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList.from_list()" name="Vital.Data.LazyList.from_list()">Vital.Data.LazyList.from_list()</a>
+        Constructs lazy list based on given <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span>.
+
+iterate(<span class="Special">{init}</span>, <span class="Special">{f}</span>)            <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList.iterate()" name="Vital.Data.LazyList.iterate()">Vital.Data.LazyList.iterate()</a>
+        Constructs lazy list based on given initial value <span class="Special">{init}</span> and a
+        function <span class="Special">{f}</span> to make new item of lazy list based on previous value,
+        described in <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+
+<span class="helpExample">        :echo L.take(3, L.iterate(0, 'v:val + 1'))</span>
+<span class="helpExample">        [0, 1, 2]</span>
+<span class="helpExample">        :echo L.take(3, L.filter(L.iterate(0, 'v:val + 1'), 'v:val % 2 == 0'))</span>
+<span class="helpExample">        [0, 2, 4]</span>
+
+
+file_readlines(<span class="Special">{fname}</span>)         <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList.file_readlines()" name="Vital.Data.LazyList.file_readlines()">Vital.Data.LazyList.file_readlines()</a>
+        Constructs lazy list based on given filename <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> <span class="Special">{fname}</span>.
+        This function requires <a href="https://www.google.com/search?q=vim+%22vimproc%22&lr=lang_en"><span class="MissingTag">vimproc</span></a>.
+
+        For example, the following line of code will read first 4 lines from
+        the given file &quot;/tmp/a.txt&quot;.
+
+<span class="helpExample">        L.take(4, L.file_readlines('/tmp/a.txt'))</span>
+
+
+take(<span class="Special">{n}</span>, <span class="Special">{xs}</span>)                 <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList.take()" name="Vital.Data.LazyList.take()">Vital.Data.LazyList.take()</a>
+        De-constructs from lazy list <span class="Special">{xs}</span> to <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>, but the length will be at
+        most <span class="Special">{n}</span>.
+        See other functions such as <a class="Identifier" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList.iterate()">Vital.Data.LazyList.iterate()</a> for sample
+        use case.
+
+        You may get confused by the order of arguments, but it's on purpose.
+
+zip(<span class="Special">{xs}</span>, <span class="Special">{ys}</span>)                 <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList.zip()" name="Vital.Data.LazyList.zip()">Vital.Data.LazyList.zip()</a>
+        Constructs a new lazy list based on given 2 lazy lists <span class="Special">{xs}</span> and <span class="Special">{ys}</span>.
+
+<span class="helpExample">        :let xs = L.from_list([3, 1, 4])</span>
+<span class="helpExample">        :let ys = L.from_list(['a', 'b', 'c'])</span>
+<span class="helpExample">        :echo L.take(3, L.zip(L.map(xs, 'v:val + 1'), ys))</span>
+<span class="helpExample">        [[4, 'a'], [2, 'b'], [5, 'c']]</span>
+
+filter(<span class="Special">{xs}</span>, <span class="Special">{string}</span>)                  <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList.filter()" name="Vital.Data.LazyList.filter()">Vital.Data.LazyList.filter()</a>
+
+map(<span class="Special">{xs}</span>, <span class="Special">{string}</span>)                     <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList.map()" name="Vital.Data.LazyList.map()">Vital.Data.LazyList.map()</a>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERNAL</span>                        <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-internal" name="Vital.Data.LazyList-internal">Vital.Data.LazyList-internal</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">DATA STRUCTURE</span>                  <a class="String" href="./../../vital/Data/LazyList.html#Vital.Data.LazyList-datastructure" name="Vital.Data.LazyList-datastructure">Vital.Data.LazyList-datastructure</a>
+
+        This section is only for deep understanding of lazy list
+        implementation just for  debugging / developing this library itself.
+        Any application code should not depend on its internal data structure
+        since vital developers may make changes without explicitly telling.
+
+
+<span class="helpExample">        :echo L.from_list([3, 1, 4])</span>
+<span class="helpExample">        [[], {'list': [3, 1, 4], 'run': function('&lt;SNR&gt;385__f_from_list')}]</span>
+
+        A lazy list is a tuple (a 2-item <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>).  The left side is registered
+        functions to apply when you take items from the lazy list. Each item
+        is a string which has &quot;v:val&quot; that returns an empty list or a list
+        which only has 1 item if you <a href="https://www.google.com/search?q=vim+%22eval()%22&lr=lang_en"><span class="MissingTag">eval()</span></a> it. The right side is a
+        <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> which either at least has &quot;run&quot; key where the value is a
+        <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> or an empty dict {} which means the end of the lazy list.
+        This is for generating an item and upcoming uncalculated next items.
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital</h1>
+<a href="./index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="././vital.html" name="vital.txt">vital.txt</a>             A comprehensive Vim utility functions for Vim plugins.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="././vital.html#Vital-contents" name="Vital-contents">Vital-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="././vital.html#Vital-introduction">Vital-introduction</a>
+USAGE                           <a class="Identifier" href="././vital.html#Vital-usage">Vital-usage</a>
+TERM                            <a href="https://www.google.com/search?q=vim+%22Vital-term%22&lr=lang_en"><span class="MissingTag">Vital-term</span></a>
+INTERFACE                       <a class="Identifier" href="././vital.html#Vital-interface">Vital-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="././vital.html#Vital-functions">Vital-functions</a>
+  Vital object                    <a class="Identifier" href="././vital.html#Vital-Vital-object">Vital-Vital-object</a>
+LINKS                           <a class="Identifier" href="././vital.html#Vital-links">Vital-links</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="././vital.html#Vital-introduction" name="Vital-introduction">Vital-introduction</a>
+
+<a class="String" href="././vital.html#vital" name="vital">vital</a> (or <a class="String" href="././vital.html#vital.vim" name="vital.vim">vital.vim</a> ) is like a plugin which has both aspects of Bundler and
+jQuery at the same time.
+
+ Bundler: <span class="String"><a href="http://gembundler.com/">http://gembundler.com/</a></span>
+ jQuery:  <span class="String"><a href="http://jquery.com/">http://jquery.com/</a></span>
+
+If you are a Vim user who doesn't make Vim plugins, please ignore this page.
+If you are a Vim plugin author, please check this out.
+
+Modules in vital.vim basically support Vim 8.1 or later.
+We guarantee that the following versions of Vim are supported:
+* The latest major version (8.2.*)
+* The previous major version (8.1.*)
+
+And some modules have stricter requirements and additional dependencies.
+Please read the docs of each module before using them.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                                   <a class="String" href="././vital.html#Vital-usage" name="Vital-usage">Vital-usage</a>
+
+Assuming your Vim plugin name is &quot;your_plugin_name&quot;. You can define your utility
+function set &quot;your_plugin_name#util&quot; just by
+
+<span class="helpExample">    let s:Process = vital#your_plugin_name#import('System.Process')</span>
+<span class="helpExample">    </span>
+<span class="helpExample">    function! your_plugin_name#util#system(...)</span>
+<span class="helpExample">       return s:Process.execute(a:000)</span>
+<span class="helpExample">    endfunction</span>
+
+and then you can call functions by 'your_plugin_name#util#system()', without taking
+care of <a class="Identifier" href="././vital.html#vital.vim">vital.vim</a> itself. It's all hidden.
+
+<a href="https://www.google.com/search?q=vim+%22Vital%22&lr=lang_en"><span class="MissingTag">Vital</span></a> has module system. The below is an example to import/load a module
+&quot;Math&quot; and to call a function &quot;lcm()&quot; of the module.
+
+<span class="helpExample">    let s:M = vital#your_plugin_name#import('Math')</span>
+<span class="helpExample">    call s:M.lcm([2, 3, 4])</span>
+
+or
+
+<span class="helpExample">    let s:V = vital#your_plugin_name#new()</span>
+<span class="helpExample">    let s:M = s:V.import('Math')</span>
+<span class="helpExample">    call s:M.lcm([2, 3, 4])</span>
+
+or
+
+<span class="helpExample">    let s:V = vital#your_plugin_name#new()</span>
+<span class="helpExample">    call s:V.load('Math')</span>
+<span class="helpExample">    call s:V.Math.lcm([2, 3, 4])</span>
+
+or
+
+<span class="helpExample">    let s:V = vital#your_plugin_name#new()</span>
+<span class="helpExample">    call s:V.import('Math', s:)</span>
+<span class="helpExample">    call s:lcm([2, 3, 4])</span>
+
+We recommend you to use a capital letter for a Vital module dictionary to
+assign as Vital convention. That makes your code more readable among Vital
+programmers.
+
+When you start using vital for your own Vim plugin for the first time, you
+have to embed vital. See <a class="Identifier" href="././vitalizer.html">vitalizer.txt</a> about the details how to embed and
+keep it updated.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TERMS</span>                                   <a class="String" href="././vital.html#Vital-terms" name="Vital-terms">Vital-terms</a>
+
+<span class="Special">{plugin-name}</span>                           <a class="String" href="././vital.html#Vital-term-plugin-name" name="Vital-term-plugin-name">Vital-term-plugin-name</a>
+        It's same as the <span class="Special">{name}</span> in <a class="Identifier" href="././vitalizer.html#:Vitalize">:Vitalize</a> and this name is used in
+        <a class="Identifier" href="././vital.html#Vital-functions">Vital-functions</a>.
+
+        <span class="PreProc">Reserved name: &quot;vital&quot;</span>
+        You can use &quot;vital&quot; as a <span class="Special">{plugin-name}</span> by default. When <span class="Special">{plugin-name}</span>
+        is &quot;vital&quot;, you can use all available vital modules in <a href="https://www.google.com/search?q=vim+%22'runtimepath'%22&lr=lang_en"><span class="MissingTag">'runtimepath'</span></a>.
+        Just use &quot;vital&quot; for development only and use unique <span class="Special">{plugin-name}</span> to
+        embed modules by <a class="Identifier" href="././vitalizer.html#:Vitalize">:Vitalize</a> and use them in your plugin.
+
+<span class="Special">{module-name}</span>                           <a class="String" href="././vital.html#Vital-term-module-name" name="Vital-term-module-name">Vital-term-module-name</a>
+        A name of vital module. <span class="Special">{module-name}</span> is capitalized words separated
+        with dot. Please see each <a class="Identifier" href="././vital.html#Vital-modules">Vital-modules</a> help for detail.
+        Example:
+                &quot;Prelude&quot; (<a class="Identifier" href="./vital/Prelude.html">vital/Prelude.txt</a>)
+                &quot;Data.String&quot; (<a class="Identifier" href="./vital/Data/String.html">vital/Data/String.txt</a>)
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="././vital.html#Vital-interface" name="Vital-interface">Vital-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS </span>                              <a class="String" href="././vital.html#Vital-functions" name="Vital-functions">Vital-functions</a>
+
+vital#<span class="Special">{plugin-name}</span>#new()                       <a class="String" href="././vital.html#vital#{plugin-name}#new()" name="vital#{plugin-name}#new()">vital#{plugin-name}#new()</a>
+        Creates a new Vital object(<a class="Identifier" href="././vital.html#Vital-Vital-object">Vital-Vital-object</a>).
+        If you just want to use <a class="Identifier" href="././vital.html#Vital-Vital.import()">Vital-Vital.import()</a>, You can use
+        <a class="Identifier" href="././vital.html#vital#{plugin-name}#import()">vital#{plugin-name}#import()</a> instead without any performance
+        degradation.
+
+vital#<span class="Special">{plugin-name}</span>#import(<span class="Special">{module-name}</span>)       <a class="String" href="././vital.html#vital#{plugin-name}#import()" name="vital#{plugin-name}#import()">vital#{plugin-name}#import()</a>
+        Imports a single module specified by <span class="Special">{module-name}</span>.
+
+<span class="helpExample">        let s:List = vital#vital#import('Data.List')</span>
+<span class="helpExample">        echo s:List.uniq([1,1,2])</span>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Vital object                            <a class="String" href="././vital.html#Vital-Vital-object" name="Vital-Vital-object">Vital-Vital-object</a>
+
+Vital.import(<span class="Special">{module-name}</span> [, <span class="Special">{to}</span>])    <a class="String" href="././vital.html#Vital-Vital.import()" name="Vital-Vital.import()">Vital-Vital.import()</a>
+        Imports a single module specified by <span class="Special">{module-name}</span> to <span class="Special">{to}</span> or empty
+        dictionary, and returns it.
+
+<span class="helpExample">        let s:List = s:V.import('Data.List')</span>
+<span class="helpExample">        echo s:List.uniq([1,1,2])</span>
+
+Vital.load(<span class="Special">{module-name}</span>)               <a class="String" href="././vital.html#Vital-Vital.load()" name="Vital-Vital.load()">Vital-Vital.load()</a>
+        Loads a module to the Vital directly.
+
+<span class="helpExample">        call s:V.load('Data.List')</span>
+<span class="helpExample">        echo s:V.Data.List.uniq([1,1,2])</span>
+
+Vital.exists(<span class="Special">{module-name}</span>)             <a class="String" href="././vital.html#Vital-Vital.exists()" name="Vital-Vital.exists()">Vital-Vital.exists()</a>
+        Checks whether a module specified by <span class="Special">{module-name}</span> exists.
+
+Vital.search(<span class="Special">{pattern}</span>)                 <a class="String" href="././vital.html#Vital-Vital.search()" name="Vital-Vital.search()">Vital-Vital.search()</a>
+        Searches available modules.  Returns module names by <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>.
+        Wildcard '*' is available in <span class="Special">{pattern}</span>.  This matches to any strings
+        in the part of module name that excludes &quot;.&quot;.
+        Wildcard '**' is available in <span class="Special">{pattern}</span>.  This is similar to '*' but
+        also matches to &quot;.&quot;.
+
+<span class="helpExample">        echo s:V.search('Data.*')</span>
+<span class="helpExample">        echo s:V.search('Data.*List')</span>
+<span class="helpExample">        echo s:V.search('**')  &quot; returns all available module names</span>
+
+Vital.plugin_name()                     <a class="String" href="././vital.html#Vital-Vital.plugin_name()" name="Vital-Vital.plugin_name()">Vital-Vital.plugin_name()</a>
+        Returns <span class="Special">{plugin-name}</span> of the Vital object.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">LINKS</span>                                   <a class="String" href="././vital.html#Vital-links" name="Vital-links">Vital-links</a>
+
+ Delegation in Vim script:
+   <span class="String"><a href="http://ujihisa.blogspot.com/2011/02/delegation-in-vim-script.html">http://ujihisa.blogspot.com/2011/02/delegation-in-vim-script.html</a></span>
+ Core concept of vital (in Japanese):
+   <span class="String"><a href="http://d.hatena.ne.jp/thinca/20110310/1299768323">http://d.hatena.ne.jp/thinca/20110310/1299768323</a></span>
+ How to make a vital module (in Japanese):
+   <span class="String"><a href="http://d.hatena.ne.jp/thinca/20110311/1299769233">http://d.hatena.ne.jp/thinca/20110311/1299769233</a></span>
+ API Reference (in Japanese):
+   <span class="String"><a href="http://d.hatena.ne.jp/kanno_kanno/20120107/1325949855">http://d.hatena.ne.jp/kanno_kanno/20120107/1325949855</a></span>
+ Let's use vital.vim (in Japanese):
+   <span class="String"><a href="http://qiita.com/rbtnn/items/deb569ebc94d5172a5e5">http://qiita.com/rbtnn/items/deb569ebc94d5172a5e5</a></span>
+
+ Vitalize command:
+  <a class="Identifier" href="././vitalizer.html">vitalizer.txt</a>
+
+ Vital modules                          <a class="String" href="././vital.html#Vital-modules" name="Vital-modules">Vital-modules</a>
+  <a class="Identifier" href="./vital/Assertion.html">vital/Assertion.txt</a>         assertion library.
+  <a class="Identifier" href="./vital/Async/Promise.html">vital/Async/Promise.txt</a>     An asynchronous operation like ES6 Promise
+  <a class="Identifier" href="./vital/Bitwise.html">vital/Bitwise.txt</a>           bitwise operators.
+  <a class="Identifier" href="./vital/Color.html">vital/Color.txt</a>             color conversion library between RGB/HSL/terminal code
+  <a class="Identifier" href="./vital/ConcurrentProcess.html">vital/ConcurrentProcess.txt</a> Manages processes concurrently with vimproc.
+  <a class="Identifier" href="./vital/Data/Base64.html">vital/Data/Base64.txt</a>       base64 utilities library.
+  <a class="Identifier" href="./vital/Data/Base64/RFC4648.html">vital/Data/Base64/RFC4648.txt</a>       base64 RFC4648 utilities library.
+  <a class="Identifier" href="./vital/Data/Base64/URLSafe.html">vital/Data/Base64/URLSafe.txt</a>       base64 URLSafe utilities library.
+  <a class="Identifier" href="./vital/Data/Base32.html">vital/Data/Base32.txt</a>       base32 utilities library.
+  <a class="Identifier" href="./vital/Data/Base32/Crockford.html">vital/Data/Base32/Crockford.txt</a>     base32 Crockford utilities library.
+  <a class="Identifier" href="./vital/Data/Base32/Hex.html">vital/Data/Base32/Hex.txt</a>   base32 Hex utilities library.
+  <a class="Identifier" href="./vital/Data/Base32/RFC4648.html">vital/Data/Base32/RFC4648.txt</a>       base32 RFC4648 utilities library.
+  <a class="Identifier" href="./vital/Data/Base16.html">vital/Data/Base16.txt</a>       base16 utilities library.
+  <a class="Identifier" href="./vital/Data/BigNum.html">vital/Data/BigNum.txt</a>       Multi precision integer library.
+  <a class="Identifier" href="./vital/Data/Closure.html">vital/Data/Closure.txt</a>      Provide Closure object.
+  <a class="Identifier" href="./vital/Data/Counter.html">vital/Data/Counter.txt</a>      Counter library to support convenient tallies.
+  <a class="Identifier" href="./vital/Data/Dict.html">vital/Data/Dict.txt</a>         dictionary utilities library.
+  <a class="Identifier" href="./vital/Data/LazyList.html">vital/Data/LazyList.txt</a>     lazy list including file io.
+  <a class="Identifier" href="./vital/Data/List.html">vital/Data/List.txt</a>         list utilities library.
+  <a class="Identifier" href="./vital/Data/List/Byte.html">vital/Data/List/Byte.txt</a>    Bytes-List and other bytes-list like data converter.
+  <a class="Identifier" href="./vital/Data/Optional.html">vital/Data/Optional.txt</a>     Provide optional value
+  <a class="Identifier" href="./vital/Data/OrderedSet.html">vital/Data/OrderedSet.txt</a>   ordered collection library.
+  <a class="Identifier" href="./vital/Data/Set.html">vital/Data/Set.txt</a>          set library.
+  <a class="Identifier" href="./vital/Data/String.html">vital/Data/String.txt</a>       string utilities library.
+  <a class="Identifier" href="./vital/Data/String/Interpolation.html">vital/Data/String/Interpolation.txt</a> String interpolation in Vim
+  <a class="Identifier" href="./vital/Data/Tree.html">vital/Data/Tree.txt</a>         tree utilities library.
+  <a class="Identifier" href="./vital/Database/SQLite.html">vital/Database/SQLite.txt</a>   sqlite utilities library.
+  <a class="Identifier" href="./vital/DateTime.html">vital/DateTime.txt</a>          date and time library.
+  <a class="Identifier" href="./vital/Experimental/Functor.html">vital/Experimental/Functor.txt</a>      Utilities for functor.
+  <a class="Identifier" href="./vital/Hash/HMAC.html">vital/Hash/HMAC.txt</a>         Hash-based Message Authentication Code.
+  <a class="Identifier" href="./vital/Hash/MD5.html">vital/Hash/MD5.txt</a>          MD5 encoding.
+  <a class="Identifier" href="./vital/Hash/SHA1.html">vital/Hash/SHA1.txt</a>         SHA1 encoding.
+  <a class="Identifier" href="./vital/Interpreter/Brainf__k.html">vital/Interpreter/Brainf__k.txt</a>     Brainf**k interpreter
+  <a class="Identifier" href="./vital/Locale/Message.html">vital/Locale/Message.txt</a>    very simple message localization library.
+  <a class="Identifier" href="./vital/Mapping.html">vital/Mapping.txt</a>           Utilities for mapping.
+  <a class="Identifier" href="./vital/Math.html">vital/Math.txt</a>              Mathematical functions
+  <a class="Identifier" href="./vital/OptionParser.html">vital/OptionParser.txt</a>      Option parser library for Vim.
+  <a class="Identifier" href="./vital/Prelude.html">vital/Prelude.txt</a>           crucial functions
+  <a class="Identifier" href="./vital/Process.html">vital/Process.txt</a>           Utilities for process.
+  <a class="Identifier" href="./vital/Random.html">vital/Random.txt</a>            Random utility frontend library
+  <a class="Identifier" href="./vital/Random/Mt19937ar.html">vital/Random/Mt19937ar.txt</a>  random number generator using mt19937ar
+  <a class="Identifier" href="./vital/Random/Xor128.html">vital/Random/Xor128.txt</a>     random number generator using xor128
+  <a class="Identifier" href="./vital/System/Cache.html">vital/System/Cache.txt</a>      An unified cache system
+  <a class="Identifier" href="./vital/System/Cache/Base.html">vital/System/Cache/Base.txt</a> An abstract class of unified cache system
+  <a class="Identifier" href="./vital/System/Cache/Deprecated.html">vital/System/Cache/Deprecated.txt</a>   store/restore cache into/from file
+  <a class="Identifier" href="./vital/System/Cache/Dummy.html">vital/System/Cache/Dummy.txt</a>        A dummy class of unified cache system
+  <a class="Identifier" href="./vital/System/Cache/File.html">vital/System/Cache/File.txt</a> A file based cache system
+  <a class="Identifier" href="./vital/System/Cache/Memory.html">vital/System/Cache/Memory.txt</a>       A dictionary instance based cache system
+  <a class="Identifier" href="./vital/System/Cache/SingleFile.html">vital/System/Cache/SingleFile.txt</a>   A single file based cache system
+  <a class="Identifier" href="./vital/System/File.html">vital/System/File.txt</a>       filesystem utilities library.
+  <a class="Identifier" href="./vital/System/Filepath.html">vital/System/Filepath.txt</a>   path string utilities library.
+  <a class="Identifier" href="./vital/System/Process.html">vital/System/Process.txt</a>    Cross platform process executor
+  <a class="Identifier" href="./vital/System/Process/Mock.html">vital/System/Process/Mock.txt</a>       A Process client for test
+  <a class="Identifier" href="./vital/System/Process/System.html">vital/System/Process/System.txt</a>     A Process client using system() function
+  <a class="Identifier" href="./vital/System/Process/Vimproc.html">vital/System/Process/Vimproc.txt</a>    A Process client using vimproc
+  <a class="Identifier" href="./vital/Text/CSV.html">vital/Text/CSV.txt</a>          CSV library.
+  <a class="Identifier" href="./vital/Text/INI.html">vital/Text/INI.txt</a>          INI file library.
+  <a class="Identifier" href="./vital/Text/LTSV.html">vital/Text/LTSV.txt</a>         LTSV library.
+  <a class="Identifier" href="./vital/Text/Lexer.html">vital/Text/Lexer.txt</a>        lexer library.
+  <a class="Identifier" href="./vital/Text/Parser.html">vital/Text/Parser.txt</a>       parser library.
+  <a class="Identifier" href="./vital/Text/TOML.html">vital/Text/TOML.txt</a>         TOML library.
+  <a class="Identifier" href="./vital/Text/Table.html">vital/Text/Table.txt</a>        Character table library.
+  <a class="Identifier" href="./vital/Vim/Buffer.html">vital/Vim/Buffer.txt</a>        Vim's buffer related stuff in general.
+  <a class="Identifier" href="./vital/Vim/BufferManager.html">vital/Vim/BufferManager.txt</a> buffer manager.
+  <a class="Identifier" href="./vital/Vim/Compat.html">vital/Vim/Compat.txt</a>        Vim compatibility wrapper functions.
+  <a class="Identifier" href="./vital/Vim/Guard.html">vital/Vim/Guard.txt</a>         Vim options/variables guard utility
+  <a class="Identifier" href="./vital/Vim/Message.html">vital/Vim/Message.txt</a>       Vim message functions
+  <a class="Identifier" href="./vital/Vim/Python.html">vital/Vim/Python.txt</a>        Vim python/python3 compatible function
+  <a class="Identifier" href="./vital/Vim/ScriptLocal.html">vital/Vim/ScriptLocal.txt</a>   Get script-local things
+  <a class="Identifier" href="./vital/Vim/Search.html">vital/Vim/Search.txt</a>        Vim's [I like function
+  <a class="Identifier" href="./vital/Vim/ViewTracer.html">vital/Vim/ViewTracer.txt</a>    Trace <a href="https://www.google.com/search?q=vim+%22window%22&lr=lang_en"><span class="MissingTag">window</span></a> and <a href="https://www.google.com/search?q=vim+%22tabpage%22&lr=lang_en"><span class="MissingTag">tabpage</span></a>.
+  <a class="Identifier" href="./vital/Web/HTML.html">vital/Web/HTML.txt</a>          HTML parser written in pure Vim script.
+  <a class="Identifier" href="./vital/Web/HTTP.html">vital/Web/HTTP.txt</a>          simple HTTP client library.
+  <a class="Identifier" href="./vital/Web/HTTP/Cookie.html">vital/Web/HTTP/Cookie.txt</a>   An HTTP Cookie utility.
+  <a class="Identifier" href="./vital/Web/HTTP/CookieJar.html">vital/Web/HTTP/CookieJar.txt</a>        Manage collection of HTTP Cookie.
+  <a class="Identifier" href="./vital/Web/JSON.html">vital/Web/JSON.txt</a>          JSON parser written in pure Vim script.
+  <a class="Identifier" href="./vital/Web/URI.html">vital/Web/URI.txt</a>           URI manipulation library
+  <a class="Identifier" href="./vital/Web/XML.html">vital/Web/XML.txt</a>           XML parser written in pure Vim script.
+
+ External vital modules:
+  <span class="String"><a href="https://github.com/vim-jp/vital.vim/wiki/External-vital-modules">https://github.com/vim-jp/vital.vim/wiki/External-vital-modules</a></span>
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./index.html">main help file</a> - <a href="./tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

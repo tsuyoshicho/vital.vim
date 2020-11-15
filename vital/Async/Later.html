@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Async/Later</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Async/Later</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Async/Later.html" name="Vital/Async/Later.txt">Vital/Async/Later.txt</a>         FIFO task queue for calling function later
+
+Maintainer : Alisue &lt;lambdalisue@hashnote.net&gt;
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later-contents" name="Vital.Async.Later-contents">Vital.Async.Later-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Async/Later.html#Vital.Async.Later-introduction">Vital.Async.Later-introduction</a>
+FUNCTION                        <a class="Identifier" href="./../../vital/Async/Later.html#Vital.Async.Later-function">Vital.Async.Later-function</a>
+VARIABLE                        <a href="https://www.google.com/search?q=vim+%22Vital.Async.Later-variable%22&lr=lang_en"><span class="MissingTag">Vital.Async.Later-variable</span></a>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later-introduction" name="Vital.Async.Later-introduction">Vital.Async.Later-introduction</a>
+
+<a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later" name="Vital.Async.Later">Vital.Async.Later</a> provides a FIFO task queue. While Vim uses FILO way to
+execute a task registered by <a href="https://www.google.com/search?q=vim+%22timer_start()%22&lr=lang_en"><span class="MissingTag">timer_start()</span></a>, the following code become
+opposite in Vim and Neovim.
+
+<span class="helpExample">        let rs = []</span>
+<span class="helpExample">        call timer_start(0, { -&gt; add(rs, 1) })</span>
+<span class="helpExample">        call timer_start(0, { -&gt; add(rs, 2) })</span>
+<span class="helpExample">        call timer_start(0, { -&gt; add(rs, 3) })</span>
+<span class="helpExample">        call timer_start(0, { -&gt; timer_start(0, { -&gt; add(rs, 4) }) })</span>
+<span class="helpExample">        call timer_start(0, { -&gt; timer_start(0, { -&gt; add(rs, 5) }) })</span>
+<span class="helpExample">        call timer_start(0, { -&gt; timer_start(0, { -&gt; add(rs, 6) }) })</span>
+<span class="helpExample">        &quot; Vim&#0058;    [3, 2, 1, 4, 5, 6]</span>
+<span class="helpExample">        &quot; Neovim: [1, 2, 3, 4, 5, 6]</span>
+
+To solve this difference, <a class="Identifier" href="./../../vital/Async/Later.html#Vital.Async.Later">Vital.Async.Later</a> uses an internal task queue
+to controls the order of the execution. The following code works both on
+Vim and Neovim.
+
+<span class="helpExample">        let s:Later = vital#vital#import('Async.Later')</span>
+
+<span class="helpExample">        let rs = []</span>
+<span class="helpExample">        call s:Later.call({ -&gt; add(rs, 1) })</span>
+<span class="helpExample">        call s:Later.call({ -&gt; add(rs, 2) })</span>
+<span class="helpExample">        call s:Later.call({ -&gt; add(rs, 3) })</span>
+<span class="helpExample">        call s:Later.call({ -&gt; s:Later.call({ -&gt; add(rs, 4) }) })</span>
+<span class="helpExample">        call s:Later.call({ -&gt; s:Later.call({ -&gt; add(rs, 5) }) })</span>
+<span class="helpExample">        call s:Later.call({ -&gt; s:Later.call({ -&gt; add(rs, 6) }) })</span>
+<span class="helpExample">        &quot; Vim&#0058;    [1, 2, 3, 4, 5, 6]</span>
+<span class="helpExample">        &quot; Neovim: [1, 2, 3, 4, 5, 6]</span>
+
+
+
+<span class="PreProc">=============================================================================</span>
+<span class="Statement">FUNCTION </span>                               <a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later-function" name="Vital.Async.Later-function">Vital.Async.Later-function</a>
+
+                                <a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later.call()" name="Vital.Async.Later.call()">Vital.Async.Later.call()</a>
+.call(<span class="Special">{task}</span> [, <span class="Special">{arglist}</span> [, <span class="Special">{dict}</span>]])
+        Similar to <a href="https://www.google.com/search?q=vim+%22call()%22&lr=lang_en"><span class="MissingTag">call()</span></a> but it calls <span class="Special">{task}</span> a bit later, when Vim is not
+        busy. For convenience, <span class="Special">{arglist}</span> can be omit.
+
+        When an exception is thrown in <span class="Special">{task}</span>, the exception is caught and
+        echomsg with <a href="https://www.google.com/search?q=vim+%22hl-ErrorMsg%22&lr=lang_en"><span class="MissingTag">hl-ErrorMsg</span></a> by a default error handler.
+        Use <a class="Identifier" href="./../../vital/Async/Later.html#Vital.Async.Later.set_error_handler()">Vital.Async.Later.set_error_handler()</a> to change this behavior.
+        <span class="Todo">Note</span> that this error handler exists as a safety-net. Developers should
+        NOT rely on the behavior of the error handler and SHOULD catch errors
+        by themselves in each <span class="Special">{task}</span>.
+
+        Internally, it enqueues a <span class="Special">{task}</span> into an internal task queue. Tasks
+        in the queue will be dequeued and processed by internal workers. The
+        number of internal workers are gradually increase until all tasks in
+        the queue are completed or reached to the value of &quot;max_workers&quot;.
+        Once the queue become empty, the number of internal workers are
+        gradually decrease so that no workers exists at the end.
+
+                                <a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later.get_max_workers()" name="Vital.Async.Later.get_max_workers()">Vital.Async.Later.get_max_workers()</a>
+.get_max_workers()
+        Return a maximum number of workers.
+        Default: 50
+
+                                <a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later.set_max_workers()" name="Vital.Async.Later.set_max_workers()">Vital.Async.Later.set_max_workers()</a>
+.set_max_workers(<span class="Special">{n}</span>)
+        Set a maximum number of workers to <span class="Special">{n}</span>.
+
+                                <a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later.get_error_handler()" name="Vital.Async.Later.get_error_handler()">Vital.Async.Later.get_error_handler()</a>
+.get_error_handler()
+        Return an error handler (<a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>) or <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a> if no custom error
+        handler has specified.
+        Default: <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>
+
+                                <a class="String" href="./../../vital/Async/Later.html#Vital.Async.Later.set_error_handler()" name="Vital.Async.Later.set_error_handler()">Vital.Async.Later.set_error_handler()</a>
+.set_error_handler(<span class="Special">{handler}</span>)
+        Set an error handler (<a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>) which is called when tasks throws
+        errors. Use <a href="https://www.google.com/search?q=vim+%22v:exception%22&lr=lang_en"><span class="MissingTag">v:exception</span></a> and <a href="https://www.google.com/search?q=vim+%22v:throwpoint%22&lr=lang_en"><span class="MissingTag">v:throwpoint</span></a> in the <span class="Special">{handler}</span> to
+        access cought errors. Set <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a> to use a default error handler.
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

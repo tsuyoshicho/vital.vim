@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/Either</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/Either</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Data/Either.html" name="vital/Data/Either.txt">vital/Data/Either.txt</a> Provide left/right value
+
+Maintainer: aiya000 &lt;aiya000.develop@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either-contents" name="Vital.Data.Either-contents">Vital.Data.Either-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either-introduction">Vital.Data.Either-introduction</a>
+TERM                            <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either-term">Vital.Data.Either-term</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either-interface">Vital.Data.Either-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either-functions">Vital.Data.Either-functions</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either-introduction" name="Vital.Data.Either-introduction">Vital.Data.Either-introduction</a>
+
+<a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either" name="Vital.Data.Either">Vital.Data.Either</a> is representation of left/right value. This is like the
+Either in Haskell. The &quot;left value&quot; means invalid value in most case. The
+&quot;right value&quot; means valid value in most case. But it can be used evenly.
+Either simply holds one of two different structures
+
+<span class="helpExample">        function! AuthFooAccount(account_name, account_password) abort</span>
+<span class="helpExample">          &quot; Send the information to somewhere.</span>
+<span class="helpExample">          &quot; Return some response as {right} value if the operation succeed.</span>
+<span class="helpExample">          &quot; Otherwise, return {left} value.</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        let password_or_error = E.null_to_left(get(g:, 'foo_password', v:null),</span>
+<span class="helpExample">        \       'foo_password is not found')</span>
+<span class="helpExample">        let response_or_error = E.bind(password_or_error,</span>
+<span class="helpExample">        \       {password -&gt; AuthFooAccount('aiya000', password)})</span>
+<span class="helpExample">        call E.map(response_or_error,</span>
+<span class="helpExample">        \       {response -&gt; execute('echo ' . string(response))})</span>
+<span class="helpExample">        &quot; If all operation is succeed, the response is shown</span>
+
+The &quot;either&quot; has either &quot;left value&quot; or &quot;right value&quot;. The &quot;either&quot; doesn't
+have both &quot;left value&quot; and &quot;right value&quot;.
+
+The &quot;either&quot; follows behavior of &quot;monad&quot;, &quot;applicative&quot;, and &quot;functor&quot;. For
+example, <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.join()">Vital.Data.Either.join()</a> doesn't extract the either value to its
+mere value.
+
+<span class="helpExample">        let x = E.right(E.right(10))</span>
+<span class="helpExample">        echo E.join(x)  &quot; Right(10)</span>
+
+<span class="helpExample">        let y = E.right(10)</span>
+<span class="helpExample">        echo E.join(y)  &quot; An exception is thrown</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TERM</span>                                    <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either-term" name="Vital.Data.Either-term">Vital.Data.Either-term</a>
+
+<span class="Special">{either}</span>                                <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either-term-either" name="Vital.Data.Either-term-either">Vital.Data.Either-term-either</a>
+        <span class="Special">{either}</span> is a left value or right value.
+
+<span class="Special">{left}</span>                                  <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either-term-left" name="Vital.Data.Either-term-left">Vital.Data.Either-term-left</a>
+        <span class="Special">{left}</span> is an item of <span class="Special">{either}</span>.
+
+<span class="Special">{right}</span>                                 <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either-term-right" name="Vital.Data.Either-term-right">Vital.Data.Either-term-right</a>
+        <span class="Special">{right}</span> is an item of <span class="Special">{either}</span>.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either-interface" name="Vital.Data.Either-interface">Vital.Data.Either-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either-functions" name="Vital.Data.Either-functions">Vital.Data.Either-functions</a>
+
+left(<span class="Special">{value}</span>)                           <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.left()" name="Vital.Data.Either.left()">Vital.Data.Either.left()</a>
+        Create a <span class="Special">{left}</span> value.
+
+
+right(<span class="Special">{value}</span>)                          <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.right()" name="Vital.Data.Either.right()">Vital.Data.Either.right()</a>
+        Create a <span class="Special">{right}</span> value.
+
+
+return(<span class="Special">{value}</span>)                         <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.return()" name="Vital.Data.Either.return()">Vital.Data.Either.return()</a>
+        This is an alias of <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.right()">Vital.Data.Either.right()</a> for monadic behavior.
+        The is like the Haskell's &quot;return&quot; function of Monad type class. It
+        puts <span class="Special">{value}</span> into the monadic context.
+
+
+is_left(<span class="Special">{either}</span>)                       <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.is_left()" name="Vital.Data.Either.is_left()">Vital.Data.Either.is_left()</a>
+        If <span class="Special">{either}</span> is <span class="Special">{left}</span>, return 1. If <span class="Special">{either}</span> is <span class="Special">{right}</span>, Return 0.
+        Otherwise, the behavior is undefined.
+
+
+is_right(<span class="Special">{either}</span>)                      <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.is_right()" name="Vital.Data.Either.is_right()">Vital.Data.Either.is_right()</a>
+        If <span class="Special">{either}</span> is <span class="Special">{left}</span>, return 1. If <span class="Special">{either}</span> is <span class="Special">{right}</span>, Return 0.
+        Otherwise, the behavior is undefined.
+
+is_either(<span class="Special">{value}</span>)                      <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.is_either()" name="Vital.Data.Either.is_either()">Vital.Data.Either.is_either()</a>
+        If <span class="Special">{value}</span> is the <span class="Special">{left}</span> value or the <span class="Special">{right}</span> value, return 1.
+        Otherwise, return 0.
+
+
+from_left(<span class="Special">{default}</span>, <span class="Special">{either}</span>)          <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.from_left()" name="Vital.Data.Either.from_left()">Vital.Data.Either.from_left()</a>
+        If <span class="Special">{either}</span> is <span class="Special">{left}</span>, return the internal value of <span class="Special">{either}</span>. If
+        <span class="Special">{either}</span> is <span class="Special">{right}</span>, return <span class="Special">{default}</span>.
+
+
+from_right(<span class="Special">{default}</span>, <span class="Special">{either}</span>)         <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.from_right()" name="Vital.Data.Either.from_right()">Vital.Data.Either.from_right()</a>
+        If <span class="Special">{either}</span> is <span class="Special">{right}</span>, return the internal value of <span class="Special">{either}</span>. If
+        <span class="Special">{either}</span> is <span class="Special">{left}</span>, return <span class="Special">{default}</span>.
+
+
+unsafe_from_left(<span class="Special">{either}</span>)              <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.unsafe_from_left()" name="Vital.Data.Either.unsafe_from_left()">Vital.Data.Either.unsafe_from_left()</a>
+        If <span class="Special">{either}</span> is <span class="Special">{left}</span>, return the internal value of <span class="Special">{left}</span>. If <span class="Special">{either}</span>
+        is <span class="Special">{right}</span>, throw an exception with &quot;vital: Data.Either:&quot; prefix.
+
+
+unsafe_from_right(<span class="Special">{either}</span>)             <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.unsafe_from_right()" name="Vital.Data.Either.unsafe_from_right()">Vital.Data.Either.unsafe_from_right()</a>
+        If <span class="Special">{either}</span> is <span class="Special">{right}</span>, return the internal value of <span class="Special">{right}</span>. If
+        <span class="Special">{either}</span> is <span class="Special">{left}</span>, throw an exception with &quot;vital: Data.Either:&quot;
+        prefix.
+
+
+map(<span class="Special">{either}</span>, <span class="Special">{f}</span>)                      <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.map()" name="Vital.Data.Either.map()">Vital.Data.Either.map()</a>
+        Map <span class="Special">{f}</span> to internal value of <span class="Special">{either}</span> if <span class="Special">{either}</span> is <span class="Special">{right}</span>. Return
+        <span class="Special">{either}</span> simply if <span class="Special">{either}</span> is <span class="Special">{left}</span>.
+
+        <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> and <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> expression can be used as <span class="Special">{f}</span>.
+
+<span class="helpExample">        let either = E.right(10)</span>
+<span class="helpExample">        echo E.map(either, 'v:val + 1')  &quot; Right(11)</span>
+
+<span class="helpExample">        let either = E.left(something)</span>
+<span class="helpExample">        echo E.map(either, 'v:val + 1')  &quot; Left(something)</span>
+
+
+map_left(<span class="Special">{either}</span>, <span class="Special">{f}</span>)                 <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.map_left()" name="Vital.Data.Either.map_left()">Vital.Data.Either.map_left()</a>
+        Similar to <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.map()">Vital.Data.Either.map()</a>, but map <span class="Special">{f}</span> to <span class="Special">{left}</span>.
+
+<span class="helpExample">        let either = E.left(10)</span>
+<span class="helpExample">        echo E.map_left(either, 'v:val + 1')  &quot; left(11)</span>
+
+<span class="helpExample">        let either = E.left(something)</span>
+<span class="helpExample">        echo E.map_left(either, 'v:val + 1')  &quot; Left(something)</span>
+
+
+bimap(<span class="Special">{either}</span>, <span class="Special">{f}</span>, <span class="Special">{g}</span>)               <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.bimap()" name="Vital.Data.Either.bimap()">Vital.Data.Either.bimap()</a>
+        Map <span class="Special">{f}</span> if <span class="Special">{either}</span> is <span class="Special">{left}</span>, or map <span class="Special">{g}</span> if <span class="Special">{either}</span> is <span class="Special">{right}</span>.
+
+        <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> and <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> expression can be used as <span class="Special">{f}</span> and <span class="Special">{g}</span>.
+
+<span class="helpExample">        let either = E.left(0)</span>
+<span class="helpExample">        echo E.bimap(either, {x -&gt; x + 1}, {y -&gt; y . 'D'}) &quot; Left(1)</span>
+
+<span class="helpExample">        let either = E.right(':')</span>
+<span class="helpExample">        echo E.bimap(either, {x -&gt; x + 1}, {y -&gt; y . 'D'}) &quot; Right(':D')</span>
+
+
+apply({either_func}, {either_values}...)        <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.apply()" name="Vital.Data.Either.apply()">Vital.Data.Either.apply()</a>
+        {either_func} is a function that is wrapped by
+        <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.right()">Vital.Data.Either.right()</a> or some <span class="Special">{left}</span> value. {either_values} is a
+        value that is wrapped by <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.right()">Vital.Data.Either.right()</a> or some <span class="Special">{left}</span>
+        value. If {either_func} is <span class="Special">{left}</span> value or {either_values} has <span class="Special">{left}</span>
+        value, return first left element. If {either_func} and all
+        {either_values} is <span class="Special">{right}</span>, extract {either_func} to its mere function,
+        extract {either_values} to its mere values, apply the mere value to
+        the mere function, and wrap the result by <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.right()">Vital.Data.Either.right()</a>.
+        And return it.
+
+<span class="helpExample">        &quot; Apply a right value to a right func</span>
+<span class="helpExample">        let either_func = E.right('v:val + 1')</span>
+<span class="helpExample">        let either_value = E.right(10)</span>
+<span class="helpExample">        echo E.apply(either_func, either_value)  &quot; Right(11)</span>
+
+<span class="helpExample">        &quot; Apply two right values to a right func</span>
+<span class="helpExample">        let either_func = {x, y -&gt; x + y}</span>
+<span class="helpExample">        let either_value_x = E.right(10)</span>
+<span class="helpExample">        let either_value_y = E.right(20)</span>
+<span class="helpExample">        echo E.apply(either_func, either_value_x, either_value_y)</span>
+
+<span class="helpExample">        &quot; Don't apply a right value to a &quot;left&quot; func</span>
+<span class="helpExample">        let either_func = E.left(something)</span>
+<span class="helpExample">        let either_value = E.right(10)</span>
+<span class="helpExample">        echo E.apply(either_func, either_value)  &quot; Left(something)</span>
+
+<span class="helpExample">        &quot; Don't apply a &quot;left&quot; value to a right func</span>
+<span class="helpExample">        let either_func = E.right({x -&gt; x + 1})</span>
+<span class="helpExample">        let either_value = E.left(something)</span>
+<span class="helpExample">        echo E.apply(either_func, either_value)  &quot; Left(something)</span>
+
+<span class="helpExample">        &quot; Return first left if both is left</span>
+<span class="helpExample">        let either_func = E.left(something_x)</span>
+<span class="helpExample">        let either_value = E.left(something_y)</span>
+<span class="helpExample">        echo E.apply(either_func, either_value)  &quot; Left(something_x)</span>
+
+
+join(<span class="Special">{either}</span>)                          <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.join()" name="Vital.Data.Either.join()">Vital.Data.Either.join()</a>
+        Remove one if <span class="Special">{either}</span> is nested <span class="Special">{either}</span> value. But single <span class="Special">{either}</span>
+        value (not nested <span class="Special">{either}</span> value) cannot be applied to this. This
+        behavior depends &quot;monad&quot; behavior.
+
+<span class="helpExample">        let nested_either = E.right(E.right(10))</span>
+<span class="helpExample">        echo E.join(nested_either)  &quot; Right(10)</span>
+
+<span class="helpExample">        let single_either = E.right(10)</span>
+<span class="helpExample">        echo E.join(single_either)  &quot; an exception is thrown with prefix of 'vital: Data.Either:'</span>
+
+        If you extract <span class="Special">{either}</span> to mere value, I recommend to use
+        <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.from_left()">Vital.Data.Either.from_left()</a> or <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.from_left()">Vital.Data.Either.from_left()</a>
+        instead.
+
+
+bind(<span class="Special">{either}</span>, <span class="Special">{karrow}</span>)                <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.bind()" name="Vital.Data.Either.bind()">Vital.Data.Either.bind()</a>
+        Apply <span class="Special">{karrow}</span> to <span class="Special">{either}</span> if <span class="Special">{either}</span> is <span class="Special">{right}</span>. <span class="Special">{karrow}</span> is a &quot;lift
+        function&quot;. &quot;lift function&quot; lift up a mere value to a <span class="Special">{either}</span> value.
+
+        Example for &quot;lift function&quot;:
+
+<span class="helpExample">        function! Devide10(x)</span>
+<span class="helpExample">          if x is 0</span>
+<span class="helpExample">            return E.left('a:x must not be 0')</span>
+<span class="helpExample">          else</span>
+<span class="helpExample">            return E.right(10 / a:x)</span>
+<span class="helpExample">          endif</span>
+<span class="helpExample">        endfunction</span>
+
+        The point is the argument value is a mere value meanwhile the return
+        value is <span class="Special">{either}</span> value.
+        (&quot;karrow&quot; means &quot;kleisli arrow&quot;)
+
+        Example for .bind()
+
+<span class="helpExample">        let either = E.right(2)</span>
+<span class="helpExample">        echo E.bind(either, function('Devide10'))  &quot; Right(5)</span>
+
+<span class="helpExample">        let either = E.left(something)</span>
+<span class="helpExample">        echo E.bind(either, function('Devide10'))  &quot; Left(something)</span>
+
+
+flat_map(<span class="Special">{either}</span>, <span class="Special">{f}</span>)                 <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.flat_map()" name="Vital.Data.Either.flat_map()">Vital.Data.Either.flat_map()</a>
+        This is an alias of <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.bind()">Vital.Data.Either.bind()</a>. Please see
+        <a class="Identifier" href="./../../vital/Data/Either.html#Vital.Data.Either.bind()">Vital.Data.Either.bind()</a> about this.
+
+
+null_to_left(<span class="Special">{value}</span>, <span class="Special">{message}</span>)        <a class="String" href="./../../vital/Data/Either.html#Vital.Data.Either.null_to_left()" name="Vital.Data.Either.null_to_left()">Vital.Data.Either.null_to_left()</a>
+        Lift <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a> to <span class="Special">{left}</span> value, or pass <span class="Special">{value}</span> to <span class="Special">{right}</span> value.
+
+<span class="helpExample">        let dict = {'foo': 10}</span>
+
+<span class="helpExample">        echo E.null_to_left(get(dict, 'foo', v:null), 'error')</span>
+<span class="helpExample">        &quot; Right(10)</span>
+
+<span class="helpExample">        echo E.null_to_left(get(dict, 'bar', v:null), 'error')</span>
+<span class="helpExample">        &quot; Left('error')</span>
+
+<span class="helpExample">        echo E.null_to_left(get(dict, 'foo'), 'error')</span>
+<span class="helpExample">        &quot; Right(0)</span>
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

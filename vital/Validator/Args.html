@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Validator/Args</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Validator/Args</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Validator/Args.html" name="vital/Validator/Args.txt">vital/Validator/Args.txt</a>      Arguments validation library
+
+Maintainer: tyru &lt;tyru.exe@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-contents" name="Vital.Validator.Args-contents">Vital.Validator.Args-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-introduction">Vital.Validator.Args-introduction</a>
+EXAMPLES                        <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-examples">Vital.Validator.Args-examples</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-interface">Vital.Validator.Args-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-functions">Vital.Validator.Args-functions</a>
+VALIDATOR OBJECT                <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-Validator-object">Vital.Validator.Args-Validator-object</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-introduction" name="Vital.Validator.Args-introduction">Vital.Validator.Args-introduction</a>
+
+<a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args" name="Vital.Validator.Args">Vital.Validator.Args</a> is a library to validate arity / types / contents of
+function's arguments. This library separates concerns about invalid arity,
+types, and values.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">EXAMPLES</span>                                <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-examples" name="Vital.Validator.Args-examples">Vital.Validator.Args-examples</a>
+
+type()                          <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-type" name="Vital.Validator.Args-example-type">Vital.Validator.Args-example-type</a>
+<span class="PreProc">------</span>
+
+<span class="helpExample">        let s:Validator = vital#{plugin-name}#import('Validator.Args')</span>
+<span class="helpExample">        let s:TYPE = s:Validator.TYPE</span>
+
+<span class="helpExample">        &quot; s:func1() receives one number argument</span>
+<span class="helpExample">        let s:func1_args =</span>
+<span class="helpExample">        \ s:Validator.of('func1()')</span>
+<span class="helpExample">                    \.type(v:t_number)</span>
+<span class="helpExample">        function! s:func1(...) abort</span>
+<span class="helpExample">          &quot; validate() throws an exception when:</span>
+<span class="helpExample">          &quot; * arity is not 1</span>
+<span class="helpExample">          &quot; * if the first argument is not a number</span>
+<span class="helpExample">          let [n] = s:func1_args.validate(a:000)</span>
+<span class="helpExample">          echo 'n is a number: ' . n</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        &quot; s:func2() receives two number and string arguments</span>
+<span class="helpExample">        let s:func2_args =</span>
+<span class="helpExample">        \ s:Validator.of('func2()')</span>
+<span class="helpExample">                    \.type(v:t_number, v:t_string)</span>
+
+type(): Union types             <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-union-types" name="Vital.Validator.Args-example-union-types">Vital.Validator.Args-example-union-types</a>
+<span class="PreProc">-------------------</span>
+
+<span class="helpExample">        &quot; s:func3() receives one number or float argument</span>
+<span class="helpExample">        let s:func3_args =</span>
+<span class="helpExample">        \ s:Validator.of('func3()')</span>
+<span class="helpExample">                    \.type([v:t_number, v:t_float])</span>
+
+                        <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-optional-arguments" name="Vital.Validator.Args-example-optional-arguments">Vital.Validator.Args-example-optional-arguments</a>
+type(): Optional arguments
+<span class="PreProc">--------------------------</span>
+
+<span class="helpExample">        &quot; s:func4() receives one string argument and zero or more optional arguments</span>
+<span class="helpExample">        &quot; (NOTE: if the last type is optional argument, skip the rest arguments validations)</span>
+<span class="helpExample">        let s:func4_args =</span>
+<span class="helpExample">        \ s:Validator.of('func4()')</span>
+<span class="helpExample">                    \.type(v:t_string, 'option')</span>
+
+<span class="helpExample">        &quot; if you want to check also the optional arguments, specify the types</span>
+<span class="helpExample">        &quot; after optional argument (s:func5() receives exact 1-2 argument(s): Number [, Number])</span>
+<span class="helpExample">        let s:func5_args =</span>
+<span class="helpExample">        \ s:Validator.of('func5()')</span>
+<span class="helpExample">                    \.type(v:t_number, 'option', v:t_number)</span>
+
+type(): Any type                <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-any-type" name="Vital.Validator.Args-example-any-type">Vital.Validator.Args-example-any-type</a>
+<span class="PreProc">----------------</span>
+
+<span class="helpExample">        &quot; s:func6() receives one arbitrary type argument</span>
+<span class="helpExample">        let s:func6_args =</span>
+<span class="helpExample">        \ s:Validator.of('func6()')</span>
+<span class="helpExample">                    \.type('any')</span>
+
+assert()                        <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-assert" name="Vital.Validator.Args-example-assert">Vital.Validator.Args-example-assert</a>
+<span class="PreProc">--------</span>
+
+<span class="helpExample">        &quot; s:func7() receives one positive number argument</span>
+<span class="helpExample">        &quot; (type() validations were done before assert() validations</span>
+<span class="helpExample">        &quot;  regardless of invoked order)</span>
+<span class="helpExample">        let s:func7_args =</span>
+<span class="helpExample">        \ s:Validator.of('func7()')</span>
+<span class="helpExample">                    \.type(v:t_number)</span>
+<span class="helpExample">                    \.assert(1, 'v:val &gt; 0',</span>
+<span class="helpExample">                    \  'the first argument should be a positive number')</span>
+<span class="helpExample">        function! s:func7(...) abort</span>
+<span class="helpExample">          &quot; validate() throws an exception when:</span>
+<span class="helpExample">          &quot; * arity is not 1</span>
+<span class="helpExample">          &quot; * if the first argument is not a number</span>
+<span class="helpExample">          &quot; * if the first argument is not a positive number</span>
+<span class="helpExample">          let [n] = s:func7_args.validate(a:000)</span>
+<span class="helpExample">          echo 'n is a positive number: ' . n</span>
+<span class="helpExample">        endfunction</span>
+<span class="helpExample">        </span>
+<span class="helpExample">        &quot; Here is an example of Vim script's built-in function range()</span>
+<span class="helpExample">        let s:range_args = validator.of('vital: Stream: range()')</span>
+<span class="helpExample">                                   \.type(v:t_number, 'option', v:t_number, v:t_number)</span>
+<span class="helpExample">                                   \.assert(3, 'v:val !=# 0', 'stride is zero')</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-interface" name="Vital.Validator.Args-interface">Vital.Validator.Args-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-functions" name="Vital.Validator.Args-functions">Vital.Validator.Args-functions</a>
+
+of(<span class="Special">{prefix}</span> [, <span class="Special">{enable}</span>])                               <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args.of()" name="Vital.Validator.Args.of()">Vital.Validator.Args.of()</a>
+        Creates validator of a function. <span class="Special">{prefix}</span> is a prefix of a thrown
+        exception message. see <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-exceptions">Vital.Validator.Args-exceptions</a> for the
+        examples of thrown exception messages.
+        If <span class="Special">{enable}</span> was given and zero, this module does not perform any
+        validations. It is useful to switch in debug/production environment.
+
+<span class="helpExample">        &quot; Validates arguments if 'g:myplugin#enable_debug' is non-zero.</span>
+<span class="helpExample">        &quot; Otherwise this does not validate arguments.</span>
+<span class="helpExample">        let func_args = s:Validator.of('func()', g:myplugin#enable_debug)</span>
+<span class="helpExample">                                  \.type(v:t_number)</span>
+<span class="helpExample">        function! s:func(...) abort</span>
+<span class="helpExample">          let [n] = s:func_args.validate(a:000)</span>
+
+<span class="helpExample">          &quot; ...</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">VALIDATOR OBJECT</span>                        <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-Validator-object" name="Vital.Validator.Args-Validator-object">Vital.Validator.Args-Validator-object</a>
+
+Validator.type([<span class="Special">{type}</span> ...])            <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-Validator.type()" name="Vital.Validator.Args-Validator.type()">Vital.Validator.Args-Validator.type()</a>
+        Specify types of arguments.
+        <span class="Special">{type}</span> is <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a> (like <span class="Comment">type(42)</span>, <span class="Comment">v:t_string</span>) or
+        some special <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> values below.
+
+        &quot;any&quot;
+                An arbitrary type argument.
+        &quot;option&quot;
+                An optional argument (Vim script's &quot;...&quot; in :function arguments).
+                If the last type is optional argument, skip validation of rest arguments.
+                But if any type(s) were given after optional argument, check the type(s)
+                and arity.
+                See examples for <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-optional-arguments">Vital.Validator.Args-example-optional-arguments</a>.
+
+        See <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-type">Vital.Validator.Args-example-type</a> for examples.
+
+                                        <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-Validator.assert()" name="Vital.Validator.Args-Validator.assert()">Vital.Validator.Args-Validator.assert()</a>
+Validator.assert(<span class="Special">{nth}</span>, <span class="Special">{assert}</span> [, <span class="Special">{msg}</span>])
+        Specify assertions of arguments.
+
+        <span class="Special">{nth}</span> is 1-origin number which specifies the number of argument.
+
+        <span class="Special">{assert}</span> is a <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> or <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> which is a function to receive a
+        value of each argument.
+
+        <span class="Special">{msg}</span> is an exception message.
+        Default value is: <span class="Comment">&quot;the &quot; . nth . &quot;th argument's assertion failed&quot;</span>
+
+        See <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-assert">Vital.Validator.Args-example-assert</a> for examples.
+
+Validator.validate(<span class="Special">{args}</span>)              <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-Validator.validate()" name="Vital.Validator.Args-Validator.validate()">Vital.Validator.Args-Validator.validate()</a>
+        Validates given arguments <span class="Special">{args}</span> and throw an exception if the given
+        arguments don't match with defined arguments. <span class="Special">{args}</span> is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of
+        arguments. A thrown exception format is: <span class="Comment">{prefix}: {msg}</span>
+
+        See <a class="Identifier" href="./../../vital/Validator/Args.html#Vital.Validator.Args-example-assert">Vital.Validator.Args-example-assert</a> for examples.
+
+                                        <a class="String" href="./../../vital/Validator/Args.html#Vital.Validator.Args-exceptions" name="Vital.Validator.Args-exceptions">Vital.Validator.Args-exceptions</a>
+        This method throws an exception when:
+
+        * Arity is different with type()'s arguments:
+          <span class="Comment">func(): too few arguments</span> or
+          <span class="Comment">func(): too many arguments</span>
+
+        * Any types of function arguments and type()'s arguments
+          are different:
+          <span class="Comment">func(): invalid type arguments were given (expected: string, got: number)</span>
+
+        * assert()'s <span class="Special">{assert}</span> argument doesn't match with the given argument:
+          <span class="Comment">func(): the {nth}th argument's assertion was failed</span>
+          or, assert()'s <span class="Special">{msg}</span> was given:
+          <span class="Comment">func(): {msg}</span>
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Web/URI</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.String { color: #032f62; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Web/URI</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Web/URI.html" name="vital/Web/URI.txt">vital/Web/URI.txt</a>                     URI manipulation library
+
+Maintainer: tyru &lt;tyru.exe@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-contents" name="Vital.Web.URI-contents">Vital.Web.URI-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-introduction">Vital.Web.URI-introduction</a>
+INTERFACE                               <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-interface">Vital.Web.URI-interface</a>
+  Functions                             <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-functions">Vital.Web.URI-functions</a>
+  URI Object                    <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-URI">Vital.Web.URI-URI</a>
+  PatternSet Object             <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet">Vital.Web.URI-PatternSet</a>
+NOTES                                   <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-notes">Vital.Web.URI-notes</a>
+TODO                                    <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-todo">Vital.Web.URI-todo</a>
+REFERENCES                              <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-references">Vital.Web.URI-references</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-introduction" name="Vital.Web.URI-introduction">Vital.Web.URI-introduction</a>
+
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI" name="Vital.Web.URI">Vital.Web.URI</a> is URI manipulation library.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-interface" name="Vital.Web.URI-interface">Vital.Web.URI-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-functions" name="Vital.Web.URI-functions">Vital.Web.URI-functions</a>
+
+new(<span class="Special">{str}</span> [, <span class="Special">{default}</span> [, <span class="Special">{patternset}</span>]])               <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.new()" name="Vital.Web.URI.new()">Vital.Web.URI.new()</a>
+        Returns a <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-URI">Vital.Web.URI-URI</a> object constructed by <span class="Special">{str}</span>.
+        If <span class="Special">{default}</span> is given and <span class="Special">{str}</span> is invalid,
+        returns <span class="Special">{default}</span>.
+        Otherwise, throws an exception.
+        See <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet">Vital.Web.URI-PatternSet</a> for <span class="Special">{patternset}</span>.
+
+new_from_uri_like_string(<span class="Special">{str}</span> [, <span class="Special">{default}</span> [, <span class="Special">{patternset}</span>]])
+                                        <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.new_from_uri_like_string()" name="Vital.Web.URI.new_from_uri_like_string()">Vital.Web.URI.new_from_uri_like_string()</a>
+        This is same as <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI.new()">Vital.Web.URI.new()</a>
+        except when <span class="Special">{str}</span> has no scheme.
+        then this function prepends the string &quot;<a href="http://">http://</a>&quot; to <span class="Special">{str}</span>.
+
+new_from_seq_string(<span class="Special">{str}</span> [, <span class="Special">{default}</span> [, <span class="Special">{patternset}</span>]])
+                                        <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.new_from_seq_string()" name="Vital.Web.URI.new_from_seq_string()">Vital.Web.URI.new_from_seq_string()</a>
+        This is same as <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI.new()">Vital.Web.URI.new()</a>, except
+        1. When <span class="Special">{str}</span> contains illegal trailing string,
+           then this function DOES NOT throw an exception.
+        2. Returns <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of [<span class="Special">{uri}</span>, <span class="Special">{origuri}</span>, <span class="Special">{rest}</span>]
+           <span class="Special">{uri}</span>
+              <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-URI">Vital.Web.URI-URI</a> object constructed by <span class="Special">{str}</span>.
+           <span class="Special">{origuri}</span>
+              Original string which was used for constructing <span class="Special">{uri}</span>.
+           <span class="Special">{rest}</span>
+              Rest of string after parsing <span class="Special">{str}</span>.
+
+is_uri(<span class="Special">{str}</span>)                           <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.is_uri()" name="Vital.Web.URI.is_uri()">Vital.Web.URI.is_uri()</a>
+        Returns non-zero value if <span class="Special">{str}</span> is URI.
+        Returns zero value otherwise.
+
+<span class="helpExample">        let URI = vital#{plugin-name}#new().import('Web.URI')</span>
+<span class="helpExample">        let ERROR = []</span>
+<span class="helpExample">        let like_uri = (URI.is_uri(a:str, ERROR) isnot ERROR)</span>
+
+like_uri(<span class="Special">{str}</span>)                         <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.like_uri()" name="Vital.Web.URI.like_uri()">Vital.Web.URI.like_uri()</a>
+        Returns non-zero value if <span class="Special">{str}</span> looks like URI.
+        Returns zero value otherwise.
+        This is the <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI.new_from_uri_like_string()">Vital.Web.URI.new_from_uri_like_string()</a> version
+        of <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI.is_uri()">Vital.Web.URI.is_uri()</a>.
+        (This uses <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI.new_from_uri_like_string()">Vital.Web.URI.new_from_uri_like_string()</a>
+         instead of <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI.new()">Vital.Web.URI.new()</a>)
+
+                                        <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.new_default_pattern_set()" name="Vital.Web.URI.new_default_pattern_set()">Vital.Web.URI.new_default_pattern_set()</a>
+new_default_pattern_set()
+        Creates a new <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet">Vital.Web.URI-PatternSet</a> object.
+
+                                        <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.clone_pattern_set()" name="Vital.Web.URI.clone_pattern_set()">Vital.Web.URI.clone_pattern_set()</a>
+clone_pattern_set(<span class="Special">{patternset}</span>)
+        Clones a <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet">Vital.Web.URI-PatternSet</a> object.
+
+encode(<span class="Special">{str}</span> [, <span class="Special">{char-enc}</span>])            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.encode()" name="Vital.Web.URI.encode()">Vital.Web.URI.encode()</a>
+        Encodes <span class="Special">{str}</span> to Percent-encoding string.
+        Converts <span class="Special">{str}</span> to <span class="Special">{char-enc}</span>(or &quot;utf-8&quot; when omitted) before encode.
+        When <span class="Special">{char-enc}</span> is an empty string, <span class="Special">{str}</span> is not converted.
+
+decode(<span class="Special">{str}</span> [, <span class="Special">{char-enc}</span>])            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI.decode()" name="Vital.Web.URI.decode()">Vital.Web.URI.decode()</a>
+        Decodes <span class="Special">{str}</span> that is encoded by Percent-encoding.
+        Converts result from <span class="Special">{char-enc}</span>(or &quot;utf-8&quot; when omitted) to <a href="https://www.google.com/search?q=vim+%22'encoding'%22&lr=lang_en"><span class="MissingTag">'encoding'</span></a>
+        after decode.
+        When <span class="Special">{char-enc}</span> is an empty string, result is not converted.
+        <span class="Todo">Note</span> that this function does not convert &quot;+&quot; to &quot; &quot;.
+        Because this function is based on percent-encoding in RFC3986.
+        <span class="String"><a href="http://tools.ietf.org/html/rfc3986#section-2.1">http://tools.ietf.org/html/rfc3986#section-2.1</a></span>
+        But &quot;+&quot; conversion is based on
+        application/x-www-form-urlencoded in RFC1866.
+        <span class="String"><a href="http://tools.ietf.org/html/rfc1866#section-8.2.1">http://tools.ietf.org/html/rfc1866#section-8.2.1</a></span>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">URI OBJECT</span>                              <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI" name="Vital.Web.URI-URI">Vital.Web.URI-URI</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object" name="Vital.Web.URI-object">Vital.Web.URI-object</a>
+
+<span class="Todo">NOTE</span>: See <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP">Vital.Web.HTTP</a> for encoding/decoding functions.
+* <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.encodeURI()">Vital.Web.HTTP.encodeURI()</a>
+* <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.encodeURIComponent()">Vital.Web.HTTP.encodeURIComponent()</a>
+* <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.decodeURI()">Vital.Web.HTTP.decodeURI()</a>
+
+
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.scheme()" name="Vital.Web.URI-URI.scheme()">Vital.Web.URI-URI.scheme()</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.scheme()" name="Vital.Web.URI-object.scheme()">Vital.Web.URI-object.scheme()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.host()" name="Vital.Web.URI-URI.host()">Vital.Web.URI-URI.host()</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.host()" name="Vital.Web.URI-object.host()">Vital.Web.URI-object.host()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.port()" name="Vital.Web.URI-URI.port()">Vital.Web.URI-URI.port()</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.port()" name="Vital.Web.URI-object.port()">Vital.Web.URI-object.port()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.path()" name="Vital.Web.URI-URI.path()">Vital.Web.URI-URI.path()</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.path()" name="Vital.Web.URI-object.path()">Vital.Web.URI-object.path()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.opaque()" name="Vital.Web.URI-URI.opaque()">Vital.Web.URI-URI.opaque()</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.opaque()" name="Vital.Web.URI-object.opaque()">Vital.Web.URI-object.opaque()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.authority()" name="Vital.Web.URI-URI.authority()">Vital.Web.URI-URI.authority()</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.authority()" name="Vital.Web.URI-object.authority()">Vital.Web.URI-object.authority()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.query()" name="Vital.Web.URI-URI.query()">Vital.Web.URI-URI.query()</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.query()" name="Vital.Web.URI-object.query()">Vital.Web.URI-object.query()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.fragment()" name="Vital.Web.URI-URI.fragment()">Vital.Web.URI-URI.fragment()</a> <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.fragment()" name="Vital.Web.URI-object.fragment()">Vital.Web.URI-object.fragment()</a>
+scheme([<span class="Special">{str}</span>])
+userinfo([<span class="Special">{str}</span>])
+host([<span class="Special">{str}</span>])
+port([<span class="Special">{str}</span>])
+path([<span class="Special">{str}</span>])
+authority([<span class="Special">{str}</span>])
+opaque([<span class="Special">{str}</span>])
+query([<span class="Special">{str}</span>])
+fragment([<span class="Special">{str}</span>])
+
+        If no arguments are given, returns each part value.
+        If <span class="Special">{str}</span> is given, sets <span class="Special">{str}</span> as each part value,
+        and returns the URI object itself.
+
+        <span class="Todo">NOTE</span>: opaque(), authority() do not support <span class="Special">{str}</span> yet.
+        <span class="Todo">NOTE</span>: port(<span class="Special">{str}</span>) allows both Number and String for <span class="Special">{str}</span>.
+
+to_iri([<span class="Special">{char-enc}</span>])                            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.to_iri()" name="Vital.Web.URI-object.to_iri()">Vital.Web.URI-object.to_iri()</a>
+        Same as <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-object.to_string()">Vital.Web.URI-object.to_string()</a>,
+        but do URI-unescape for <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-object.path()">Vital.Web.URI-object.path()</a> part.
+        Passes <span class="Special">{char-enc}</span> to <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI.decode()">Vital.Web.URI.decode()</a> if specified.
+
+to_string()                             <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-object.to_string()" name="Vital.Web.URI-object.to_string()">Vital.Web.URI-object.to_string()</a>
+        Returns URI representation of this object.
+
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.is_scheme()" name="Vital.Web.URI-URI.is_scheme()">Vital.Web.URI-URI.is_scheme()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.is_userinfo()" name="Vital.Web.URI-URI.is_userinfo()">Vital.Web.URI-URI.is_userinfo()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.is_host()" name="Vital.Web.URI-URI.is_host()">Vital.Web.URI-URI.is_host()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.is_port()" name="Vital.Web.URI-URI.is_port()">Vital.Web.URI-URI.is_port()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.is_path()" name="Vital.Web.URI-URI.is_path()">Vital.Web.URI-URI.is_path()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.is_query()" name="Vital.Web.URI-URI.is_query()">Vital.Web.URI-URI.is_query()</a>
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.is_fragment()" name="Vital.Web.URI-URI.is_fragment()">Vital.Web.URI-URI.is_fragment()</a>
+is_scheme(<span class="Special">{str}</span>)
+is_userinfo(<span class="Special">{str}</span>)
+is_host(<span class="Special">{str}</span>)
+is_port(<span class="Special">{str}</span>)
+is_path(<span class="Special">{str}</span>)
+is_query(<span class="Special">{str}</span>)
+is_fragment(<span class="Special">{str}</span>)
+
+        Returns non-zero value if <span class="Special">{str}</span> has right syntax
+        for each component. Returns zero otherwise.
+
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.clone()" name="Vital.Web.URI-URI.clone()">Vital.Web.URI-URI.clone()</a>
+clone()
+
+        This method clones a URI object itself.
+<span class="helpExample">        let s:URI = vital#{plugin-name}#new().import('Web.URI')</span>
+<span class="helpExample">        let uri = s:URI.new('<a href="http://example.com/">http://example.com/</a>')</span>
+<span class="helpExample">        let copyuri = uri.clone().relative('/a/b/c')</span>
+<span class="helpExample">        echo uri.to_string()</span>
+<span class="helpExample">        &quot; =&gt; '<a href="http://example.com/">http://example.com/</a>'</span>
+<span class="helpExample">        echo copyuri.to_string()</span>
+<span class="helpExample">        &quot; =&gt; '<a href="http://example.com/a/b/c">http://example.com/a/b/c</a>'</span>
+
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.relative()" name="Vital.Web.URI-URI.relative()">Vital.Web.URI-URI.relative()</a>
+relative(<span class="Special">{reluri}</span>)
+
+        This method ...
+        * Calculates a URI from
+        base URI and relative URI(<span class="Special">{reluri}</span>).
+        * Changes the URI object itself (destructive).
+        * Returns the URI object itself.
+        * Calls <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.relative()">Vital.Web.URI-URI.relative()</a> implicitly.
+
+        Example:
+<span class="helpExample">        let s:URI = vital#{plugin-name}#new().import('Web.URI')</span>
+<span class="helpExample">        let BASE_URI = '<a href="http://example.com/foo/bar">http://example.com/foo/bar</a>'</span>
+<span class="helpExample">        let RELATIVE_URI = '../baz'</span>
+<span class="helpExample">        echo s:URI.new(BASE_URI).relative(RELATIVE_URI).to_string()</span>
+<span class="helpExample">        &quot; =&gt; '<a href="http://example.com/baz">http://example.com/baz</a>'</span>
+
+<span class="helpExample">        let BASE_URI = '<a href="http://example.com/foo/bar/">http://example.com/foo/bar/</a>'</span>
+<span class="helpExample">        let RELATIVE_URI = '../baz'</span>
+<span class="helpExample">        echo s:URI.new(BASE_URI).relative(RELATIVE_URI).to_string()</span>
+<span class="helpExample">        &quot; =&gt; '<a href="http://example.com/foo/baz">http://example.com/foo/baz</a>'</span>
+
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.canonicalize()" name="Vital.Web.URI-URI.canonicalize()">Vital.Web.URI-URI.canonicalize()</a>
+canonicalize()
+
+        This method ...
+        * Canonicalizes the URI.
+        * Changes the URI object itself (destructive).
+        * Returns the URI object itself.
+
+        See Web.URI.* modules for supported schemes.
+        For example, the following four URIs
+        becomes equivalent URI (<span class="String"><a href="http://example.com/">http://example.com/</a></span>).
+        * <span class="String"><a href="http://example.com">http://example.com</a></span>
+        * <span class="String"><a href="http://example.com/">http://example.com/</a></span>
+        * <span class="String"><a href="http://example.com:/">http://example.com:/</a></span>
+        * <span class="String"><a href="http://example.com:80/">http://example.com:80/</a></span>
+
+        Example:
+<span class="helpExample">        let s:URI = vital#{plugin-name}#new().import('Web.URI')</span>
+<span class="helpExample">        echo s:URI.new('<a href="http://example.com:80/">http://example.com:80/</a>').to_string()</span>
+<span class="helpExample">        &quot; =&gt; '<a href="http://example.com/">http://example.com/</a>'</span>
+
+<a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.default_port()" name="Vital.Web.URI-URI.default_port()">Vital.Web.URI-URI.default_port()</a>
+default_port()
+
+        This method returns the default port for current scheme.
+        (e.g.: 80 for &quot;http&quot; scheme)
+        See Web.URI.* modules for supported schemes.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">PATTERNSET OBJECT</span>                               <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet" name="Vital.Web.URI-PatternSet">Vital.Web.URI-PatternSet</a>
+
+PatternSet object is the set of patterns for URI syntax.
+This object has each method for URI components based on RFC3986
+and all components are fully customizable.
+e.g.: scheme(), host(), path(), ...
+
+Below is the example how to customize URI component definition.
+This example allows more tolerant URI parsing.
+(This example is from <span class="String"><a href="https://github.com/tyru/open-browser.vim/issues/72">https://github.com/tyru/open-browser.vim/issues/72</a></span>)
+The default PatternSet is very strict
+because it is completely RFC3986 based implementation.
+(_default_ means the object which
+<a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI.new_default_pattern_set()">Vital.Web.URI.new_default_pattern_set()</a> returns)
+
+According to RFC3986, URI allows
+* ' (single quote)
+* ( (left parenthesis)
+* ) (right parenthesis)
+but these characters often appears in ordinary text.
+This code lets the parser ignore these characters.
+
+<span class="helpExample">        let s:LoosePatternSet = s:URI.new_default_pattern_set()</span>
+
+<span class="helpExample">        &quot; Remove &quot;'&quot;, &quot;(&quot;, &quot;)&quot; from default sub_delims().</span>
+<span class="helpExample">        function! s:LoosePatternSet.sub_delims() abort</span>
+<span class="helpExample">            return '[!$&amp;*+,;=]'</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        &quot; Ignore trailing string after URI.</span>
+<span class="helpExample">        let NONE = []</span>
+<span class="helpExample">        let ret = URI.new_from_seq_string(</span>
+<span class="helpExample">        \               '<a href="http://example.com)">http://example.com)</a>', NONE, s:LoosePatternSet)</span>
+<span class="helpExample">        if ret isnot NONE</span>
+<span class="helpExample">            ...</span>
+<span class="helpExample">        endif</span>
+
+
+get(<span class="Special">{component}</span>)                        <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.get()" name="Vital.Web.URI-PatternSet.get()">Vital.Web.URI-PatternSet.get()</a>
+
+        Returns each component definition.
+
+<span class="helpExample">        let s:PatternSet = s:URI.new_default_pattern_set()</span>
+<span class="helpExample">        echo s:PatternSet.get('scheme')</span>
+
+Listing all customizable components here (alphabetic order).
+<span class="Todo">NOTE</span>: DON'T call these methods directly.
+These methods are used when defining customized PatternSet.
+See how-to at <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet">Vital.Web.URI-PatternSet</a>.
+
+dec_octet()                                     <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.dec_octet()" name="Vital.Web.URI-PatternSet.dec_octet()">Vital.Web.URI-PatternSet.dec_octet()</a>
+fragment()                                      <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.fragment()" name="Vital.Web.URI-PatternSet.fragment()">Vital.Web.URI-PatternSet.fragment()</a>
+h16()                                           <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.h16()" name="Vital.Web.URI-PatternSet.h16()">Vital.Web.URI-PatternSet.h16()</a>
+hexdig()                                        <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.hexdig()" name="Vital.Web.URI-PatternSet.hexdig()">Vital.Web.URI-PatternSet.hexdig()</a>
+host()                                          <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.host()" name="Vital.Web.URI-PatternSet.host()">Vital.Web.URI-PatternSet.host()</a>
+ip_literal()                            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.ip_literal()" name="Vital.Web.URI-PatternSet.ip_literal()">Vital.Web.URI-PatternSet.ip_literal()</a>
+ipv4address()                           <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.ipv4address()" name="Vital.Web.URI-PatternSet.ipv4address()">Vital.Web.URI-PatternSet.ipv4address()</a>
+ipv6address()                           <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.ipv6address()" name="Vital.Web.URI-PatternSet.ipv6address()">Vital.Web.URI-PatternSet.ipv6address()</a>
+ipv_future()                            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.ipv_future()" name="Vital.Web.URI-PatternSet.ipv_future()">Vital.Web.URI-PatternSet.ipv_future()</a>
+ls32()                                          <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.ls32()" name="Vital.Web.URI-PatternSet.ls32()">Vital.Web.URI-PatternSet.ls32()</a>
+path()                                          <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.path()" name="Vital.Web.URI-PatternSet.path()">Vital.Web.URI-PatternSet.path()</a>
+path_abempty()                          <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.path_abempty()" name="Vital.Web.URI-PatternSet.path_abempty()">Vital.Web.URI-PatternSet.path_abempty()</a>
+path_absolute()                         <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.path_absolute()" name="Vital.Web.URI-PatternSet.path_absolute()">Vital.Web.URI-PatternSet.path_absolute()</a>
+path_noscheme()                         <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.path_noscheme()" name="Vital.Web.URI-PatternSet.path_noscheme()">Vital.Web.URI-PatternSet.path_noscheme()</a>
+path_rootless()                         <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.path_rootless()" name="Vital.Web.URI-PatternSet.path_rootless()">Vital.Web.URI-PatternSet.path_rootless()</a>
+pchar()                                         <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.pchar()" name="Vital.Web.URI-PatternSet.pchar()">Vital.Web.URI-PatternSet.pchar()</a>
+pct_encoded()                           <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.pct_encoded()" name="Vital.Web.URI-PatternSet.pct_encoded()">Vital.Web.URI-PatternSet.pct_encoded()</a>
+port()                                          <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.port()" name="Vital.Web.URI-PatternSet.port()">Vital.Web.URI-PatternSet.port()</a>
+query()                                         <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.query()" name="Vital.Web.URI-PatternSet.query()">Vital.Web.URI-PatternSet.query()</a>
+reg_name()                                      <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.reg_name()" name="Vital.Web.URI-PatternSet.reg_name()">Vital.Web.URI-PatternSet.reg_name()</a>
+scheme()                                        <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.scheme()" name="Vital.Web.URI-PatternSet.scheme()">Vital.Web.URI-PatternSet.scheme()</a>
+segment()                                       <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.segment()" name="Vital.Web.URI-PatternSet.segment()">Vital.Web.URI-PatternSet.segment()</a>
+segment_nz()                            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.segment_nz()" name="Vital.Web.URI-PatternSet.segment_nz()">Vital.Web.URI-PatternSet.segment_nz()</a>
+segment_nz_nc()                         <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.segment_nz_nc()" name="Vital.Web.URI-PatternSet.segment_nz_nc()">Vital.Web.URI-PatternSet.segment_nz_nc()</a>
+sub_delims()                            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.sub_delims()" name="Vital.Web.URI-PatternSet.sub_delims()">Vital.Web.URI-PatternSet.sub_delims()</a>
+unreserved()                            <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.unreserved()" name="Vital.Web.URI-PatternSet.unreserved()">Vital.Web.URI-PatternSet.unreserved()</a>
+userinfo()                                      <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-PatternSet.userinfo()" name="Vital.Web.URI-PatternSet.userinfo()">Vital.Web.URI-PatternSet.userinfo()</a>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">NOTES</span>                                   <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-notes" name="Vital.Web.URI-notes">Vital.Web.URI-notes</a>
+
+Empty authority
+<span class="PreProc">-----------------</span>
+
+Empty authority is allowed for &quot;file&quot; scheme,
+but not for almost schemes, for example, &quot;http&quot; scheme.
+However, Web.URI does not concern about
+authority handling for each scheme,
+because it is just a parser library for URI.
+If a user wants to raise an error for a such case,
+needs to raise an error for him or herself.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TODO</span>                                    <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-todo" name="Vital.Web.URI-todo">Vital.Web.URI-todo</a>
+
+* Punycode (RFC3492)
+* IRI support (RFC3987)
+* <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.opaque()">Vital.Web.URI-URI.opaque()</a> with an argument
+* <a class="Identifier" href="./../../vital/Web/URI.html#Vital.Web.URI-URI.authority()">Vital.Web.URI-URI.authority()</a> with an argument
+* Perl's URI, URI::Find module
+<span class="Statement"> </span> * <span class="Comment">URI::eq()</span>
+<span class="Statement"> </span> * <span class="Comment">URI::query_form()</span>
+<span class="Statement"> </span> * <span class="Comment">URI::query_keywords()</span>
+<span class="Statement"> </span> * <span class="Comment">URI::ihost()</span>
+<span class="Statement"> </span> * <span class="Comment">URI::Find::find()</span>
+* RFC 5890: IDNA (Internationalized Domain Names for Applications)
+<span class="Statement"> </span> * A Label
+<span class="Statement"> </span> * U Label
+<span class="Statement"> </span> * NR-LDH Label
+* <span class="Comment">s:URI.to_string()</span> should recompose string by the algorithm
+  based on <span class="String"><a href="https://tools.ietf.org/html/rfc3986#section-5.3">https://tools.ietf.org/html/rfc3986#section-5.3</a></span>
+* <span class="Comment">s:URI.to_iri()</span>: Write tests
+* <span class="Comment">s:URI.to_iri()</span>: Write document
+* URN Support
+<span class="Statement"> </span> * urn:isbn
+<span class="Statement"> </span> * urn:uuid
+<span class="Statement"> </span> * urn:ietf:rfc
+<span class="Statement"> </span> * urn:oid
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">REFERENCES</span>                              <a class="String" href="./../../vital/Web/URI.html#Vital.Web.URI-references" name="Vital.Web.URI-references">Vital.Web.URI-references</a>
+
+* URL: Living Standard
+  <span class="String"><a href="https://url.spec.whatwg.org/#informative">https://url.spec.whatwg.org/#informative</a></span>
+* RFC3986
+  <span class="String"><a href="http://tools.ietf.org/html/rfc3986">http://tools.ietf.org/html/rfc3986</a></span>
+* RFC3986 Errata
+  <span class="String"><a href="https://www.rfc-editor.org/errata_search.php?rfc=3987">https://www.rfc-editor.org/errata_search.php?rfc=3987</a></span>
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

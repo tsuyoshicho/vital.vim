@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/DateTime</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/DateTime</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/DateTime.html" name="vital/DateTime.txt">vital/DateTime.txt</a>    date and time library.
+
+Maintainer: thinca &lt;thinca+vim@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../vital/DateTime.html#Vital.DateTime-contents" name="Vital.DateTime-contents">Vital.DateTime-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-introduction">Vital.DateTime-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-interface">Vital.DateTime-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-functions">Vital.DateTime-functions</a>
+OBJECTS                         <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-objects">Vital.DateTime-objects</a>
+  DateTime Object                 <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime">Vital.DateTime-DateTime</a>
+  TimeZone Object                 <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-TimeZone">Vital.DateTime-TimeZone</a>
+  TimeDelta Object                <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta">Vital.DateTime-TimeDelta</a>
+FORMAT                          <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-format">Vital.DateTime-format</a>
+TIPS                            <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-tips">Vital.DateTime-tips</a>
+TODO                            <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-todo">Vital.DateTime-todo</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../vital/DateTime.html#Vital.DateTime-introduction" name="Vital.DateTime-introduction">Vital.DateTime-introduction</a>
+
+<a class="String" href="./../vital/DateTime.html#Vital.DateTime" name="Vital.DateTime">Vital.DateTime</a> is a date and time library.
+
+- This library uses proleptic Gregorian calendar.
+- Doesn't treat DST(summer time).
+- Doesn't treat leap second.
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-interface" name="Vital.DateTime-interface">Vital.DateTime-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-functions" name="Vital.DateTime-functions">Vital.DateTime-functions</a>
+
+now([<span class="Special">{timezone}</span>])                       <a class="String" href="./../vital/DateTime.html#Vital.DateTime.now()" name="Vital.DateTime.now()">Vital.DateTime.now()</a>
+        Creates a new DateTime object with now time.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime">Vital.DateTime-DateTime</a> about DateTime object.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.timezone()">Vital.DateTime.timezone()</a> about <span class="Special">{timezone}</span>.
+
+                                        <a class="String" href="./../vital/DateTime.html#Vital.DateTime.from_unix_time()" name="Vital.DateTime.from_unix_time()">Vital.DateTime.from_unix_time()</a>
+from_unix_time(<span class="Special">{unix-time}</span> [, <span class="Special">{timezone}</span>])
+        Creates a new DateTime object from <span class="Special">{unix-time}</span>.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime">Vital.DateTime-DateTime</a> about DateTime object.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.timezone()">Vital.DateTime.timezone()</a> about <span class="Special">{timezone}</span>.
+
+                                        <a class="String" href="./../vital/DateTime.html#Vital.DateTime.from_date()" name="Vital.DateTime.from_date()">Vital.DateTime.from_date()</a>
+from_date([<span class="Special">{year}</span> [, <span class="Special">{month}</span> [, <span class="Special">{day}</span>
+          [, <span class="Special">{hour}</span> [, <span class="Special">{minute}</span> [, <span class="Special">{second}</span> [, <span class="Special">{timezone}</span>]]]]]]])
+        Creates a new DateTime object from date info.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime">Vital.DateTime-DateTime</a> about DateTime object.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.timezone()">Vital.DateTime.timezone()</a> about <span class="Special">{timezone}</span>.
+
+                                        <a class="String" href="./../vital/DateTime.html#Vital.DateTime.from_format()" name="Vital.DateTime.from_format()">Vital.DateTime.from_format()</a>
+from_format(<span class="Special">{string}</span>, <span class="Special">{format}</span> [, <span class="Special">{locale}</span>])
+        Creates a new DateTime object from format.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime">Vital.DateTime-DateTime</a> about DateTime object.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-format">Vital.DateTime-format</a> about <span class="Special">{format}</span>.
+
+from_julian_day(<span class="Special">{jd}</span> [, <span class="Special">{timezone}</span>])    <a class="String" href="./../vital/DateTime.html#Vital.DateTime.from_julian_day()" name="Vital.DateTime.from_julian_day()">Vital.DateTime.from_julian_day()</a>
+        Creates a new DateTime object from Julian day.
+        <span class="Special">{jd}</span> accepts <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a> value.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime">Vital.DateTime-DateTime</a> about DateTime object.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.timezone()">Vital.DateTime.timezone()</a> about <span class="Special">{timezone}</span>.
+
+timezone([<span class="Special">{timezone}</span>])                  <a class="String" href="./../vital/DateTime.html#Vital.DateTime.timezone()" name="Vital.DateTime.timezone()">Vital.DateTime.timezone()</a>
+        Creates a new TimeZone object.
+        <span class="Special">{timezone}</span> accepts one of following.
+        - Omitted or an empty string
+          - Returns current timezone.
+        - A string like &quot;+0900&quot;, &quot;+09:00&quot;, or &quot;+09&quot;
+          - Regexp: &quot;^[+-]\?\d\<span class="Special">{1,2}</span>:\?\d\<span class="Special">{1,2}</span>$&quot;
+        - A number that specifies the offset by hour.
+        - TimeZone object.
+          - Returns it directly.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-TimeZone">Vital.DateTime-TimeZone</a> about TimeZone object.
+
+delta()                                 <a class="String" href="./../vital/DateTime.html#Vital.DateTime.delta()" name="Vital.DateTime.delta()">Vital.DateTime.delta()</a>
+delta(<span class="Special">{days}</span>, <span class="Special">{seconds}</span>)
+delta(<span class="Special">{value}</span>, <span class="Special">{unit}</span>, ...)
+        Creates a new TimeDelta object.
+        <span class="Special">{unit}</span> accepts the followings:
+        &quot;second&quot;, &quot;sec&quot;, &quot;minute&quot;, &quot;min&quot;, &quot;hour&quot;, &quot;day&quot;, &quot;week&quot;
+delta(<span class="Special">{TimeDelta}</span>)
+        Returns <span class="Special">{TimeDelta}</span> directly.
+
+compare(<span class="Special">{datetime1}</span>, <span class="Special">{datetime2}</span>)       <a class="String" href="./../vital/DateTime.html#Vital.DateTime.compare()" name="Vital.DateTime.compare()">Vital.DateTime.compare()</a>
+        Comparison function for DateTime.
+        This is same to &quot;datetime1.compare(datetime2)&quot;
+        This is useful when using <a href="https://www.google.com/search?q=vim+%22sort()%22&lr=lang_en"><span class="MissingTag">sort()</span></a>.
+
+month_names([<span class="Special">{longname}</span> [, <span class="Special">{locale}</span>]])  <a class="String" href="./../vital/DateTime.html#Vital.DateTime.month_names()" name="Vital.DateTime.month_names()">Vital.DateTime.month_names()</a>
+        Returns month names according to the current or specified locale.
+        If <span class="Special">{longname}</span> is supplied and it is true, returns long name.
+
+weekday_names([<span class="Special">{longname}</span> [, <span class="Special">{locale}</span>]]) <a class="String" href="./../vital/DateTime.html#Vital.DateTime.weekday_names()" name="Vital.DateTime.weekday_names()">Vital.DateTime.weekday_names()</a>
+        Returns weekday names according to the current or specified locale.
+        If <span class="Special">{longname}</span> is supplied and it is true, returns long name.
+
+am_pm_names([<span class="Special">{lowercase}</span> [, <span class="Special">{locale}</span>]]) <a class="String" href="./../vital/DateTime.html#Vital.DateTime.am_pm_names()" name="Vital.DateTime.am_pm_names()">Vital.DateTime.am_pm_names()</a>
+        Returns am/pm names according to the current or specified locale.
+        If <span class="Special">{lowercase}</span> is supplied and it is true, returns lower case.
+
+is_leap_year(<span class="Special">{year}</span>)                    <a class="String" href="./../vital/DateTime.html#Vital.DateTime.is_leap_year()" name="Vital.DateTime.is_leap_year()">Vital.DateTime.is_leap_year()</a>
+        Returns true when the <span class="Special">{year}</span> is a leap year.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                                 <a class="String" href="./../vital/DateTime.html#Vital.DateTime-objects" name="Vital.DateTime-objects">Vital.DateTime-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+DateTime Object                 <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime" name="Vital.DateTime-DateTime">Vital.DateTime-DateTime</a>
+
+DateTime.year()                 <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.year()" name="Vital.DateTime-DateTime.year()">Vital.DateTime-DateTime.year()</a>
+        Returns the year.
+
+DateTime.month()                <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.month()" name="Vital.DateTime-DateTime.month()">Vital.DateTime-DateTime.month()</a>
+        Returns the month. (1-12)
+
+DateTime.day()                  <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.day()" name="Vital.DateTime-DateTime.day()">Vital.DateTime-DateTime.day()</a>
+        Returns the day. (1-31)
+
+DateTime.hour()                 <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.hour()" name="Vital.DateTime-DateTime.hour()">Vital.DateTime-DateTime.hour()</a>
+        Returns the hour. (0-23)
+
+DateTime.minute()               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.minute()" name="Vital.DateTime-DateTime.minute()">Vital.DateTime-DateTime.minute()</a>
+        Returns the minute. (0-59)
+
+DateTime.second()               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.second()" name="Vital.DateTime-DateTime.second()">Vital.DateTime-DateTime.second()</a>
+        Returns the second. (0-59)
+
+DateTime.timezone()             <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.timezone()" name="Vital.DateTime-DateTime.timezone()">Vital.DateTime-DateTime.timezone()</a>
+        Returns the TimeZone object.
+DateTime.timezone(<span class="Special">{timezone}</span>)
+        Returns a new object with the specified <span class="Special">{timezone}</span>.
+        This changes only <span class="Special">{timezone}</span>, the number of time is not changed.
+
+DateTime.day_of_week()          <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.day_of_week()" name="Vital.DateTime-DateTime.day_of_week()">Vital.DateTime-DateTime.day_of_week()</a>
+        Returns the day of the week. (0-6)  0 is Sunday.
+
+DateTime.day_of_year()          <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.day_of_year()" name="Vital.DateTime-DateTime.day_of_year()">Vital.DateTime-DateTime.day_of_year()</a>
+        Returns the day of the year.
+
+DateTime.days_from_era()        <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.days_from_era()" name="Vital.DateTime-DateTime.days_from_era()">Vital.DateTime-DateTime.days_from_era()</a>
+        Returns the number of days from the Christian era.
+
+DateTime.julian_day([<span class="Special">{float}</span>])  <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.julian_day()" name="Vital.DateTime-DateTime.julian_day()">Vital.DateTime-DateTime.julian_day()</a>
+        Returns the Julian day.
+        If <span class="Special">{float}</span> is supplied and it is true, returns <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a> value.
+
+DateTime.seconds_of_day()       <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.seconds_of_day()" name="Vital.DateTime-DateTime.seconds_of_day()">Vital.DateTime-DateTime.seconds_of_day()</a>
+        Returns the number of seconds of the day.
+
+DateTime.quarter()              <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.quarter()" name="Vital.DateTime-DateTime.quarter()">Vital.DateTime-DateTime.quarter()</a>
+        Returns the quarter. (1-4)
+
+DateTime.unix_time()            <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.unix_time()" name="Vital.DateTime-DateTime.unix_time()">Vital.DateTime-DateTime.unix_time()</a>
+        Returns the unix time.
+        If this DateTime is out of range of unix time, returns -1.
+        The upper limit is 2038, but if your Vim has <span class="Comment">+num64</span> it's limitless.
+
+DateTime.is_leap_year()         <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.is_leap_year()" name="Vital.DateTime-DateTime.is_leap_year()">Vital.DateTime-DateTime.is_leap_year()</a>
+        Returns true when the year is a leap year.
+
+DateTime.is(<span class="Special">{DateTime}</span>)         <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.is()" name="Vital.DateTime-DateTime.is()">Vital.DateTime-DateTime.is()</a>
+        Returns true if this DateTime and the specified <span class="Special">{DateTime}</span> is the same
+        time.
+
+DateTime.compare(<span class="Special">{DateTime}</span>)    <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.compare()" name="Vital.DateTime-DateTime.compare()">Vital.DateTime-DateTime.compare()</a>
+        Returns -1 if <span class="Special">{DateTime}</span> is later more than this DateTime.
+        Returns 0 if <span class="Special">{DateTime}</span> and this DateTime is same.
+        Returns 1 if <span class="Special">{DateTime}</span> is precedes more than this DateTime.
+
+DateTime.delta(<span class="Special">{DateTime}</span>)      <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.delta()" name="Vital.DateTime-DateTime.delta()">Vital.DateTime-DateTime.delta()</a>
+        Returns a new TimeDelta(<a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta">Vital.DateTime-TimeDelta</a>) object.
+        It is the delta of this DateTime to <span class="Special">{DateTime}</span>.
+
+DateTime.to(<span class="Special">{delta}</span>)            <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.to()" name="Vital.DateTime-DateTime.to()">Vital.DateTime-DateTime.to()</a>
+DateTime.to(<span class="Special">{timezone}</span>)
+        Returns a new object from which the specified time is different.
+        This function accepts the followings:
+        - <span class="Special">{TimeDelta}</span> object or <span class="Special">{TimeZone}</span> object.
+        - If the length of argument is one, it is a <span class="Special">{timezone}</span>.
+          This the same arguments as <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.timezone()">Vital.DateTime.timezone()</a>.
+        - If the length of argument is two or more, it is a <span class="Special">{delta}</span>.
+          This the same arguments as <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.delta()">Vital.DateTime.delta()</a>.
+
+                                <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.format()" name="Vital.DateTime-DateTime.format()">Vital.DateTime-DateTime.format()</a>
+DateTime.format(<span class="Special">{format}</span> [, <span class="Special">{locale}</span>])
+        Returns the formatted string of this DateTime.
+        See <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-format">Vital.DateTime-format</a> about <span class="Special">{format}</span>.
+
+                                <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.strftime()" name="Vital.DateTime-DateTime.strftime()">Vital.DateTime-DateTime.strftime()</a>
+DateTime.strftime(<span class="Special">{format}</span> [, <span class="Special">{locale}</span>])
+        An alternative version of <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime.format()">Vital.DateTime-DateTime.format()</a> which
+        use <a href="https://www.google.com/search?q=vim+%22strftime()%22&lr=lang_en"><span class="MissingTag">strftime()</span></a> internally. While <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime.format()">Vital.DateTime-DateTime.format()</a>
+        parse <span class="Special">{format}</span>, it is really slow compared to using <a href="https://www.google.com/search?q=vim+%22strftime()%22&lr=lang_en"><span class="MissingTag">strftime()</span></a>.
+        However <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime.format()">Vital.DateTime-DateTime.format()</a> is required while accepted
+        <span class="Special">{format}</span> and a return value of <a href="https://www.google.com/search?q=vim+%22strftime()%22&lr=lang_en"><span class="MissingTag">strftime()</span></a> depends on the system.
+        That's why this function exists for user who need performance but the
+        accuracy.
+        It substitutes '%z' in <span class="Special">{format}</span> into the value returned from
+        <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-TimeZone.offset_string()">Vital.DateTime-TimeZone.offset_string()</a> while <a href="https://www.google.com/search?q=vim+%22strftime()%22&lr=lang_en"><span class="MissingTag">strftime()</span></a> always
+        return the system default timezone offset string.
+        See <span class="String"><a href="https://gist.github.com/lambdalisue/e73bd722ca8840e82bd8">https://gist.github.com/lambdalisue/e73bd722ca8840e82bd8</a></span>
+        for benchmarking.
+
+DateTime.to_string()            <a class="String" href="./../vital/DateTime.html#Vital.DateTime-DateTime.to_string()" name="Vital.DateTime-DateTime.to_string()">Vital.DateTime-DateTime.to_string()</a>
+        Same as &quot;format('%c')&quot;.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+TimeZone Object                 <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeZone" name="Vital.DateTime-TimeZone">Vital.DateTime-TimeZone</a>
+
+TimeZone has just the offset.  Name of timezone is not supported yet.
+
+TimeZone.offset()               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeZone.offset()" name="Vital.DateTime-TimeZone.offset()">Vital.DateTime-TimeZone.offset()</a>
+        Returns the offset in second.
+
+TimeZone.minutes()              <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeZone.minutes()" name="Vital.DateTime-TimeZone.minutes()">Vital.DateTime-TimeZone.minutes()</a>
+        Returns the offset in minute.
+
+TimeZone.hours()                <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeZone.hours()" name="Vital.DateTime-TimeZone.hours()">Vital.DateTime-TimeZone.hours()</a>
+        Returns the offset in hour.
+
+TimeZone.sign()                 <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeZone.sign()" name="Vital.DateTime-TimeZone.sign()">Vital.DateTime-TimeZone.sign()</a>
+        Returns the offset of sign.  This is -1, 0, or 1.
+
+TimeZone.offset_string()        <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeZone.offset_string()" name="Vital.DateTime-TimeZone.offset_string()">Vital.DateTime-TimeZone.offset_string()</a>
+        Returns the offset by the format used by RFC 2822.  ex&#0058; &quot;+0900&quot;
+
+TimeZone.w3c()                  <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeZone.w3c()" name="Vital.DateTime-TimeZone.w3c()">Vital.DateTime-TimeZone.w3c()</a>
+        Returns the offset by the format used by W3CDTF.  ex&#0058; &quot;+09:00&quot;
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+TimeDelta Object                <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta" name="Vital.DateTime-TimeDelta">Vital.DateTime-TimeDelta</a>
+
+TimeDelta is a delta of two DateTime.
+
+TimeDelta.seconds()             <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.seconds()" name="Vital.DateTime-TimeDelta.seconds()">Vital.DateTime-TimeDelta.seconds()</a>
+        Returns the seconds component.
+
+TimeDelta.minutes()             <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.minutes()" name="Vital.DateTime-TimeDelta.minutes()">Vital.DateTime-TimeDelta.minutes()</a>
+        Returns the minutes component.
+
+TimeDelta.hours()               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.hours()" name="Vital.DateTime-TimeDelta.hours()">Vital.DateTime-TimeDelta.hours()</a>
+        Returns the hours component.
+
+TimeDelta.days()                <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.days()" name="Vital.DateTime-TimeDelta.days()">Vital.DateTime-TimeDelta.days()</a>
+        Returns the days component.
+
+TimeDelta.weeks()               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.weeks()" name="Vital.DateTime-TimeDelta.weeks()">Vital.DateTime-TimeDelta.weeks()</a>
+        Returns the days component by the unit of the week.
+
+TimeDelta.months()              <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.months()" name="Vital.DateTime-TimeDelta.months()">Vital.DateTime-TimeDelta.months()</a>
+        Returns the days component by the unit of the month.
+        The month is always calculated in 30 days.
+
+TimeDelta.years()               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.years()" name="Vital.DateTime-TimeDelta.years()">Vital.DateTime-TimeDelta.years()</a>
+        Returns the days component by the unit of the years.
+        The year is always calculated in 365 days.
+
+TimeDelta.total_seconds()       <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.total_seconds()" name="Vital.DateTime-TimeDelta.total_seconds()">Vital.DateTime-TimeDelta.total_seconds()</a>
+        Returns the total seconds of the delta.
+        This may overflow, when the delta is large.
+
+TimeDelta.sign()                <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.sign()" name="Vital.DateTime-TimeDelta.sign()">Vital.DateTime-TimeDelta.sign()</a>
+        Returns the seconds sign of the delta.
+        This is -1, 0, or 1.
+
+TimeDelta.negate()              <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.negate()" name="Vital.DateTime-TimeDelta.negate()">Vital.DateTime-TimeDelta.negate()</a>
+        Returns a new negated TimeDelta object.
+        delta.sign() == -delta.negate().sign()
+
+TimeDelta.duration()            <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.duration()" name="Vital.DateTime-TimeDelta.duration()">Vital.DateTime-TimeDelta.duration()</a>
+        Returns a TimeDelta object that is absolute value.
+
+TimeDelta.is(<span class="Special">{TimeDelta}</span>)       <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.is()" name="Vital.DateTime-TimeDelta.is()">Vital.DateTime-TimeDelta.is()</a>
+        Returns true if this TimeDelta and the specified <span class="Special">{TimeDelta}</span> is the
+        same delta.
+
+TimeDelta.add(<span class="Special">{other}</span>)          <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.add()" name="Vital.DateTime-TimeDelta.add()">Vital.DateTime-TimeDelta.add()</a>
+        Returns a new TimeDelta object which added this and <span class="Special">{other}</span>.
+        <span class="Special">{other}</span> accepts the same arguments as <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.delta()">Vital.DateTime.delta()</a>.
+
+TimeDelta.subtract(<span class="Special">{other}</span>)     <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.subtract()" name="Vital.DateTime-TimeDelta.subtract()">Vital.DateTime-TimeDelta.subtract()</a>
+        Returns a new TimeDelta object which subtracted this and <span class="Special">{other}</span>.
+        <span class="Special">{other}</span> accepts the same arguments as <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.delta()">Vital.DateTime.delta()</a>.
+
+TimeDelta.about()               <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.about()" name="Vital.DateTime-TimeDelta.about()">Vital.DateTime-TimeDelta.about()</a>
+        Returns a string that about this delta.
+        Examples:
+        &quot;now&quot;
+        &quot;8 seconds later&quot;
+        &quot;30 minutes ago&quot;
+        &quot;1 hour later&quot;
+        &quot;4 days ago&quot;
+        &quot;3 weeks later&quot;
+        &quot;2 months ago&quot;
+        &quot;1 year later&quot;
+
+TimeDelta.to_string()           <a class="String" href="./../vital/DateTime.html#Vital.DateTime-TimeDelta.to_string()" name="Vital.DateTime-TimeDelta.to_string()">Vital.DateTime-TimeDelta.to_string()</a>
+        Returns a string representation of this TimeDelta.  It is the
+        following string.
+        &quot;[-]<span class="Special">{n}</span>day[s], HH:MM:SS&quot;.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">FORMAT</span>                                  <a class="String" href="./../vital/DateTime.html#Vital.DateTime-format" name="Vital.DateTime-format">Vital.DateTime-format</a>
+
+The format is used by the following functions.
+- <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime-DateTime.format()">Vital.DateTime-DateTime.format()</a>
+  - For formatting.
+- <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.from_format()">Vital.DateTime.from_format()</a>
+  - For parsing.
+
+The format is similar to <a href="https://www.google.com/search?q=vim+%22strftime()%22&lr=lang_en"><span class="MissingTag">strftime()</span></a>.
+There is a list of specifications of the format.
+
+  +---- Available for formatting
+  | +-- Available for parsing
+  | |
+  o o  %%  The '%' character.
+  o    %a  The abbreviated weekday name.
+  o    %A  The full weekday name.
+  o o  %b  The abbreviated month name.
+  o o  %B  The full month name.
+  o o  %c  Equivalent to &quot;%F %T %z&quot;.
+  o o  %C  The century number (year/100) as a 2-digit integer.
+  o o  %d  The day of the month as a decimal number (range 01 to 31).
+  o o  %D  Equivalent to &quot;%m/%d/%y&quot;.
+  o o  %e  Equivalent to &quot;%_m/%_d/%_y&quot;.
+  o o  %F  Equivalent to &quot;%Y-%m-%d&quot;.
+  o o  %h  Equivalent to &quot;%b&quot;.
+  o o  %H  The hour as a decimal number using a 24-hour clock(range 00 to 23).
+  o o  %I  The hour as a decimal number using a 12-hour clock(range 01 to 12).
+  o    %j  The day of the year as a decimal number (range 001 to 366).
+  o o  %k  Equivalent to &quot;%_H&quot;.
+  o o  %l  Equivalent to &quot;%_I&quot;.
+  o o  %m  The month as a decimal number (range 01 to 12).
+  o o  %M  The minute as a decimal number (range 00 to 59).
+  o o  %n  When formatting, a newline character.
+           When parsing, arbitrary whitespace.
+  o o  %p  Either &quot;AM&quot; or &quot;PM&quot; according to the given time value.
+  o o  %P  Like %p but in lowercase.  <span class="Todo">NOTE</span>: This doesn't work in MS Windows.
+  o o  %r  Equivalent to &quot;%I:%M:%S %p&quot;.
+  o o  %R  Equivalent to &quot;%H:%M&quot;.
+  o    %s  The number of seconds since the Epoch, 1970-01-01 00:00:00 +0000.
+  o o  %S  The second as a decimal number (range 00 to 59).
+  o o  %t  When formatting, a tab character.
+           When parsing, arbitrary whitespace.
+  o o  %u  The day of the week as a decimal, range 1 to 7, Monday being 1.
+  o o  %T  Equivalent to &quot;%H:%M:%S&quot;.
+  o    %w  The day of the week as a decimal, range 0 to 6, Sunday being 0.
+  o o  %y  The year as a decimal number without a century (range 00 to 99).
+  o o  %Y  The year as a decimal number including the century.
+  o o  %z  The +hhmm or -hhmm numeric timezone.  The pattern which this uses
+           for parsing is same as the argument of <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.timezone()">Vital.DateTime.timezone()</a>.
+           But, an empty string is treated as UTC.
+    o  %*  Any texts.
+
+Flags and width
+<span class="PreProc">---------------</span>
+You can use the flag and width like glibc.
+TODO: More detail.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TIPS</span>                                    <a class="String" href="./../vital/DateTime.html#Vital.DateTime-tips" name="Vital.DateTime-tips">Vital.DateTime-tips</a>
+
+- All objects are immutable.
+  - Don't touch the inner value.
+- <span class="Special">{timezone}</span> argument accepts arguments of <a class="Identifier" href="./../vital/DateTime.html#Vital.DateTime.timezone()">Vital.DateTime.timezone()</a>
+  directly.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TODO</span>                                    <a class="String" href="./../vital/DateTime.html#Vital.DateTime-todo" name="Vital.DateTime-todo">Vital.DateTime-todo</a>
+
+- Week number of the current year.
+- Optional member &quot;TimeDelta.from&quot;.
+  - The origin date.
+  - For accurate years and months.
+- more specs(test).
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

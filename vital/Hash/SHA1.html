@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Hash/SHA1</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Hash/SHA1</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Hash/SHA1.html" name="vital/Hash/SHA1.txt">vital/Hash/SHA1.txt</a>           sha1 utilities library.
+
+Maintainer: Tsuyoshi CHO &lt;Tsuyoshi.CHO@Gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1-contents" name="Vital.Hash.SHA1-contents">Vital.Hash.SHA1-contents</a>
+
+INTRODUCTION                            <a class="Identifier" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1-introduction">Vital.Hash.SHA1-introduction</a>
+INTERFACE                               <a class="Identifier" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1-interface">Vital.Hash.SHA1-interface</a>
+  Functions                             <a class="Identifier" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1-functions">Vital.Hash.SHA1-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1-introduction" name="Vital.Hash.SHA1-introduction">Vital.Hash.SHA1-introduction</a>
+
+<a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1" name="Vital.Hash.SHA1">Vital.Hash.SHA1</a> is a SHA1 Utilities Library.
+It provides functions to return the SHA1 sum/digest of a given string as
+hex/bytes list.
+
+The algorithm was ported to Vim script by Yukihiro Nakadaira and this module is
+imported from the implementation.
+
+<span class="String"><a href="https://github.com/vim-scripts/sha1.vim">https://github.com/vim-scripts/sha1.vim</a></span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1-interface" name="Vital.Hash.SHA1-interface">Vital.Hash.SHA1-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1-functions" name="Vital.Hash.SHA1-functions">Vital.Hash.SHA1-functions</a>
+
+sum(<span class="Special">{str}</span>)                              <a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1.sum()" name="Vital.Hash.SHA1.sum()">Vital.Hash.SHA1.sum()</a>
+sum_raw(<span class="Special">{bytes}</span>)                        <a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1.sum_raw()" name="Vital.Hash.SHA1.sum_raw()">Vital.Hash.SHA1.sum_raw()</a>
+        Return SHA1 hashed string from <span class="Special">{str}</span> or raw <span class="Special">{bytes}</span> list.
+
+digest(<span class="Special">{str}</span>)                           <a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1.digest()" name="Vital.Hash.SHA1.digest()">Vital.Hash.SHA1.digest()</a>
+digest_raw(<span class="Special">{bytes}</span>)                     <a class="String" href="./../../vital/Hash/SHA1.html#Vital.Hash.SHA1.digest_raw()" name="Vital.Hash.SHA1.digest_raw()">Vital.Hash.SHA1.digest_raw()</a>
+        Return SHA1 hashed bytes list from <span class="Special">{str}</span> or raw <span class="Special">{bytes}</span> list.
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/Counter</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/Counter</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Data/Counter.html" name="vital/Data/Counter.txt">vital/Data/Counter.txt</a>        Counter library to support convenient tallies.
+
+Maintainer: haya14busa &lt;hayabusa1419@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-contents" name="Vital.Data.Counter-contents">Vital.Data.Counter-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-introduction">Vital.Data.Counter-introduction</a>
+TERM                            <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-term">Vital.Data.Counter-term</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-interface">Vital.Data.Counter-interface</a>
+  FUNCTIONS                     <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-functions">Vital.Data.Counter-functions</a>
+OBJECTS                         <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-objects">Vital.Data.Counter-objects</a>
+  Counter Object                  <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter">Vital.Data.Counter-Counter</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-introduction" name="Vital.Data.Counter-introduction">Vital.Data.Counter-introduction</a>
+
+<a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter" name="Vital.Data.Counter">Vital.Data.Counter</a> is a counter library to support convenient tallies.
+
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:Counter = s:V.import('Data.Counter')</span>
+<span class="helpExample">        let s:Math = s:V.import('Math')</span>
+
+<span class="helpExample">        &quot; count elements from a string</span>
+<span class="helpExample">        let s:c = s:Counter.new('abcdeabcdabcaba')</span>
+
+<span class="helpExample">        echo s:c.to_dict()</span>
+<span class="helpExample">        &quot; =&gt; {'a': 5, 'b': 4, 'c': 3, 'd': 2, 'e': 1}</span>
+
+<span class="helpExample">        &quot; three most common elements</span>
+<span class="helpExample">        echo s:c.most_common(3)</span>
+<span class="helpExample">        &quot; =&gt; [['a', 5], ['b', 4], ['c', 3]]</span>
+
+<span class="helpExample">        &quot; list all unique elements</span>
+<span class="helpExample">        echo sort(s:c.to_list())</span>
+<span class="helpExample">        &quot; =&gt; ['a', 'b', 'c', 'd', 'e']</span>
+
+<span class="helpExample">        &quot; list elements with repetitions</span>
+<span class="helpExample">        echo join(sort(s:c.elements()), '')</span>
+<span class="helpExample">        &quot; =&gt; aaaaabbbbcccdde</span>
+
+<span class="helpExample">        &quot; total of all counts</span>
+<span class="helpExample">        echo s:Math.sum(s:c.values())</span>
+<span class="helpExample">        &quot; =&gt; 15</span>
+
+<span class="helpExample">        &quot; count of letter 'a'</span>
+<span class="helpExample">        echo s:c.get('a')</span>
+<span class="helpExample">        &quot; =&gt; 5</span>
+
+<span class="helpExample">        &quot; add counts from list</span>
+<span class="helpExample">        call s:c.add(['s', 'h', 'a', 'z', 'a', 'm'])</span>
+
+<span class="helpExample">        &quot; now there are seven 'a'</span>
+<span class="helpExample">        echo s:c.get('a')</span>
+<span class="helpExample">        &quot; =&gt; 7</span>
+
+<span class="helpExample">        &quot; remove all 'b'</span>
+<span class="helpExample">        call s:c.del('b')</span>
+
+<span class="helpExample">        &quot; now there are zero 'b'</span>
+<span class="helpExample">        echo s:c.get('b')</span>
+<span class="helpExample">        &quot; =&gt; 0</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TERM</span>                                    <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-term" name="Vital.Data.Counter-term">Vital.Data.Counter-term</a>
+
+<span class="Special">{countable}</span>                             <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-term-countable" name="Vital.Data.Counter-term-countable">Vital.Data.Counter-term-countable</a>
+        A <span class="Special">{countable}</span> is one of the followings.
+        - <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>
+        - <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>
+        - <span class="Special">{count-dict}</span> <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-term-count-dict">Vital.Data.Counter-term-count-dict</a>
+        - <span class="Special">{Counter}</span> <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-term-Counter">Vital.Data.Counter-term-Counter</a>
+
+<span class="Special">{count-dict}</span>                            <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-term-count-dict" name="Vital.Data.Counter-term-count-dict">Vital.Data.Counter-term-count-dict</a>
+        A <span class="Special">{count-dict}</span> is <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> whose value is <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a>.
+        e.g. {'a': 1, 'b': 2, 'c': 3}
+
+<span class="Special">{Counter}</span>                               <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-term-Counter" name="Vital.Data.Counter-term-Counter">Vital.Data.Counter-term-Counter</a>
+        A <span class="Special">{Counter}</span> is Counter Object <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter">Vital.Data.Counter-Counter</a>.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-interface" name="Vital.Data.Counter-interface">Vital.Data.Counter-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-functions" name="Vital.Data.Counter-functions">Vital.Data.Counter-functions</a>
+
+new([<span class="Special">{countable}</span>])                      <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter.new()" name="Vital.Data.Counter.new()">Vital.Data.Counter.new()</a>
+        Return a new 'Counter' object.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                                 <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-objects" name="Vital.Data.Counter-objects">Vital.Data.Counter-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Counter Object                  <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter" name="Vital.Data.Counter-Counter">Vital.Data.Counter-Counter</a>
+
+Counter.get(<span class="Special">{key}</span>)              <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.get()" name="Vital.Data.Counter-Counter.get()">Vital.Data.Counter-Counter.get()</a>
+        Get count of <span class="Special">{key}</span> from Counter. Return 0 if <span class="Special">{key}</span> is not in the
+        Counter.
+
+<span class="helpExample">        let s:c = s:Counter.new('vim')</span>
+<span class="helpExample">        echo s:c.get('v')</span>
+<span class="helpExample">        &quot; =&gt; 1</span>
+<span class="helpExample">        echo s:c.get('b')</span>
+<span class="helpExample">        &quot; =&gt; 0</span>
+
+Counter.set(<span class="Special">{key}</span>, <span class="Special">{nr}</span>)                <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.set()" name="Vital.Data.Counter-Counter.set()">Vital.Data.Counter-Counter.set()</a>
+        Set count of <span class="Special">{key}</span> to <span class="Special">{nr}</span>.
+
+<span class="helpExample">        let s:c = s:Counter.new('vim')</span>
+<span class="helpExample">        call s:c.set('v', 3)</span>
+<span class="helpExample">        call s:c.get('v')</span>
+<span class="helpExample">        &quot; =&gt; 3</span>
+
+Counter.add(<span class="Special">{countable}</span>)        <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.add()" name="Vital.Data.Counter-Counter.add()">Vital.Data.Counter-Counter.add()</a>
+        Adds counts from countable instead of replacing them.
+
+<span class="helpExample">        let s:c = s:Counter.new('vim')</span>
+<span class="helpExample">        call s:c.add('vital')</span>
+<span class="helpExample">        echo s:c.get('v')</span>
+<span class="helpExample">        &quot; =&gt; 2</span>
+
+Counter.subtract(<span class="Special">{countable}</span>)   <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.subtract()" name="Vital.Data.Counter-Counter.subtract()">Vital.Data.Counter-Counter.subtract()</a>
+        Subtracts count from countable. Counts can be reduced below zero. Both
+        the inputs and outputs are allowed to contain zero and negative
+        counts.
+
+<span class="helpExample">        let s:c = s:Counter.new('vim')</span>
+<span class="helpExample">        call s:c.subtract('vital')</span>
+<span class="helpExample">        echo s:c.get('v')</span>
+<span class="helpExample">        &quot; =&gt; 0</span>
+<span class="helpExample">        echo s:c.get('a')</span>
+<span class="helpExample">        &quot; =&gt; -1</span>
+
+Counter.union(<span class="Special">{expr}</span>)           <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.union()" name="Vital.Data.Counter-Counter.union()">Vital.Data.Counter-Counter.union()</a>
+        <span class="Special">{expr}</span> is <span class="Special">{Counter}</span> or <span class="Special">{count-dict}</span>.  Returns a counter of the maximum
+        of value in either of the input counters. It keeps only positive
+        counts. It is non-destructive method, it doesn't change the counter
+        nor an argument.
+
+<span class="helpExample">        let s:c = s:Counter.new('vim')</span>
+<span class="helpExample">        echo s:c.union('vital').to_dict()</span>
+<span class="helpExample">        &quot; =&gt; {'a': 1, 't': 1, 'v': 1, 'i': 1, 'l': 1, 'm': 1}</span>
+
+Counter.intersection(<span class="Special">{expr}</span>)    <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.intersection()" name="Vital.Data.Counter-Counter.intersection()">Vital.Data.Counter-Counter.intersection()</a>
+        <span class="Special">{expr}</span> is <span class="Special">{Counter}</span> or <span class="Special">{count-dict}</span>.  Returns a counter of the maximum
+        of value in either of the input counters. It keeps only positive
+        counts. It is non-destructive method, it doesn't change the counter
+        nor an argument.
+
+<span class="helpExample">        let s:c = s:Counter.new('vim')</span>
+<span class="helpExample">        echo s:c.intersection('vital').to_dict()</span>
+<span class="helpExample">        &quot; =&gt; {'v': 1, 'i': 1}</span>
+
+Counter.clear()                 <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.clear()" name="Vital.Data.Counter-Counter.clear()">Vital.Data.Counter-Counter.clear()</a>
+        Reset all counts.
+
+<span class="helpExample">        let s:c = s:Counter.new('vim')</span>
+<span class="helpExample">        call s:c.clear()</span>
+<span class="helpExample">        echo s:c.get('v')</span>
+<span class="helpExample">        &quot; =&gt; 0</span>
+
+Counter.elements()              <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.elements()" name="Vital.Data.Counter-Counter.elements()">Vital.Data.Counter-Counter.elements()</a>
+        Returns a list of elements repeating each as many times as its count.
+        Elements are returned in arbitrary order. If an element's count is
+        less than one, elements() will ignore it.
+
+<span class="helpExample">        let s:c = s:Counter.new('ABCABC')</span>
+<span class="helpExample">        echo sort(s:c.elements())</span>
+<span class="helpExample">        &quot; =&gt; ['A', 'A', 'B', 'B', 'C', 'C']</span>
+
+Counter.most_common(<span class="Special">{nr}</span>)       <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.most_common()" name="Vital.Data.Counter-Counter.most_common()">Vital.Data.Counter-Counter.most_common()</a>
+        Returns a list of the <span class="Special">{nr}</span> most common elements and their counts
+        from the most common to the least. If n is omitted, most_common()
+        returns all elements in the counter. Elements with equal counts are
+        ordered arbitrarily.
+
+<span class="helpExample">        echo s:Counter.new('abcdeabcdabcaba').most_common(3)</span>
+<span class="helpExample">        &quot; =&gt; [['a', 5], ['b', 4], ['c', 3]]</span>
+
+Counter.to_dict()               <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.to_dict()" name="Vital.Data.Counter-Counter.to_dict()">Vital.Data.Counter-Counter.to_dict()</a>
+        Returns <span class="Special">{count-dict}</span> <a class="Identifier" href="./../../vital/Data/Counter.html#Vital.Data.Counter-term-count-dict">Vital.Data.Counter-term-count-dict</a> from Counter
+        object.
+
+<span class="helpExample">        let s:c = s:Counter.new('ABCABC')</span>
+<span class="helpExample">        echo s:c.to_dict()</span>
+<span class="helpExample">        &quot; =&gt; {'A': 2, 'B': 2, 'C': 2}</span>
+
+Counter.to_list()               <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.to_list()" name="Vital.Data.Counter-Counter.to_list()">Vital.Data.Counter-Counter.to_list()</a>
+        Returns list of element in the counter. The order is arbitrary.
+
+<span class="helpExample">        let s:c = s:Counter.new('ABCABC')</span>
+<span class="helpExample">        echo sort(s:c.to_list())</span>
+<span class="helpExample">        &quot; =&gt; ['A', 'B', 'C']</span>
+
+Counter.values()                <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.values()" name="Vital.Data.Counter-Counter.values()">Vital.Data.Counter-Counter.values()</a>
+        Returns list of count in the counter. The order is arbitrary.
+
+<span class="helpExample">        let s:c = s:Counter.new('ABCABC')</span>
+<span class="helpExample">        echo sort(s:c.values())</span>
+<span class="helpExample">        &quot; =&gt; [2, 2, 2]</span>
+
+Counter.in(<span class="Special">{expr}</span>)              <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.in()" name="Vital.Data.Counter-Counter.in()">Vital.Data.Counter-Counter.in()</a>
+        Returns the Number 1 if the given element is in the counter, zero
+        otherwise.
+
+<span class="helpExample">        let s:c = s:Counter.new('ABCABC')</span>
+<span class="helpExample">        echo s:c.in('A')</span>
+<span class="helpExample">        &quot; =&gt; 1</span>
+<span class="helpExample">        echo s:c.in('D')</span>
+<span class="helpExample">        &quot; =&gt; 0</span>
+
+Counter.del(<span class="Special">{expr}</span>)             <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.del()" name="Vital.Data.Counter-Counter.del()">Vital.Data.Counter-Counter.del()</a>
+        Deletes the given element from the counter. Does not raise error for
+        missing values.
+
+<span class="helpExample">        let s:c = s:Counter.new('ABCABC')</span>
+<span class="helpExample">        call s:c.del('A')</span>
+<span class="helpExample">        echo s:c.in('A')</span>
+<span class="helpExample">        &quot; =&gt; 0</span>
+
+Counter.keep_positive()         <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.keep_positive()" name="Vital.Data.Counter-Counter.keep_positive()">Vital.Data.Counter-Counter.keep_positive()</a>
+        Strips elements with a negative or zero count. This is similar to
+        unary addition to collections.Counter in python.
+
+<span class="helpExample">        let c = s:Counter.new({'A': 2, 'B': -1, 'C': 0})</span>
+<span class="helpExample">        call c.keep_positive()</span>
+<span class="helpExample">        echo c.to_dict()</span>
+<span class="helpExample">        &quot; =&gt; {'A': 2}</span>
+
+Counter.reverse()               <a class="String" href="./../../vital/Data/Counter.html#Vital.Data.Counter-Counter.reverse()" name="Vital.Data.Counter-Counter.reverse()">Vital.Data.Counter-Counter.reverse()</a>
+        Reverses the sign of counts.
+
+<span class="helpExample">        let c = s:Counter.new({'A': 2, 'B': -1, 'C': 0})</span>
+<span class="helpExample">        call c.reverse()</span>
+<span class="helpExample">        echo c.to_dict()</span>
+<span class="helpExample">        &quot; =&gt; {'A': -2, 'B': 1, 'C': 0}</span>
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

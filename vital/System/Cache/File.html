@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/System/Cache/File</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/System/Cache/File</h1>
+<a href="./../../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../../vital/System/Cache/File.html" name="vital/System/Cache/File.txt">vital/System/Cache/File.txt</a>   A file based cache system
+
+Maintainer: Alisue &lt;lambdalisue@hashnote.net&gt;
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                        <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-contents" name="Vital.System.Cache.File-contents">Vital.System.Cache.File-contents</a>
+
+Introductions           <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-intro">Vital.System.Cache.File-intro</a>
+Usage                   <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-usage">Vital.System.Cache.File-usage</a>
+Functions               <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-functions">Vital.System.Cache.File-functions</a>
+Methods                 <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-methods">Vital.System.Cache.File-methods</a>
+Properties              <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-properties">Vital.System.Cache.File-properties</a>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTIONS</span>                           <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-intro" name="Vital.System.Cache.File-intro">Vital.System.Cache.File-intro</a>
+
+<a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File" name="Vital.System.Cache.File">Vital.System.Cache.File</a> is a file based unified cache system.
+It stores a value into a file in a cache directory, mean that individual files
+have one particular Vim object.
+If you prefer to store keys and values into a single file, use
+<a class="Identifier" href="./../../../vital/System/Cache/SingleFile.html#Vital.System.Cache.SingleFile">Vital.System.Cache.SingleFile</a> instead.
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                                   <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-usage" name="Vital.System.Cache.File-usage">Vital.System.Cache.File-usage</a>
+
+<a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File">Vital.System.Cache.File</a> have all required API of unified cache system and
+store cache in a filesystem.
+In the following example, <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File">Vital.System.Cache.File</a> is used for memorize the
+calculated values.
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:C = s:V.import('System.Cache.File')</span>
+
+<span class="helpExample">        let s:factorial_cache = s:C.new({'cache_dir': '.cache'})</span>
+
+<span class="helpExample">        function! s:factorial(n)</span>
+<span class="helpExample">          if a:n == 0</span>
+<span class="helpExample">            return 1</span>
+<span class="helpExample">          elseif s:factorial_cache.has(a:n)</span>
+<span class="helpExample">            return s:factorial_cache.get(a:n)</span>
+<span class="helpExample">          else</span>
+<span class="helpExample">            let x = s:factorial(a:n - 1) * a:n</span>
+<span class="helpExample">            call s:factorial_cache.set(a:n, x)</span>
+<span class="helpExample">            return x</span>
+<span class="helpExample">          endif</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:factorial(10)</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-functions" name="Vital.System.Cache.File-functions">Vital.System.Cache.File-functions</a>
+
+new([<span class="Special">{options}</span>])                        <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File.new()" name="Vital.System.Cache.File.new()">Vital.System.Cache.File.new()</a>
+
+        Create a new instance of System.Cache.File.
+        It requires 'cache_dir' option in <span class="Special">{options}</span>. If no 'cache_dir' is
+        specified, it will throw an exception.
+        The 'cache_dir' will automatically be created if missing.
+
+hash({cache_dir}, <span class="Special">{str}</span>)                <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File.hash()" name="Vital.System.Cache.File.hash()">Vital.System.Cache.File.hash()</a>
+
+        Return a hash string of <span class="Special">{str}</span> in {cache_dir}.
+        It is used internally to distinguish.
+
+load(<span class="Special">{filename}</span>[, <span class="Special">{default}</span>])           <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File.load()" name="Vital.System.Cache.File.load()">Vital.System.Cache.File.load()</a>
+
+        Load a vim object from a <span class="Special">{filename}</span>. It uses <a href="https://www.google.com/search?q=vim+%22sandbox%22&lr=lang_en"><span class="MissingTag">sandbox</span></a> and <a href="https://www.google.com/search?q=vim+%22eval%22&lr=lang_en"><span class="MissingTag">eval</span></a> internally
+        to build a vim object dumped by <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File.dump()">Vital.System.Cache.File.dump()</a>.
+        If the <span class="Special">{filename}</span> is unreadable or the content of <span class="Special">{filename}</span> is empty,
+        an empty dictionary or <span class="Special">{default}</span> (when specified) will be returned.
+
+dump(<span class="Special">{filename}</span>, <span class="Special">{obj}</span>)                 <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File.dump()" name="Vital.System.Cache.File.dump()">Vital.System.Cache.File.dump()</a>
+
+        Dump a vim object (<span class="Special">{obj}</span>) into a <span class="Special">{filename}</span>.
+        Use <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File.load()">Vital.System.Cache.File.load()</a> to restore the dumped vim object.
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">METHODS</span>                                 <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-methods" name="Vital.System.Cache.File-methods">Vital.System.Cache.File-methods</a>
+
+cache_key(<span class="Special">{obj}</span>)        <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.cache_key()" name="Vital.System.Cache.File-instance.cache_key()">Vital.System.Cache.File-instance.cache_key()</a>
+
+        See <a class="Identifier" href="./../../../vital/System/Cache/Base.html#Vital.System.Cache.Base-instance.cache_key()">Vital.System.Cache.Base-instance.cache_key()</a>
+
+has(<span class="Special">{name}</span>)             <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.has()" name="Vital.System.Cache.File-instance.has()">Vital.System.Cache.File-instance.has()</a>
+
+        Return 1 if the cache instance has <span class="Special">{name}</span> in its cache directory.
+        Otherwise 0.
+
+        <span class="Special">{name}</span> (required)
+        A name of the cache. An actual cache key will be created via
+        <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.cache_key()">Vital.System.Cache.File-instance.cache_key()</a> method thus <span class="Special">{name}</span> is not
+        required to be <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+
+                        <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.get()" name="Vital.System.Cache.File-instance.get()">Vital.System.Cache.File-instance.get()</a>
+get(<span class="Special">{name}</span>[, <span class="Special">{default}</span>])
+
+        Return a cached value of <span class="Special">{name}</span> in a cache directory. It returns
+        <span class="Special">{default}</span> if no value is found.
+
+        <span class="Special">{name}</span> (required)
+        A name of the cache. An actual cache key will be created via
+        <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.cache_key()">Vital.System.Cache.File-instance.cache_key()</a> method thus <span class="Special">{name}</span> is not
+        required to be <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+
+        <span class="Special">{default}</span> (optional)
+        A default value. It will be returned when no value is found in the
+        cache dictionary.
+
+set(<span class="Special">{name}</span>, <span class="Special">{value}</span>)    <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.set()" name="Vital.System.Cache.File-instance.set()">Vital.System.Cache.File-instance.set()</a>
+
+        Save <span class="Special">{value}</span> into a cache directory as <span class="Special">{name}</span>.
+
+        <span class="Special">{name}</span> (required)
+        A name of the cache. An actual cache key will be created via
+        <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.cache_key()">Vital.System.Cache.File-instance.cache_key()</a> method thus <span class="Special">{name}</span> is not
+        required to be <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+
+        <span class="Special">{value}</span> (required)
+        A value of the cache.
+
+keys()                  <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.keys()" name="Vital.System.Cache.File-instance.keys()">Vital.System.Cache.File-instance.keys()</a>
+
+        Return a list of cache keys
+
+remove(<span class="Special">{name}</span>)          <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.remove()" name="Vital.System.Cache.File-instance.remove()">Vital.System.Cache.File-instance.remove()</a>
+
+        Remove <span class="Special">{name}</span> from a cache directory. It does nothing when the
+        specified <span class="Special">{name}</span> is not found in the cache.
+
+        <span class="Special">{name}</span> (required)
+        A name of the cache. An actual cache key will be created via
+        <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.cache_key()">Vital.System.Cache.File-instance.cache_key()</a> method thus <span class="Special">{name}</span> is not
+        required to be <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+
+clear()                 <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.clear()" name="Vital.System.Cache.File-instance.clear()">Vital.System.Cache.File-instance.clear()</a>
+
+        Clear all files in the cache directory without prompts.
+
+        CAUTION
+        It removes all files in the directory. Make sure the correct cache
+        directory is specified in the instance.
+
+on_changed()            <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.on_changed()" name="Vital.System.Cache.File-instance.on_changed()">Vital.System.Cache.File-instance.on_changed()</a>
+
+        A user defined hook method. This method is called when the content of
+        the cache is changed, namely after the following methods:
+        - <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.set()">Vital.System.Cache.File-instance.set()</a>
+        - <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.remove()">Vital.System.Cache.File-instance.remove()</a>
+        - <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.clear()">Vital.System.Cache.File-instance.clear()</a>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">PROPERTIES</span>                              <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-properties" name="Vital.System.Cache.File-properties">Vital.System.Cache.File-properties</a>
+
+cache_dir               <a class="String" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File-instance.cache_dir" name="Vital.System.Cache.File-instance.cache_dir">Vital.System.Cache.File-instance.cache_dir</a>
+
+        A directory path where cache files (keys) are saved.
+        The directory need to be exists if users re-define this property after
+        the <a class="Identifier" href="./../../../vital/System/Cache/File.html#Vital.System.Cache.File.new()">Vital.System.Cache.File.new()</a> function call.
+
+
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../../index.html">main help file</a> - <a href="./../../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

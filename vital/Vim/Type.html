@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Vim/Type</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Vim/Type</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Vim/Type.html" name="vital/Vim/Type.txt">vital/Vim/Type.txt</a>    Check variable types.
+
+Maintainer: thinca &lt;thinca+vim@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type-contents" name="Vital.Vim.Type-contents">Vital.Vim.Type-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Vim/Type.html#Vital.Vim.Type-introduction">Vital.Vim.Type-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Vim/Type.html#Vital.Vim.Type-interface">Vital.Vim.Type-interface</a>
+  CONSTANTS                       <a class="Identifier" href="./../../vital/Vim/Type.html#Vital.Vim.Type-constants">Vital.Vim.Type-constants</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Vim/Type.html#Vital.Vim.Type-functions">Vital.Vim.Type-functions</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type-introduction" name="Vital.Vim.Type-introduction">Vital.Vim.Type-introduction</a>
+
+<a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type" name="Vital.Vim.Type">Vital.Vim.Type</a> is a module to check type of variables.
+
+<span class="helpExample">        :let s:T = vital#{plugin-name}#import('Vim.Type')</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type-interface" name="Vital.Vim.Type-interface">Vital.Vim.Type-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">CONSTANTS</span>                               <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type-constants" name="Vital.Vim.Type-constants">Vital.Vim.Type-constants</a>
+
+types                                   <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type-types" name="Vital.Vim.Type-types">Vital.Vim.Type-types</a>
+        A dictionary that has the results of <a href="https://www.google.com/search?q=vim+%22type()%22&lr=lang_en"><span class="MissingTag">type()</span></a> function.
+        This is useful in older versions without <a href="https://www.google.com/search?q=vim+%22v:t_TYPE%22&lr=lang_en"><span class="MissingTag">v:t_TYPE</span></a> variables.
+
+        number: 0
+        string: 1
+        func: 2
+        list: 3
+        dict: 4
+        float: 5
+        bool: 6
+        none: 7
+        job: 8
+        channel: 9
+        blob: 10
+
+<span class="helpExample">        let s:t = s:T.types</span>
+
+<span class="helpExample">        let foo_t = type(foo)</span>
+<span class="helpExample">        if foo_t == s:t.string</span>
+<span class="helpExample">          &quot; ...</span>
+<span class="helpExample">        elseif foo_t == s:t.list</span>
+<span class="helpExample">          &quot; ...</span>
+<span class="helpExample">        endif</span>
+
+type_names                              <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type-type_names" name="Vital.Vim.Type-type_names">Vital.Vim.Type-type_names</a>
+        A dictionary that maps from type value to type name.
+
+         0: number
+         1: string
+         2: func
+         3: list
+         4: dict
+         5: float
+         6: bool
+         7: none
+         8: job
+         9: channel
+        10: blob
+
+<span class="helpExample">        :echo s:T.type_names[type('')]</span>
+<span class="helpExample">        string</span>
+
+
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type-functions" name="Vital.Vim.Type-functions">Vital.Vim.Type-functions</a>
+
+is_numeric(<span class="Special">{value}</span>)                     <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type.is_numeric()" name="Vital.Vim.Type.is_numeric()">Vital.Vim.Type.is_numeric()</a>
+        Returns TRUE if <span class="Special">{value}</span> is a <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a> or a <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a>, FALSE otherwise.
+        Examples:
+<span class="helpExample">        :echo s:T.is_numeric(123)</span>
+<span class="helpExample">        1</span>
+<span class="helpExample">        :echo s:T.is_numeric(1.23)</span>
+<span class="helpExample">        1</span>
+<span class="helpExample">        :echo s:T.is_numeric(&quot;hoge&quot;)</span>
+<span class="helpExample">        0</span>
+
+is_special(<span class="Special">{value}</span>)                     <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type.is_special()" name="Vital.Vim.Type.is_special()">Vital.Vim.Type.is_special()</a>
+        Returns TRUE if <span class="Special">{value}</span> is a <a href="https://www.google.com/search?q=vim+%22Special%22&lr=lang_en"><span class="MissingTag">Special</span></a>, FALSE otherwise.  In other
+        words, <span class="Special">{value}</span> is <a href="https://www.google.com/search?q=vim+%22v:false%22&lr=lang_en"><span class="MissingTag">v:false</span></a>, <a href="https://www.google.com/search?q=vim+%22v:true%22&lr=lang_en"><span class="MissingTag">v:true</span></a>, <a href="https://www.google.com/search?q=vim+%22v:none%22&lr=lang_en"><span class="MissingTag">v:none</span></a>, or <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>.
+
+is_predicate(<span class="Special">{value}</span>)                   <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type.is_predicate()" name="Vital.Vim.Type.is_predicate()">Vital.Vim.Type.is_predicate()</a>
+        Returns TRUE if <span class="Special">{value}</span> can be used as predicate, FALSE otherwise.
+        In other words, this returns TRUE if <span class="Special">{value}</span> can use as argument of
+        <a href="https://www.google.com/search?q=vim+%22:if%22&lr=lang_en"><span class="MissingTag">:if</span></a>.
+        Examples:
+<span class="helpExample">        function! s:foo(val) abort</span>
+<span class="helpExample">          if !s:T.is_predicate(a:val)</span>
+<span class="helpExample">            return 'invalid'</span>
+<span class="helpExample">          endif</span>
+<span class="helpExample">          return v:val ? 'true' : 'false'</span>
+<span class="helpExample">        endfunction</span>
+
+is_comparable(<span class="Special">{value1}</span>, <span class="Special">{value2}</span>)       <a class="String" href="./../../vital/Vim/Type.html#Vital.Vim.Type.is_comparable()" name="Vital.Vim.Type.is_comparable()">Vital.Vim.Type.is_comparable()</a>
+        Returns TRUE if <span class="Special">{value1}</span> and <span class="Special">{value2}</span> can be compared by <a href="https://www.google.com/search?q=vim+%22expr-==%22&lr=lang_en"><span class="MissingTag">expr-==</span></a>,
+        FALSE otherwise.
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

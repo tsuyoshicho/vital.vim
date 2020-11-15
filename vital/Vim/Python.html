@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Vim/Python</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Vim/Python</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Vim/Python.html" name="vital/Vim/Python.txt">vital/Vim/Python.txt</a>  Vim python/python3 compatible function
+
+Maintainer: lambdalisue &lt;lambdalisue@hashnote.net&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python-contents" name="Vital.Vim.Python-contents">Vital.Vim.Python-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Vim/Python.html#Vital.Vim.Python-introduction">Vital.Vim.Python-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Vim/Python.html#Vital.Vim.Python-interface">Vital.Vim.Python-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Vim/Python.html#Vital.Vim.Python-functions">Vital.Vim.Python-functions</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python-introduction" name="Vital.Vim.Python-introduction">Vital.Vim.Python-introduction</a>
+
+<a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python" name="Vital.Vim.Python">Vital.Vim.Python</a> provides compatible functions of <a href="https://www.google.com/search?q=vim+%22python%22&lr=lang_en"><span class="MissingTag">python</span></a>, <a href="https://www.google.com/search?q=vim+%22pyfile%22&lr=lang_en"><span class="MissingTag">pyfile</span></a>, and <a href="https://www.google.com/search?q=vim+%22pyeval%22&lr=lang_en"><span class="MissingTag">pyeval</span></a>.
+It automatically uses a correct function/command to execute a Python code/file.
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:P = s:V.import('Vim.Python')</span>
+
+<span class="helpExample">        &quot; Check if Python is enabled</span>
+<span class="helpExample">        echo s:P.is_enabled()</span>
+<span class="helpExample">        &quot; =&gt; 0 or 1, depends on +python/+python3</span>
+
+<span class="helpExample">        &quot; Execute a Python file</span>
+<span class="helpExample">        execute s:P.exec_file('your/python/file.py')</span>
+
+<span class="helpExample">        &quot; Execute a Python code</span>
+<span class="helpExample">        execute s:P.exec_code('print(&quot;Hello Python&quot;)')</span>
+
+<span class="helpExample">        &quot; Evaluate a Python expression and return</span>
+<span class="helpExample">        echo s:P.eval_expr('1 + 1')</span>
+<span class="helpExample">        &quot; =&gt; 2</span>
+
+<span class="helpExample">        &quot; Get a current major version</span>
+<span class="helpExample">        echo s:P.get_major_version()</span>
+<span class="helpExample">        &quot; =&gt; 0, 2, or 3, depends on +python/+python3</span>
+
+<span class="helpExample">        &quot; Set a current major versioin</span>
+<span class="helpExample">        &quot; NOTE: It only affects when a Vim was compiled with +python/+python3</span>
+<span class="helpExample">        call s:P.set_major_version(2)</span>
+<span class="helpExample">        echo s:P.eval_expr('print(sys.version_info.major)')</span>
+<span class="helpExample">        &quot; =&gt; 2</span>
+<span class="helpExample">        call s:P.set_major_version(3)</span>
+<span class="helpExample">        echo s:P.eval_expr('print(sys.version_info.major)')</span>
+<span class="helpExample">        &quot; =&gt; 3</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python-interface" name="Vital.Vim.Python-interface">Vital.Vim.Python-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python-functions" name="Vital.Vim.Python-functions">Vital.Vim.Python-functions</a>
+
+is_enabled()                            <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python.is_enabled()" name="Vital.Vim.Python.is_enabled()">Vital.Vim.Python.is_enabled()</a>
+
+        Return 1 if <a class="Identifier" href="./../../vital/Vim/Python.html#Vital.Vim.Python.is_python2_enabled()">Vital.Vim.Python.is_python2_enabled()</a> or
+        <a class="Identifier" href="./../../vital/Vim/Python.html#Vital.Vim.Python.is_python3_enabled()">Vital.Vim.Python.is_python3_enabled()</a> return 1.
+
+is_python2_enabled()                    <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python.is_python2_enabled()" name="Vital.Vim.Python.is_python2_enabled()">Vital.Vim.Python.is_python2_enabled()</a>
+
+        Return 1 if <a href="https://www.google.com/search?q=vim+%22+python%22&lr=lang_en"><span class="MissingTag">+python</span></a> and the following code exit without exceptions.
+
+<span class="helpExample">        python 0</span>
+
+is_python3_enabled()                    <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python.is_python3_enabled()" name="Vital.Vim.Python.is_python3_enabled()">Vital.Vim.Python.is_python3_enabled()</a>
+
+        Return 1 if <a href="https://www.google.com/search?q=vim+%22+python3%22&lr=lang_en"><span class="MissingTag">+python3</span></a> and the following code exit without exceptions.
+
+<span class="helpExample">        python3 0</span>
+
+get_major_version()                     <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python.get_major_version()" name="Vital.Vim.Python.get_major_version()">Vital.Vim.Python.get_major_version()</a>
+
+        Return 0, 2, or 3. Depends on <a href="https://www.google.com/search?q=vim+%22+python%22&lr=lang_en"><span class="MissingTag">+python</span></a> and/or <a href="https://www.google.com/search?q=vim+%22+python3%22&lr=lang_en"><span class="MissingTag">+python3</span></a> features.
+        In case of <a href="https://www.google.com/search?q=vim+%22+python%22&lr=lang_en"><span class="MissingTag">+python</span></a><a href="https://www.google.com/search?q=vim+%22/%22&lr=lang_en"><span class="MissingTag">/</span></a><a href="https://www.google.com/search?q=vim+%22+python3%22&lr=lang_en"><span class="MissingTag">+python3</span></a>, it returns a current major version.
+        In case of <a href="https://www.google.com/search?q=vim+%22+python%22&lr=lang_en"><span class="MissingTag">+python</span></a>/-python3, it always returns 2.
+        In case of -python/<a href="https://www.google.com/search?q=vim+%22+python3%22&lr=lang_en"><span class="MissingTag">+python3</span></a>, it always returns 3.
+        In case of -python/-python3, it always returns 0.
+
+set_major_version(<span class="Special">{version}</span>)            <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python.set_major_version()" name="Vital.Vim.Python.set_major_version()">Vital.Vim.Python.set_major_version()</a>
+
+        Set a current major version to <span class="Special">{version}</span>. It throws an exception if
+        the specified <span class="Special">{version}</span> is not available or an invalid <span class="Special">{version}</span> is
+        specified.
+        Calling this function does not make any sense in a Vim not compiled
+        with <a href="https://www.google.com/search?q=vim+%22+python%22&lr=lang_en"><span class="MissingTag">+python</span></a><a href="https://www.google.com/search?q=vim+%22/%22&lr=lang_en"><span class="MissingTag">/</span></a><a href="https://www.google.com/search?q=vim+%22+python3%22&lr=lang_en"><span class="MissingTag">+python3</span></a>.
+
+exec_file(<span class="Special">{path}</span>[, <span class="Special">{version}</span>])          <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python.exec_file()" name="Vital.Vim.Python.exec_file()">Vital.Vim.Python.exec_file()</a>
+
+        Return an executable <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> to execute a Python file <span class="Special">{path}</span> (<a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>)
+        with a specified <span class="Special">{version}</span> of Python.
+        It is required to be called with <a href="https://www.google.com/search?q=vim+%22execute%22&lr=lang_en"><span class="MissingTag">execute</span></a> to enable script local or
+        function local variables in the Python (<a href="https://www.google.com/search?q=vim+%22python-eval%22&lr=lang_en"><span class="MissingTag">python-eval</span></a>).
+        If <span class="Special">{version}</span> is 0 or omitted, it uses a version value returned from
+        <a class="Identifier" href="./../../vital/Vim/Python.html#Vital.Vim.Python.get_major_version()">Vital.Vim.Python.get_major_version()</a>.
+        It throws an exception if the specified <span class="Special">{version}</span> is not available or
+        an invalid <span class="Special">{version}</span> is specified.
+
+<span class="helpExample">        &quot; Note: use 'execute' instead of 'call'</span>
+<span class="helpExample">        execute Python.exec_file('your/python/file.py')</span>
+
+
+exec_code(<span class="Special">{code}</span>[, <span class="Special">{version}</span>])          <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python.exec_code()" name="Vital.Vim.Python.exec_code()">Vital.Vim.Python.exec_code()</a>
+
+        Return an executable <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> to execute a Python <span class="Special">{code}</span> (<a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> or <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>)
+        with a specified <span class="Special">{version}</span> of Python.
+        It is required to be called with <a href="https://www.google.com/search?q=vim+%22execute%22&lr=lang_en"><span class="MissingTag">execute</span></a> to enable script local or
+        function local variables in the Python (<a href="https://www.google.com/search?q=vim+%22python-eval%22&lr=lang_en"><span class="MissingTag">python-eval</span></a>).
+        If <span class="Special">{version}</span> is 0 or omitted, it uses a version value returned
+        from <a class="Identifier" href="./../../vital/Vim/Python.html#Vital.Vim.Python.get_major_version()">Vital.Vim.Python.get_major_version()</a>.
+        It throws an exception if the specified <span class="Special">{version}</span> is not available or
+        an invalid <span class="Special">{version}</span> is specified.
+
+<span class="helpExample">        &quot; Note: use 'execute' instead of 'call'</span>
+<span class="helpExample">        execute Python.exec_code('print(&quot;hello&quot;)')</span>
+
+
+eval_expr(<span class="Special">{expr}</span>[, <span class="Special">{version}</span>])          <a class="String" href="./../../vital/Vim/Python.html#Vital.Vim.Python.eval_expr()" name="Vital.Vim.Python.eval_expr()">Vital.Vim.Python.eval_expr()</a>
+
+        Evaluate a Python <span class="Special">{expr}</span> (<a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> or <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>) with a specified <span class="Special">{version}</span> of
+        Python and return the result. If <span class="Special">{version}</span> is 0 or omitted, it uses a
+        version value returned from <a class="Identifier" href="./../../vital/Vim/Python.html#Vital.Vim.Python.get_major_version()">Vital.Vim.Python.get_major_version()</a>.
+        It throws an exception if the specified <span class="Special">{version}</span> is not available or
+        an invalid <span class="Special">{version}</span> is specified.
+
+        This function requires a Vim 7.3.601 or later.
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

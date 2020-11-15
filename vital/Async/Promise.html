@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Async/Promise</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Async/Promise</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Async/Promise.html" name="vital/Async/Promise.txt">vital/Async/Promise.txt</a>       an asynchronous operation like ES6 Promise
+
+Maintainer: rhysd &lt;lin90162@yahoo.co.jp&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-contents" name="Vital.Async.Promise-contents">Vital.Async.Promise-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-introduction">Vital.Async.Promise-introduction</a>
+REQUIREMENTS                    <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-requirements">Vital.Async.Promise-requirements</a>
+EXAMPLE                         <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-example">Vital.Async.Promise-example</a>
+CONSTANTS                       <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-constants">Vital.Async.Promise-constants</a>
+FUNCTIONS                       <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-functions">Vital.Async.Promise-functions</a>
+OBJECTS                         <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-objects">Vital.Async.Promise-objects</a>
+  Promise Object                <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-objects-Promise">Vital.Async.Promise-objects-Promise</a>
+  Exception Object              <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-objects-Exception">Vital.Async.Promise-objects-Exception</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-introduction" name="Vital.Async.Promise-introduction">Vital.Async.Promise-introduction</a>
+
+<a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise" name="Vital.Async.Promise">Vital.Async.Promise</a> is a library to represent the eventual completion or
+failure of an asynchronous operation. APIs are aligned to ES6 Promise. If you
+already know them, you can start to use this library easily.
+
+Instead of callbacks, Promise provides:
+
+- a guarantee that all operations are asynchronous. Functions given to .then()
+  method or .catch() method is executed on next tick (or later) using
+  <a href="https://www.google.com/search?q=vim+%22timer_start()%22&lr=lang_en"><span class="MissingTag">timer_start()</span></a>.
+- chaining asynchronous operations. Chained operation's order is sequentially
+  run and the order is guaranteed.
+- persistent error handling using .catch() method. Please be careful of
+  floating Promise. All Promise should have .catch() call not to squash an
+  exception.
+- flow control such as awaiting all Promise objects completed or selecting
+  the fastest one of Promises objects.
+
+If you know the detail of APIs, documents for ES6 Promise at Mozilla Developer
+Network and ECMA-262 specs would be great.
+
+Mozilla Developer Network:
+<span class="String"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise</a></span>
+<span class="String"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises">https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises</a></span>
+
+ECMA-262:
+<span class="String"><a href="https://www.ecma-international.org/publications/standards/Ecma-262.htm">https://www.ecma-international.org/publications/standards/Ecma-262.htm</a></span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">REQUIREMENTS</span>                            <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-requirements" name="Vital.Async.Promise-requirements">Vital.Async.Promise-requirements</a>
+
+<a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise">Vital.Async.Promise</a> requires <a href="https://www.google.com/search?q=vim+%22lambda%22&lr=lang_en"><span class="MissingTag">lambda</span></a> and <a href="https://www.google.com/search?q=vim+%22timers%22&lr=lang_en"><span class="MissingTag">timers</span></a> features.
+So Vim 8.0 or later is required. The recent version of Neovim also supports
+them.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">EXAMPLE</span>                                 <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-example" name="Vital.Async.Promise-example">Vital.Async.Promise-example</a>
+
+Before explaining the detail of APIs, let's see actual examples.
+
+(1) Timer                               <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-example-timer" name="Vital.Async.Promise-example-timer">Vital.Async.Promise-example-timer</a>
+
+<span class="helpExample">  let s:Promise = vital#vital#import('Async.Promise')</span>
+
+<span class="helpExample">  function! s:wait(ms)</span>
+<span class="helpExample">    return s:Promise.new({resolve -&gt; timer_start(a:ms, resolve)})</span>
+<span class="helpExample">  endfunction</span>
+
+<span class="helpExample">  call s:wait(500).then({-&gt; execute('echo &quot;After 500ms&quot;', '')})</span>
+
+
+  One of most simple asynchronous operation is a timer. It calls a specified
+  callback when exceeding the timeout. &quot;s:Promise.new&quot; creates a new Promise
+  object with given callback. In the callback, function &quot;resolve&quot; (and
+  &quot;reject&quot; if needed) is passed. When the asynchronous operation is done (in
+  this case, when the timer is expired), call &quot;resolve&quot; on success or call
+  &quot;reject&quot; on failure.
+
+
+(2) Next tick                           <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-example-next-tick" name="Vital.Async.Promise-example-next-tick">Vital.Async.Promise-example-next-tick</a>
+
+<span class="helpExample">  let s:Promise = vital#vital#import('Async.Promise')</span>
+
+<span class="helpExample">  function! s:next_tick()</span>
+<span class="helpExample">    return s:Promise.new({resolve -&gt; timer_start(0, resolve)})</span>
+<span class="helpExample">  endfunction</span>
+
+<span class="helpExample">  call s:next_tick()</span>
+<span class="helpExample">    \.then({-&gt; 'Execute lower priority tasks here'})</span>
+<span class="helpExample">    \.catch({err -&gt; execute('echom err', '')})</span>
+
+  By giving 0 to <a href="https://www.google.com/search?q=vim+%22timer_start()%22&lr=lang_en"><span class="MissingTag">timer_start()</span></a> as timeout, it waits for &quot;next tick&quot;. It's the
+  first time when Vim waits for input. It means that Vim gives higher priority
+  to user input and executes the script (in the callback of <a href="https://www.google.com/search?q=vim+%22timer_start()%22&lr=lang_en"><span class="MissingTag">timer_start()</span></a>)
+  after.
+
+
+(3) Job                         <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-example-job" name="Vital.Async.Promise-example-job">Vital.Async.Promise-example-job</a>
+
+<span class="helpExample">  let s:Promise = vital#vital#import('Async.Promise')</span>
+
+<span class="helpExample">  function! s:read(chan, part) abort</span>
+<span class="helpExample">    let out = []</span>
+<span class="helpExample">    while ch_status(a:chan, {'part' : a:part}) =~# 'open\|buffered'</span>
+<span class="helpExample">      call add(out, ch_read(a:chan, {'part' : a:part}))</span>
+<span class="helpExample">    endwhile</span>
+<span class="helpExample">    return join(out, &quot;\n&quot;)</span>
+<span class="helpExample">  endfunction</span>
+
+<span class="helpExample">  function! s:sh(...) abort</span>
+<span class="helpExample">    let cmd = join(a:000, ' ')</span>
+<span class="helpExample">    return s:Promise.new({resolve, reject -&gt; job_start(cmd, {</span>
+<span class="helpExample">    \   'drop' : 'never',</span>
+<span class="helpExample">    \   'close_cb' : {ch -&gt; 'do nothing'},</span>
+<span class="helpExample">    \   'exit_cb' : {ch, code -&gt;</span>
+<span class="helpExample">    \     code ? reject(s:read(ch, 'err')) : resolve(s:read(ch, 'out'))</span>
+<span class="helpExample">    \   },</span>
+<span class="helpExample">    \ })})</span>
+<span class="helpExample">  endfunction</span>
+
+  <a href="https://www.google.com/search?q=vim+%22job%22&lr=lang_en"><span class="MissingTag">job</span></a> is a feature to run commands asynchronously. But it is a bit hard to use
+  because it requires a callback. By wrapping it with Promise, it makes
+  further easier to use commands and handle errors asynchronously.
+
+  s:read() is just a helper function which reads all output of channel from
+  the job. So it's not so important.
+
+  Important part is &quot;return ...&quot; in s:sh(). It creates a Promise which starts
+  a job and resolves when the given command has done. It calls resolve() when
+  the command finished successfully with an output from stdout, and calls
+  reject() when the command failed with an output from stderr.
+
+  &quot;ls -l&quot; can be executed as follows:
+
+<span class="helpExample">  call s:sh('ls', '-l')</span>
+<span class="helpExample">        \.then({out -&gt; execute('echo &quot;Output: &quot; . out', '')})</span>
+<span class="helpExample">        \.catch({err -&gt; execute('echo &quot;Error: &quot; . err', '')})</span>
+
+  As the more complex example, following code clones 4 repositories and shows
+  a message when all of them has completed. When one of them fails, it shows
+  an error message without waiting for other operations.
+
+<span class="helpExample">  call s:Promise.all([</span>
+<span class="helpExample">  \  s:sh('git', 'clone', '<a href="https://github.com/thinca/vim-quickrun.git">https://github.com/thinca/vim-quickrun.git</a>'),</span>
+<span class="helpExample">  \  s:sh('git', 'clone', '<a href="https://github.com/tyru/open-browser-github.git">https://github.com/tyru/open-browser-github.git</a>'),</span>
+<span class="helpExample">  \  s:sh('git', 'clone', '<a href="https://github.com/easymotion/vim-easymotion.git">https://github.com/easymotion/vim-easymotion.git</a>'),</span>
+<span class="helpExample">  \  s:sh('git', 'clone', '<a href="https://github.com/rhysd/clever-f.vim.git">https://github.com/rhysd/clever-f.vim.git</a>'),</span>
+<span class="helpExample">  \]</span>
+<span class="helpExample">  \)</span>
+<span class="helpExample">    \.then({-&gt; execute('echom &quot;All repositories were successfully cloned!&quot;', '')})</span>
+<span class="helpExample">    \.catch({err -&gt; execute('echom &quot;Failed to clone: &quot; . err', '')})</span>
+
+  s:Promise.all(...) awaits all given promises have completed, or one of them
+  has failed.
+
+
+(4) Timeout                             <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-example-timeout" name="Vital.Async.Promise-example-timeout">Vital.Async.Promise-example-timeout</a>
+
+  Let's see how Promise realizes timeout easily.
+
+<span class="helpExample">  let s:Promise = vital#vital#import('Async.Promise')</span>
+
+<span class="helpExample">  call s:Promise.race([</span>
+<span class="helpExample">  \   s:sh('git', 'clone', '<a href="https://github.com/vim/vim.git">https://github.com/vim/vim.git</a>').then({-&gt; v:false}),</span>
+<span class="helpExample">  \   s:wait(10000).then({-&gt; v:true}),</span>
+<span class="helpExample">  \]).then({timed_out -&gt;</span>
+<span class="helpExample">  \   execute('echom timed_out ? &quot;Timeout!&quot; : &quot;Cloned!&quot;', '')</span>
+<span class="helpExample">  \})</span>
+
+  s:sh() and s:wait() are explained above. And .race() awaits one of given
+  Promise objects have finished.
+
+  The .race() awaits either s:sh(...) or s:wait(...) has completed or failed.
+  It means that it clones Vim repository from GitHub via git command, but if
+  it exceeds 10 seconds, it does not wait for the clone operation anymore.
+
+  By adding .then() and giving the result value (v:false or v:true here), you
+  can know whether the asynchronous operation was timed out or not in
+  succeeding .then() method. The parameter &quot;timed_out&quot; represents it.
+
+
+(5) REST API call                       <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-example-rest-api" name="Vital.Async.Promise-example-rest-api">Vital.Async.Promise-example-rest-api</a>
+
+  At last, let's see how Promise handles API call with <a href="https://www.google.com/search?q=vim+%22job%22&lr=lang_en"><span class="MissingTag">job</span></a> and curl
+  command. Here, we utilize previous &quot;s:sh&quot; function and encodeURIComponent()
+  function in <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP">Vital.Web.HTTP</a> module to encode a query string.
+
+<span class="helpExample">  let s:HTTP = vital#vital#import('Web.HTTP')</span>
+
+<span class="helpExample">  function! s:github_issues(query) abort</span>
+<span class="helpExample">      let q = s:HTTP.encodeURIComponent(a:query)</span>
+<span class="helpExample">      let url = '<a href="https://api.github.com/search/issues?q=">https://api.github.com/search/issues?q=</a>' . q</span>
+<span class="helpExample">      return s:sh('curl', url)</span>
+<span class="helpExample">             \.then({data -&gt; json_decode(data)})</span>
+<span class="helpExample">             \.then({res -&gt; has_key(res, 'items') ?</span>
+<span class="helpExample">               \ res.items :</span>
+<span class="helpExample">               \ execute('throw ' . string(res.message))})</span>
+<span class="helpExample">  endfunction</span>
+
+<span class="helpExample">  call s:github_issues('repo:vim/vim sort:reactions-+1')</span>
+<span class="helpExample">    \.then({issues -&gt; execute('echom issues[0].url', '')})</span>
+<span class="helpExample">    \.catch({err -&gt; execute('echom &quot;ERROR: &quot; . err', '')})</span>
+
+  In this example, it searches the issue in Vim repository on GitHub which
+  gained the most :+1: reactions.
+
+  In s:github_issues(), it calls GitHub Issue Search API using curl command
+  and s:sh() function explained above. And it decodes the returned JSON by
+  <a href="https://www.google.com/search?q=vim+%22json_decode()%22&lr=lang_en"><span class="MissingTag">json_decode()</span></a> and checks the content. If the curl command failed or API
+  returned failure response, the Promise value will be rejected. The rejection
+  will be caught in .catch() method at the last line and an error message will
+  be shown.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONSTANTS</span>                               <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-constants" name="Vital.Async.Promise-constants">Vital.Async.Promise-constants</a>
+
+TimeoutError                            <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.TimeoutError" name="Vital.Async.Promise.TimeoutError">Vital.Async.Promise.TimeoutError</a>
+
+        An exception message string returned as <span class="Special">{error}</span> in a result list of
+        the <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise.wait()">Vital.Async.Promise.wait()</a> function when timeout has reached.
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-functions" name="Vital.Async.Promise-functions">Vital.Async.Promise-functions</a>
+
+new(<span class="Special">{executor}</span>)                         <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.new()" name="Vital.Async.Promise.new()">Vital.Async.Promise.new()</a>
+
+        Creates a new Promise object with given <span class="Special">{executor}</span>.
+
+        <span class="Special">{executor}</span> is a <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> which represents how to create a Promise
+        object. It is called _synchronously_. It receives two functions as
+        parameters. The first parameter is &quot;resolve&quot;. It accepts one or zero
+        argument. By calling it in <span class="Special">{executor}</span>, new() returns a resolved
+        Promise object. The second parameter is &quot;reject&quot;. It also accepts one
+        or zero argument. By calling it in <span class="Special">{executor}</span>, new() returns rejected
+        Promise object.
+
+<span class="helpExample">          &quot; Resolved Promise object with 42</span>
+<span class="helpExample">          let p = Promise.new({resolve -&gt; resolve(42)})</span>
+
+<span class="helpExample">          &quot; Rejected Promise object with 'ERROR!'</span>
+<span class="helpExample">          let p = Promise.new({_, reject -&gt; reject('ERROR!')})</span>
+<span class="helpExample">          let p = Promise.new({-&gt; execute('throw &quot;ERROR!&quot;')})</span>
+
+        When another Promise object is passed to &quot;resolve&quot; or &quot;reject&quot;
+        function call, new() returns a pending Promise object which awaits
+        until the given other Promise object has finished.
+
+        If an exception is thrown in <span class="Special">{executor}</span>, new() returns a rejected
+        Promise object with the exception.
+
+        Calling &quot;resolve&quot; or &quot;reject&quot; more than once does not affect.
+
+        If &quot;resolve&quot; or &quot;reject&quot; is called with no argument, it resolves a
+        Promise object with <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>.
+
+<span class="helpExample">          &quot; :echo outputs 'v:null'</span>
+<span class="helpExample">          Promise.new({resolve -&gt; resolve()})</span>
+<span class="helpExample">            \.then({x -&gt; execute('echo x', '')})</span>
+
+resolve([<span class="Special">{value}</span>])                      <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.resolve()" name="Vital.Async.Promise.resolve()">Vital.Async.Promise.resolve()</a>
+
+        Creates a resolved Promise object.
+        It is a helper function equivalent to calling &quot;resolve&quot; immediately in
+        new():
+
+<span class="helpExample">          &quot; Followings are equivalent</span>
+<span class="helpExample">          let p = Promise.resolve(42)</span>
+<span class="helpExample">          let p = Promise.new({resolve -&gt; resolve(42)})</span>
+
+        If <span class="Special">{value}</span> is a Promise object, it resolves/rejects with a value which
+        given Promise object resolves/rejects with.
+
+<span class="helpExample">          call Promise.resolve(Promise.resolve(42))</span>
+<span class="helpExample">          \.then({x -&gt; execute('echo x', '')})</span>
+<span class="helpExample">          &quot; Outputs '42'</span>
+
+<span class="helpExample">          call Promise.resolve(Promise.reject('ERROR!'))</span>
+<span class="helpExample">          \.catch({reason -&gt; execute('echo reason', '')})</span>
+<span class="helpExample">          &quot; Outputs 'ERROR!'</span>
+
+reject([<span class="Special">{value}</span>])                       <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.reject()" name="Vital.Async.Promise.reject()">Vital.Async.Promise.reject()</a>
+
+        Creates a rejected Promise object.
+        It is a helper function equivalent to calling &quot;reject&quot; immediately in
+        new():
+
+<span class="helpExample">          &quot; Followings are equivalent</span>
+<span class="helpExample">          let p = Promise.reject('Rejected!')</span>
+<span class="helpExample">          let p = Promise.new({_, reject -&gt; reject('Rejected!')})</span>
+
+all(<span class="Special">{promises}</span>)                         <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.all()" name="Vital.Async.Promise.all()">Vital.Async.Promise.all()</a>
+
+        Creates a Promise object which awaits all of <span class="Special">{promises}</span> has completed.
+        It resolves the Promise object with a list of results of <span class="Special">{promises}</span> as
+        following:
+
+<span class="helpExample">          call Promise.all([Promise.resolve(1), Promise.resolve('foo')])</span>
+<span class="helpExample">          \.then({arr -&gt; execute('echo arr', '')})</span>
+<span class="helpExample">          &quot; It shows [1, 'foo']</span>
+
+        If one of them is rejected, it does not await other Promise objects
+        and the Promise object is rejected immediately.
+
+
+<span class="helpExample">          call Promise.all([Promise.resolve(1), Promise.reject('ERROR!')])</span>
+<span class="helpExample">          \.catch({err -&gt; execute('echo err', '')})</span>
+<span class="helpExample">          &quot; It shows 'ERROR!'</span>
+
+        If an empty list is given, it is equivalent to Promise.resolve([]).
+
+race(<span class="Special">{promises}</span>)                        <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.race()" name="Vital.Async.Promise.race()">Vital.Async.Promise.race()</a>
+
+        Creates a Promise object which resolves or rejects as soon as one of
+        <span class="Special">{promises}</span> resolves or rejects.
+
+<span class="helpExample">          call Promise.race([</span>
+<span class="helpExample">          \  Promise.new({resolve -&gt; timer_start(50, {-&gt; resolve('first')})}),</span>
+<span class="helpExample">          \  Promise.new({resolve -&gt; timer_start(100, {-&gt; resolve('second')})}),</span>
+<span class="helpExample">          \])</span>
+<span class="helpExample">          \.then({v -&gt; execute('echo v', '')})</span>
+<span class="helpExample">          &quot; It outputs 'first'</span>
+
+<span class="helpExample">          call Promise.race([</span>
+<span class="helpExample">          \  Promise.new({resolve -&gt; timer_start(50, {-&gt; execute('throw &quot;ERROR!&quot;')})}),</span>
+<span class="helpExample">          \  Promise.new({resolve -&gt; timer_start(100, {-&gt; resolve('second')})}),</span>
+<span class="helpExample">          \])</span>
+<span class="helpExample">          \.then({v -&gt; execute('echo v', '')})</span>
+<span class="helpExample">          \.catch({e -&gt; execute('echo e', '')})</span>
+<span class="helpExample">          &quot; It outputs 'ERROR!'</span>
+
+        If <span class="Special">{promises}</span> is an empty list, the returned Promise object will never
+        be resolved or rejected.
+
+wait(<span class="Special">{promise}</span>[, <span class="Special">{options}</span>])            <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.wait()" name="Vital.Async.Promise.wait()">Vital.Async.Promise.wait()</a>
+
+        Waits synchronously until a given <span class="Special">{promise}</span> has become resolved and
+        returns a [<span class="Special">{result}</span>, <span class="Special">{error}</span>] list.
+
+        The <span class="Special">{result}</span> is a <span class="Special">{value}</span> passed to <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise.resolve()">Vital.Async.Promise.resolve()</a>
+        when a given <span class="Special">{promise}</span> has resolved. Otherwise it is <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>.
+
+        The <span class="Special">{error}</span> is a <span class="Special">{value}</span> passed to <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise.reject()">Vital.Async.Promise.reject()</a>
+        when a given <span class="Special">{promise}</span> has rejected or <a href="https://www.google.com/search?q=vim+%22Async.Promise.TimeoutError%22&lr=lang_en"><span class="MissingTag">Async.Promise.TimeoutError</span></a>
+        when a given <span class="Special">{timeout}</span> has passed. Otherwise it is <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>.
+
+        The following <span class="Special">{options}</span> are available
+
+        &quot;timeout&quot;       Timeout in milliseconds. When timeout, the function
+                        returns a [<a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>, <a href="https://www.google.com/search?q=vim+%22Async.Promise.TimeoutError%22&lr=lang_en"><span class="MissingTag">Async.Promise.TimeoutError</span></a>]
+                        list.
+                        When it is <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>, the function waits a given
+                        <span class="Special">{promise}</span> for ever.
+                        Default: v:null
+        &quot;interval&quot;      Interval delay of an internal loop in milliseconds.
+                        Default: 30
+
+<span class="helpExample">        let [result, error] = Promise.wait(p, { 'timeout': 1000 })</span>
+
+<span class="helpExample">        if error ==# Promise.TimeoutError</span>
+<span class="helpExample">          echo 'Timeout!'</span>
+<span class="helpExample">        elseif error isnot# v:null</span>
+<span class="helpExample">          echoerr &quot;Failed:&quot; . string(error)</span>
+<span class="helpExample">        else</span>
+<span class="helpExample">          echo &quot;Success:&quot; . string(result)</span>
+<span class="helpExample">        endif</span>
+
+        For convenience, users can directly specify the &quot;timeout&quot; in the
+        second argument like
+
+<span class="helpExample">        call Promise.wait(p, 1000)</span>
+<span class="helpExample">        &quot; Is equivalent to call Promise.wait(p, {'timeout': 1000})</span>
+
+chain({promise_factories})              <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.chain()" name="Vital.Async.Promise.chain()">Vital.Async.Promise.chain()</a>
+        Chain promises produced by {promise_factories} (<a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of <a href="https://www.google.com/search?q=vim+%22Function%22&lr=lang_en"><span class="MissingTag">Function</span></a>)
+        and return a promise which resolves to a result <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> which contains
+        result of each produced promises.
+        It is like an asynchronous sequential call. It rejects when one of
+        function in {promise_factories} has failed or produced promises
+        rejects. <span class="Todo">Note</span> that it stops producing promises by functions after
+        rejection.
+
+<span class="helpExample">        let fs = [</span>
+<span class="helpExample">              \ { -&gt; Promise.new({ r -&gt; timer_start(50, { -&gt; r('1') })})},</span>
+<span class="helpExample">              \ { -&gt; Promise.new({ r -&gt; timer_start(50, { -&gt; r('2') })})},</span>
+<span class="helpExample">              \ { -&gt; Promise.new({ r -&gt; timer_start(50, { -&gt; r('3') })})},</span>
+<span class="helpExample">              \]</span>
+<span class="helpExample">        call Promise.chain(fs)</span>
+<span class="helpExample">        &quot; --------1--------2--------3----&gt; RESOLVE</span>
+<span class="helpExample">        &quot;         50ms     100ms    150ms</span>
+
+<span class="helpExample">        let fs = [</span>
+<span class="helpExample">              \ { -&gt; Promise.new({ r -&gt; timer_start(50, { -&gt; r('1') })})},</span>
+<span class="helpExample">              \ { -&gt; execute('throw &quot;Error&quot;') },</span>
+<span class="helpExample">              \ { -&gt; Promise.new({ r -&gt; timer_start(50, { -&gt; r('3') })})},</span>
+<span class="helpExample">              \]</span>
+<span class="helpExample">        call Promise.chain(fs)</span>
+<span class="helpExample">        &quot; --------1----&gt; REJECT</span>
+<span class="helpExample">        &quot;         50ms</span>
+
+<span class="helpExample">        let fs = [</span>
+<span class="helpExample">              \ { -&gt; Promise.new({ r -&gt; timer_start(50, { -&gt; r('1') })})},</span>
+<span class="helpExample">              \ { -&gt; Promise.new({ _, rj -&gt; timer_start(50, { -&gt; rj('2') })})},</span>
+<span class="helpExample">              \ { -&gt; Promise.new({ r -&gt; timer_start(50, { -&gt; r('3') })})},</span>
+<span class="helpExample">              \]</span>
+<span class="helpExample">        call Promise.chain(fs)</span>
+<span class="helpExample">        &quot; --------1--------2----&gt; REJECT</span>
+<span class="helpExample">        &quot;         50ms     100ms</span>
+
+on_unhandled_rejection(<span class="Special">{callback}</span>)      <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.on_unhandled_rejection" name="Vital.Async.Promise.on_unhandled_rejection">Vital.Async.Promise.on_unhandled_rejection</a>
+
+        Set callback to catch all unhandled rejected promise's result.
+        If <span class="Special">{callback}</span> throws error, <a href="https://www.google.com/search?q=vim+%22Async.Promise%22&lr=lang_en"><span class="MissingTag">Async.Promise</span></a> does not handle it.
+
+        The <span class="Special">{callback}</span> is <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>, it's argument can be unhandled thrown error or unhandled rejected value.
+
+        <span class="Todo">Note</span>:
+        This callback will called even if you using <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise.wait()">Vital.Async.Promise.wait()</a>.
+        If you want to clear callback, you can use following codes.
+
+
+<span class="helpExample">        call Promise.on_unhandled_rejection(Promise.noop)</span>
+
+
+is_promise(<span class="Special">{value}</span>)                     <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.is_promise()" name="Vital.Async.Promise.is_promise()">Vital.Async.Promise.is_promise()</a>
+
+        Returns TRUE when <span class="Special">{value}</span> is a Promise object. Otherwise, returns
+        FALSE.
+
+is_available()                          <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise.is_available()" name="Vital.Async.Promise.is_available()">Vital.Async.Promise.is_available()</a>
+
+        Returns TRUE when requirements for using <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise">Vital.Async.Promise</a> are
+        met. Please look at <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-requirements">Vital.Async.Promise-requirements</a> to know the
+        detail of the requirements.
+        Otherwise, returns FALSE.
+
+<span class="helpExample">          if Promise.is_available()</span>
+<span class="helpExample">            &quot; Asynchronous operations using Promise</span>
+<span class="helpExample">          else</span>
+<span class="helpExample">            &quot; Fallback into synchronous operations</span>
+<span class="helpExample">          endif</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                                 <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-objects" name="Vital.Async.Promise-objects">Vital.Async.Promise-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Promise Object                          <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-objects-Promise" name="Vital.Async.Promise-objects-Promise">Vital.Async.Promise-objects-Promise</a>
+
+Promise object represents the eventual completion or failure of an
+asynchronous operation. It represents one of following states:
+
+- Operation has not done yet
+- Operation has completed successfully
+- Operation has failed with an error
+
+                                        <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-Promise.then()" name="Vital.Async.Promise-Promise.then()">Vital.Async.Promise-Promise.then()</a>
+<span class="Special">{promise}</span>.then([<span class="Special">{onResolved}</span> [, <span class="Special">{onRejected}</span>]])
+
+        Creates a new Promise object which is resolved/rejected after
+        <span class="Special">{promise}</span> is resolved or rejected. <span class="Special">{onResolved}</span> and <span class="Special">{onRejected}</span> must
+        be <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> and they are guaranteed to be called __asynchronously__.
+
+<span class="helpExample">          echo 'hi'</span>
+<span class="helpExample">          call Promise.new({resolve -&gt; execute('echo &quot;halo&quot; | call resolve(42)', '')})</span>
+<span class="helpExample">          \.then({-&gt; execute('echo &quot;bye&quot;', '')}, {-&gt; execute('echo &quot;ah&quot;', '')})</span>
+<span class="helpExample">          echo 'yo'</span>
+
+        Above script outputs messages as following:
+
+<span class="helpExample">          hi</span>
+<span class="helpExample">          halo</span>
+<span class="helpExample">          yo</span>
+<span class="helpExample">          bye</span>
+
+        If <span class="Special">{onResolved}</span> is specified, it is called after <span class="Special">{promise}</span> is
+        resolved. When <span class="Special">{onResolved}</span> returns non-Promise value, the returned
+        Promise object from .then() is resolved with it.
+        When <span class="Special">{onResolved}</span> returns a Promise object, the returned Promise
+        object awaits until the Promise object has finished.
+
+        If <span class="Special">{onRejected}</span> is specified, it is called after <span class="Special">{promise}</span> is
+        rejected. When <span class="Special">{onRejected}</span> returns non-Promise value, the returned
+        Promise object from .then() is resolved with it.
+        When <span class="Special">{onRejected}</span> returns a Promise object, the returned Promise
+        object awaits until the Promise object has finished.
+
+        When an exception is thrown in <span class="Special">{onResolved}</span> or <span class="Special">{onRejected}</span>, the
+        returned Promise object from .then() will be rejected with an
+        exception object.
+        Please read <a class="Identifier" href="./../../vital/Async/Promise.html#Vital.Async.Promise-objects-Exception">Vital.Async.Promise-objects-Exception</a> to know an
+        exception object.
+
+<span class="helpExample">          &quot; Both followings create a rejected Promise value asynchronously</span>
+<span class="helpExample">          call Promise.resolve(42).then({-&gt; execute('throw &quot;ERROR!&quot;')})</span>
+<span class="helpExample">          call Promise.resolve(42).then({-&gt; Promise.reject('ERROR!')})</span>
+
+        <span class="Special">{onResolved}</span> and <span class="Special">{onRejected}</span> can be <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>.
+
+<span class="Special">{promise}</span>.catch([<span class="Special">{onRejected}</span>])         <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-Promise.catch()" name="Vital.Async.Promise-Promise.catch()">Vital.Async.Promise-Promise.catch()</a>
+
+        It is a shortcut function of calling .then() where the first argument
+        is <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>.
+
+<span class="helpExample">          &quot; Followings are equal</span>
+<span class="helpExample">          call Promise.reject('ERROR').then(v:null, {msg -&gt; execute('echo msg', '')})</span>
+<span class="helpExample">          call Promise.reject('ERROR').catch({msg -&gt; execute('echo msg', '')})</span>
+
+<span class="Special">{promise}</span>.finally([<span class="Special">{onFinally}</span>])        <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-Promise.finally()" name="Vital.Async.Promise-Promise.finally()">Vital.Async.Promise-Promise.finally()</a>
+
+        It returns a Promise and the passed callback is called once the
+        promise is settled, whether fulfilled or rejected.
+        This provides a way for code that must be executed once the promise
+        has been dealt with to be run whether it was fulfilled successfully or
+        rejected. <span class="Special">{onFinally}</span> is a <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> which has no parameter.
+
+<span class="helpExample">          &quot; Both followings echo 'on finally'</span>
+<span class="helpExample">          call Promise.resolve(42).finally({-&gt; execute('echo &quot;on finally&quot;', '')})</span>
+<span class="helpExample">          call Promise.reject('ERROR!').finally({-&gt; execute('echo &quot;on finally&quot;', '')})</span>
+
+        <a href="https://www.google.com/search?q=vim+%22:throw%22&lr=lang_en"><span class="MissingTag">:throw</span></a> in the <span class="Special">{onFinally}</span> callback will reject the new promise with
+        the thrown error.
+
+        Unlike passing the callback to both 1st and 2nd parameters of
+        .then(), it propagates its receiver's result.
+
+<span class="helpExample">          &quot; Following echoes 42</span>
+<span class="helpExample">          call Promise.resolve(42)</span>
+<span class="helpExample">            \.finally({-&gt; v:null})</span>
+<span class="helpExample">            \.then({x -&gt; execute('echo x', '')})</span>
+
+        <span class="Todo">Note</span>:
+        As an above code, .finally() is different from .then() in terms of
+        the resolved/rejected value. <span class="Comment">Promise.resolve(42).finally()</span> resolves
+        with 42, but <span class="Comment">Promise.resolve(42).then({-&gt; v:null}, {-&gt; v:null})</span>
+        resolves with v:null.
+
+
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Exception Object                        <a class="String" href="./../../vital/Async/Promise.html#Vital.Async.Promise-objects-Exception" name="Vital.Async.Promise-objects-Exception">Vital.Async.Promise-objects-Exception</a>
+
+Exception object represents an exception of Vim script. Since Vim script's
+<a href="https://www.google.com/search?q=vim+%22v:exception%22&lr=lang_en"><span class="MissingTag">v:exception</span></a> is a <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> value and a stack trace of the exception is
+separated to <a href="https://www.google.com/search?q=vim+%22v:throwpoint%22&lr=lang_en"><span class="MissingTag">v:throwpoint</span></a> variable, it does not fit Promise API.
+So we need to define our own exception object. It is passed to <span class="Special">{onRejected}</span>
+parameter of .then() or .catch() method.
+
+Example:
+
+<span class="helpExample">  call Promise.new({-&gt; execute('throw &quot;ERROR!&quot;')})</span>
+<span class="helpExample">    \.catch({ex -&gt; execute('echo ex', '')})</span>
+<span class="helpExample">  &quot; Output:</span>
+<span class="helpExample">  &quot; {'exception': 'ERROR!', 'throwpoint': '...'}</span>
+
+<span class="helpExample">  call Promise.new({-&gt; 42 == []})</span>
+<span class="helpExample">    \.catch({ex -&gt; execute('echo ex', '')})</span>
+<span class="helpExample">  &quot; Output:</span>
+<span class="helpExample">  &quot; {'exception': 'Vim(return):E691: ...', 'throwpoint': '...'}</span>
+
+Exception object has two fields; &quot;exception&quot; and &quot;throwpoint&quot;.
+&quot;exception&quot; is an error message. It's corresponding to <a href="https://www.google.com/search?q=vim+%22v:exception%22&lr=lang_en"><span class="MissingTag">v:exception</span></a>. And
+&quot;throwpoint&quot; is a stack trace of the caught exception. It's corresponding to
+<a href="https://www.google.com/search?q=vim+%22v:throwpoint%22&lr=lang_en"><span class="MissingTag">v:throwpoint</span></a>.
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

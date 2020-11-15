@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/System/Filepath</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/System/Filepath</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/System/Filepath.html" name="vital/System/Filepath.txt">vital/System/Filepath.txt</a>             path string utilities library.
+
+Maintainer: thinca  &lt;thinca+vim@gmail.com&gt;
+            tyru    &lt;tyru.exe@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath-contents" name="Vital.System.Filepath-contents">Vital.System.Filepath-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath-introduction">Vital.System.Filepath-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath-interface">Vital.System.Filepath-interface</a>
+  Functions                       <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath-functions">Vital.System.Filepath-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath-introduction" name="Vital.System.Filepath-introduction">Vital.System.Filepath-introduction</a>
+
+<a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath" name="Vital.System.Filepath">Vital.System.Filepath</a> is Path String Utilities Library.
+It provides some functions to manipulate path strings.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath-interface" name="Vital.System.Filepath-interface">Vital.System.Filepath-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath-functions" name="Vital.System.Filepath-functions">Vital.System.Filepath-functions</a>
+
+to_slash(<span class="Special">{path}</span>)                        <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.to_slash()" name="Vital.System.Filepath.to_slash()">Vital.System.Filepath.to_slash()</a>
+        Use when you quote path string for scripting languages, without
+        worrying about the runtime operating system is if windows or not.
+
+        e.g.
+
+<span class="helpExample">        let code = printf(</span>
+<span class="helpExample">          \ '(neoclojure-init &quot;%s&quot;)',</span>
+<span class="helpExample">          \ shellescape(s:F.to_slash(path)))</span>
+<span class="helpExample">        ..</span>
+<span class="helpExample">        let path = s:F.from_slash(</span>
+<span class="helpExample">          \ s:get_path_like_string_from_something())</span>
+
+
+        This function intentionally ignores <a href="https://www.google.com/search?q=vim+%22'shellslash'%22&lr=lang_en"><span class="MissingTag">'shellslash'</span></a> option, so that you
+        can simply use this function for path string not only from Vim but
+        also from others, such as environment vars, problem output, or really
+        anything.
+        See also: <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath.from_slash()">Vital.System.Filepath.from_slash()</a>
+
+from_slash(<span class="Special">{path}</span>)                      <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.from_slash()" name="Vital.System.Filepath.from_slash()">Vital.System.Filepath.from_slash()</a>
+        This is opposite to <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath.to_slash()">Vital.System.Filepath.to_slash()</a>. See its doc.
+
+separator()                     <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.separator()" name="Vital.System.Filepath.separator()">Vital.System.Filepath.separator()</a>
+        Return OS related directory separator as string.
+        This returns &quot;/&quot; on non-Windows, or Windows and <a href="https://www.google.com/search?q=vim+%22'shellslash'%22&lr=lang_en"><span class="MissingTag">'shellslash'</span></a> is on.
+        This returns &quot;\&quot; on Windows and <a href="https://www.google.com/search?q=vim+%22'shellslash'%22&lr=lang_en"><span class="MissingTag">'shellslash'</span></a> is off.
+
+path_separator()                <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.path_separator()" name="Vital.System.Filepath.path_separator()">Vital.System.Filepath.path_separator()</a>
+        Return OS related path separator as string.
+        This returns &quot;;&quot; on Windows.
+        Otherwise this returns &quot;:&quot;.
+
+        You can get list of each filepath of $PATH by:
+
+<span class="helpExample">        split($PATH, s:F.path_separator())</span>
+
+path_extensions()               <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.path_extensions()" name="Vital.System.Filepath.path_extensions()">Vital.System.Filepath.path_extensions()</a>
+        Return OS related path extensions as array of string.
+
+unify_separator(<span class="Special">{path}</span>)         <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.unify_separator()" name="Vital.System.Filepath.unify_separator()">Vital.System.Filepath.unify_separator()</a>
+        Return path string replaced all directory separators with '/'.
+
+which(<span class="Special">{command}</span> [, <span class="Special">{path}</span>])     <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.which()" name="Vital.System.Filepath.which()">Vital.System.Filepath.which()</a>
+        Returns the full path of <span class="Special">{command}</span>.  This searches from <span class="Special">{path}</span> or
+        $PATH.  If the command is not found, returns empty string.
+
+split(<span class="Special">{path}</span>)                   <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.split()" name="Vital.System.Filepath.split()">Vital.System.Filepath.split()</a>
+        Return <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of elements in <span class="Special">{path}</span> string.
+
+join(<span class="Special">{args}</span>...)                 <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.join()" name="Vital.System.Filepath.join()">Vital.System.Filepath.join()</a>
+        Join the path in <span class="Special">{args}</span>.
+
+is_absolute(<span class="Special">{path}</span>)             <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.is_absolute()" name="Vital.System.Filepath.is_absolute()">Vital.System.Filepath.is_absolute()</a>
+        When <span class="Special">{path}</span> is absolute path, return 1.
+        Otherwise, return 0.
+        cf. <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath.is_relative()">Vital.System.Filepath.is_relative()</a>
+
+is_relative(<span class="Special">{path}</span>)             <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.is_relative()" name="Vital.System.Filepath.is_relative()">Vital.System.Filepath.is_relative()</a>
+        When <span class="Special">{path}</span> is relative path, return 1.
+        Otherwise, return 0.
+        cf. <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath.is_absolute()">Vital.System.Filepath.is_absolute()</a>
+
+dirname(<span class="Special">{path}</span>)                 <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.dirname()" name="Vital.System.Filepath.dirname()">Vital.System.Filepath.dirname()</a>
+        Return directory name from <span class="Special">{path}</span>.
+
+basename(<span class="Special">{path}</span>)                <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.basename()" name="Vital.System.Filepath.basename()">Vital.System.Filepath.basename()</a>
+        Return basename from <span class="Special">{path}</span>.
+
+remove_last_separator(<span class="Special">{path}</span>)   <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.remove_last_separator()" name="Vital.System.Filepath.remove_last_separator()">Vital.System.Filepath.remove_last_separator()</a>
+        Remove last directory separator if exists.
+
+is_case_tolerant()              <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.is_case_tolerant()" name="Vital.System.Filepath.is_case_tolerant()">Vital.System.Filepath.is_case_tolerant()</a>
+        Return non-zero if filesystem ignores alphabetic case of a filename,
+        zero otherwise.
+
+expand_home(<span class="Special">{path}</span>)             <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.expand_home()" name="Vital.System.Filepath.expand_home()">Vital.System.Filepath.expand_home()</a>
+        Return a home-expanded path of <span class="Special">{path}</span>.  The home directory expansion
+        will not have a trailing directory separator.
+
+        Like <a href="https://www.google.com/search?q=vim+%22expand()%22&lr=lang_en"><span class="MissingTag">expand()</span></a>, but only expanding a leading &quot;~&quot; home directory
+        sequence, or like <a href="https://www.google.com/search?q=vim+%22fnamemodify()%22&lr=lang_en"><span class="MissingTag">fnamemodify()</span></a> with the &quot;:p&quot; modifier, but without
+        full path expansion or unpredictable results if a file name doesn't
+        exist and doesn't have an absolute path.  See <a href="https://www.google.com/search?q=vim+%22filename-modifiers%22&lr=lang_en"><span class="MissingTag">filename-modifiers</span></a>.
+
+abspath(<span class="Special">{path}</span>)                 <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.abspath()" name="Vital.System.Filepath.abspath()">Vital.System.Filepath.abspath()</a>
+        Return an absolute path of <span class="Special">{path}</span>.
+        If the <span class="Special">{path}</span> is already an absolute path, it returns the <span class="Special">{path}</span>.
+        cf. <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath.relpath()">Vital.System.Filepath.relpath()</a>
+
+relpath(<span class="Special">{path}</span>)                 <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.relpath()" name="Vital.System.Filepath.relpath()">Vital.System.Filepath.relpath()</a>
+        Return a relative path of <span class="Special">{path}</span>.
+        If the <span class="Special">{path}</span> is already a relative path, it returns the <span class="Special">{path}</span>.
+        cf. <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath.abspath()">Vital.System.Filepath.abspath()</a>
+
+unixpath(<span class="Special">{path}</span>)                <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.unixpath()" name="Vital.System.Filepath.unixpath()">Vital.System.Filepath.unixpath()</a>
+        Return a unix path of <span class="Special">{path}</span>.
+        All backslashes (\) in <span class="Special">{path}</span> will be substituted to slashes (/).
+
+winpath(<span class="Special">{path}</span>)                 <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.winpath()" name="Vital.System.Filepath.winpath()">Vital.System.Filepath.winpath()</a>
+        Return a windows path of <span class="Special">{path}</span>.
+        All slashes (/) in <span class="Special">{path}</span> will be substituted to backslashes (\).
+
+realpath(<span class="Special">{path}</span>)                <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.realpath()" name="Vital.System.Filepath.realpath()">Vital.System.Filepath.realpath()</a>
+        Return a real path of <span class="Special">{path}</span> of the current operation system.
+        In non Windows OS, it calls <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath.unixpath()">Vital.System.Filepath.unixpath()</a>
+        internally.
+        In windows, it calls <a class="Identifier" href="./../../vital/System/Filepath.html#Vital.System.Filepath.unixpath()">Vital.System.Filepath.unixpath()</a> when the
+        Vim is compiled with '+shellslash' and <a href="https://www.google.com/search?q=vim+%22shellslash%22&lr=lang_en"><span class="MissingTag">shellslash</span></a> is specified.
+        Otherwise it calls <a href="https://www.google.com/search?q=vim+%22Vim.System.Filepath.winpath()%22&lr=lang_en"><span class="MissingTag">Vim.System.Filepath.winpath()</span></a> internally.
+
+is_root_directory(<span class="Special">{path}</span>)       <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.is_root_directory()" name="Vital.System.Filepath.is_root_directory()">Vital.System.Filepath.is_root_directory()</a>
+        Return 1 if the given <span class="Special">{path}</span> points to the root directory, otherwise
+        0.
+
+<span class="helpExample">        is_root_directory('/') == 1</span>
+<span class="helpExample">        is_root_directory('/aaa') == 0</span>
+<span class="helpExample">        is_root_directory('/aaa/..') == 0 &quot; It doesn't resolve.</span>
+<span class="helpExample">        is_root_directory('C:/') == 1     &quot; If it's on Windows.</span>
+
+contains(<span class="Special">{path}</span>, <span class="Special">{base}</span>)        <a class="String" href="./../../vital/System/Filepath.html#Vital.System.Filepath.contains()" name="Vital.System.Filepath.contains()">Vital.System.Filepath.contains()</a>
+        Return 1 if <span class="Special">{path}</span> contains <span class="Special">{base}</span>, otherwise 0.
+        <span class="Special">{path}</span> and <span class="Special">{base}</span> must be a full path.
+
+<span class="helpExample">        contains('/foo/bar/buz', '/foo/bar') == 1</span>
+<span class="helpExample">        contains('/foo/hoge/buz', '/foo/bar') == 0</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

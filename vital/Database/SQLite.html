@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Database/SQLite</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Database/SQLite</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Database/SQLite.html" name="vital/Database/SQLite.txt">vital/Database/SQLite.txt</a>             sqlite utilities library.
+
+Maintainer: ujihisa &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-contents" name="Vital.Database.SQLite-contents">Vital.Database.SQLite-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-introduction">Vital.Database.SQLite-introduction</a>
+PRINCIPLE                       <a class="Identifier" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-principle">Vital.Database.SQLite-principle</a>
+EXAMPLES                        <a class="Identifier" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-examples">Vital.Database.SQLite-examples</a>
+FUNCTIONS                       <a class="Identifier" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-functions">Vital.Database.SQLite-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-introduction" name="Vital.Database.SQLite-introduction">Vital.Database.SQLite-introduction</a>
+
+<a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite" name="Vital.Database.SQLite">Vital.Database.SQLite</a> is SQLite Utilities Library.
+It provides some functions to manipulate <a href="https://www.google.com/search?q=vim+%22SQLite%22&lr=lang_en"><span class="MissingTag">SQLite</span></a>.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">PRINCIPLE</span>                               <a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-principle" name="Vital.Database.SQLite-principle">Vital.Database.SQLite-principle</a>
+
+<a class="Identifier" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite">Vital.Database.SQLite</a> won't provide ORM but provides safe query and result
+parser. ORM is a wrong way of abstracting relational database.
+
+<a class="Identifier" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite">Vital.Database.SQLite</a> is
+* not an object that wraps something fancy.
+* not sqlite itself but a bridge to use a sqlite implementation.
+* encouraging you to write a good SQL query.
+* helping you to investigate what's going on by debug functions.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">EXAMPLES</span>                                <a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-examples" name="Vital.Database.SQLite-examples">Vital.Database.SQLite-examples</a>
+
+
+<span class="helpExample">        let s:S = s:V.import('Database.SQLite')</span>
+<span class="helpExample">        if !s:S.is_available()</span>
+<span class="helpExample">          return 'failed'</span>
+<span class="helpExample">        endif</span>
+<span class="helpExample">        echo s:S.query_rawdata(</span>
+<span class="helpExample">              \ 'a.db',</span>
+<span class="helpExample">              \ 'CREATE TABLE cities (name varchar(80), country_name text);')</span>
+<span class="helpExample">        echo s:S.query_rawdata(</span>
+<span class="helpExample">              \ 'a.db',</span>
+<span class="helpExample">              \ 'INSERT INTO cities VALUES (?, ?);',</span>
+<span class="helpExample">              \ ['Vancouver', 'Canada'])</span>
+<span class="helpExample">        echo s:S.query(</span>
+<span class="helpExample">              \ 'a.db',</span>
+<span class="helpExample">              \ 'SELECT * FROM cities WHERE name = ?;',</span>
+<span class="helpExample">              \ ['Vancouver'])</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite-functions" name="Vital.Database.SQLite-functions">Vital.Database.SQLite-functions</a>
+
+is_available()          <a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite.is_available()" name="Vital.Database.SQLite.is_available()">Vital.Database.SQLite.is_available()</a>
+        1 if you can use this sqlite integration feature by checking if you
+        have sqlite3 command.
+
+<span class="helpExample">        :echo S.is_available()</span>
+<span class="helpExample">        1</span>
+
+
+query(<span class="Special">{dbfile}</span>, <span class="Special">{query/placeholders}</span>, <span class="Special">{list}</span>)   <a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite.query()" name="Vital.Database.SQLite.query()">Vital.Database.SQLite.query()</a>
+        Sends an SQL query to sqlite with specifying the db file to store is
+        <span class="Special">{dbfile}</span>, and returns its result in list. If <span class="Special">{query/placeholders}</span>
+        (query with placeholders) contains placeholders &quot;?&quot;, <span class="Special">{list}</span> has to
+        have same amount of string elements.  e.g.
+
+<span class="helpExample">        query(d, 'A', [])</span>
+<span class="helpExample">        query(d, 'A ?', [x])</span>
+<span class="helpExample">        query(d, 'A ? ?', [x, y])</span>
+
+        You don't have to give <span class="Special">{list}</span> if <span class="Special">{query/placeholders}</span> has no
+        placeholders. e.g.
+
+<span class="helpExample">        query(d, 'A', []) == query(d, 'A')</span>
+
+
+        This function returns a list which has multiple dictionaries. e.g.
+
+<span class="helpExample">        query('a.db', 'SELECT * FROM cities WHERE name = Vancouver;')</span>
+<span class="helpExample">        is</span>
+<span class="helpExample">        [{'country': 'Canada', 'name': 'Vancouver'},</span>
+<span class="helpExample">         {'country': 'US', 'name': 'Vancouver'}]</span>
+
+
+build_line_from_query_with_placeholders(<span class="Special">{query/placeholders}</span>, <span class="Special">{list}</span>)
+        <a class="String" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite.build_line_from_query_with_placeholders()" name="Vital.Database.SQLite.build_line_from_query_with_placeholders()">Vital.Database.SQLite.build_line_from_query_with_placeholders()</a>
+        Returns internal value that <a class="Identifier" href="./../../vital/Database/SQLite.html#Vital.Database.SQLite.query()">Vital.Database.SQLite.query()</a> uses. This
+        function doesn't have side effects.
+
+        This function name is long on purpose to discourage people to use that
+        frequently. Use this only for your understanding and for debugging
+        this library itself.
+
+        Examples
+
+<span class="helpExample">        build_line_from_query_with_placeholders(</span>
+<span class="helpExample">              \ 'SELECT * FROM cities WHERE name = ?;',</span>
+<span class="helpExample">              \ ['Vancouver'])</span>
+<span class="helpExample">        &quot;=&gt; 'SELECT * FROM cities WHERE name = &quot;Vancouver&quot;;'</span>
+
+<span class="helpExample">        echo s:S.build_line_from_query_with_placeholders(</span>
+<span class="helpExample">              \ 'SELECT * FROM cities WHERE name = ?;',</span>
+<span class="helpExample">              \ [&quot;Vancouver\&quot;; ujihisa\&quot;&quot;])</span>
+<span class="helpExample">        &quot;=&gt; 'SELECT * FROM cities WHERE name = &quot;Vancouver\&quot;; ujihisa\&quot;&quot;;'</span>
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

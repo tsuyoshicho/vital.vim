@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Locale/Message</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Locale/Message</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Locale/Message.html" name="vital/Locale/Message.txt">vital/Locale/Message.txt</a>      very simple message localization library.
+
+Maintainer: thinca &lt;thinca+vim@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-contents" name="Vital.Locale.Message-contents">Vital.Locale.Message-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-introduction">Vital.Locale.Message-introduction</a>
+USAGE                           <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-usage">Vital.Locale.Message-usage</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-interface">Vital.Locale.Message-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-functions">Vital.Locale.Message-functions</a>
+  Message Object                  <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message">Vital.Locale.Message-Message</a>
+MESSAGE TEXT                    <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-message-text">Vital.Locale.Message-message-text</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-introduction" name="Vital.Locale.Message-introduction">Vital.Locale.Message-introduction</a>
+
+<a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message" name="Vital.Locale.Message">Vital.Locale.Message</a> is a very simple message localization library.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                                   <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-usage" name="Vital.Locale.Message-usage">Vital.Locale.Message-usage</a>
+
+<span class="helpExample">        let s:V = vital#my_plugin#new()</span>
+<span class="helpExample">        let s:message = s:V.import('Locale.Message').new('my-plugin')</span>
+<span class="helpExample">        function! s:_(text)</span>
+<span class="helpExample">          return s:message._(a:text)</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:_('my-plugin is loaded.')</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-interface" name="Vital.Locale.Message-interface">Vital.Locale.Message-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-functions" name="Vital.Locale.Message-functions">Vital.Locale.Message-functions</a>
+
+new(<span class="Special">{plugin-name}</span>)                      <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message.new()" name="Vital.Locale.Message.new()">Vital.Locale.Message.new()</a>
+        Creates a new Message object(<a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message">Vital.Locale.Message-Message</a>).
+        <span class="Special">{plugin-name}</span> is used as the location of message text.
+        See also <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-message-text">Vital.Locale.Message-message-text</a>.
+
+get_lang()                              <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message.get_lang()" name="Vital.Locale.Message.get_lang()">Vital.Locale.Message.get_lang()</a>
+        Gets the current language code.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Message Object                  <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message" name="Vital.Locale.Message-Message">Vital.Locale.Message-Message</a>
+
+Message.get(<span class="Special">{text}</span>)             <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message.get()" name="Vital.Locale.Message-Message.get()">Vital.Locale.Message-Message.get()</a>
+        Returns a localized text.
+        If the text is not found, returns <span class="Special">{text}</span>.
+
+Message._(<span class="Special">{text}</span>)               <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message._()" name="Vital.Locale.Message-Message._()">Vital.Locale.Message-Message._()</a>
+        Shortcut version of <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message.get()">Vital.Locale.Message-Message.get()</a>.
+
+Message.load(<span class="Special">{lang}</span>)            <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message.load()" name="Vital.Locale.Message-Message.load()">Vital.Locale.Message-Message.load()</a>
+        Loads a message text file manually.
+        Normally, this is called by automatically.
+
+Message.missing(<span class="Special">{text}</span>)         <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message.missing()" name="Vital.Locale.Message-Message.missing()">Vital.Locale.Message-Message.missing()</a>
+        This is called by <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message-Message.get()">Vital.Locale.Message-Message.get()</a> if the <span class="Special">{text}</span>
+        was not found in the message text file.
+        By default, nothing is done.
+        This is used for debugging by the override.
+        If a string is returned, it is used for localized text.
+
+<span class="helpExample">        let s:mes = V.Locale.Message.new('my-plugin')</span>
+<span class="helpExample">        if g:my_plugin_debug</span>
+<span class="helpExample">          function s:mes.missing(text)</span>
+<span class="helpExample">            echomsg 'Text missing: ' . a:text</span>
+<span class="helpExample">          endfunction</span>
+<span class="helpExample">        endif</span>
+
+        An example of dynamic translation.
+        (localized texts of Message object is stored in &quot;data&quot; attribute.)
+
+<span class="helpExample">        let s:mes = V.Locale.Message.new('my-plugin')</span>
+<span class="helpExample">        function s:mes.missing(text)</span>
+<span class="helpExample">          let self.data[a:text] = Translate(a:text)</span>
+<span class="helpExample">          return self.data[a:text]</span>
+<span class="helpExample">        endfunction</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">MESSAGE TEXT</span>                            <a class="String" href="./../../vital/Locale/Message.html#Vital.Locale.Message-message-text" name="Vital.Locale.Message-message-text">Vital.Locale.Message-message-text</a>
+
+A localized message text file should be placed in following.
+
+<span class="helpExample">        {runtimepath}/message/{plugin-name}/{lang}.txt</span>
+
+- <span class="Special">{runtimepath}</span> is a one of <a href="https://www.google.com/search?q=vim+%22'runtimepath'%22&lr=lang_en"><span class="MissingTag">'runtimepath'</span></a>.
+- <span class="Special">{plugin-name}</span> is your plugin name.
+  It is passed to <a class="Identifier" href="./../../vital/Locale/Message.html#Vital.Locale.Message.new()">Vital.Locale.Message.new()</a>.
+- <span class="Special">{lang}</span> is language code.  Ex: en, ja, fr, ...
+
+If <span class="Special">{plugin-name}</span> contains &quot;%s&quot;, the rule changes.
+
+<span class="helpExample">        {runtimepath}/{plugin-name}</span>
+
+&quot;%s&quot; is replaced by <span class="Special">{lang}</span>.
+
+
+Content of a message text file is as following.
+
+<span class="helpExample">        {</span>
+<span class="helpExample">          # comment line</span>
+<span class="helpExample">          'message': 'メッセージ',</span>
+<span class="helpExample">          'hello': 'こんにちは',</span>
+<span class="helpExample">        }</span>
+
+This is just a Vim <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>.  This file must be written by utf-8.
+A comment line starts with &quot;#&quot;.  A comment cannot start after a text.
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

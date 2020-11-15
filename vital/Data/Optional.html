@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/Optional</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/Optional</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Data/Optional.html" name="vital/Data/Optional.txt">vital/Data/Optional.txt</a>       Provide optional value
+
+Maintainer: rhysd &lt;lin90162@yahoo.co.jp&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional-contents" name="Vital.Data.Optional-contents">Vital.Data.Optional-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Data/Optional.html#Vital.Data.Optional-introduction">Vital.Data.Optional-introduction</a>
+TERM                            <a class="Identifier" href="./../../vital/Data/Optional.html#Vital.Data.Optional-term">Vital.Data.Optional-term</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Data/Optional.html#Vital.Data.Optional-interface">Vital.Data.Optional-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Data/Optional.html#Vital.Data.Optional-functions">Vital.Data.Optional-functions</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional-introduction" name="Vital.Data.Optional-introduction">Vital.Data.Optional-introduction</a>
+
+<a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional" name="Vital.Data.Optional">Vital.Data.Optional</a> represents an optional value.  An optional value can be a
+valid state (some) or invalid state (none).  This is like a Maybe in Haskell,
+Option in Scala, std::optional in C++ and so on.  An optional value is usually
+used as a result of process which may cause an error or as a cache of some
+results.
+
+Vim script doesn't have a way to treat a value which may be invalid.  Goal of
+this library is to provide the way to treat an optional value in a good way.
+
+The implementation of optional value is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>.  Empty list means an invalid
+value and 1-element list means a valid value.  So, some functions for <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>
+like <a href="https://www.google.com/search?q=vim+%22empty()%22&lr=lang_en"><span class="MissingTag">empty()</span></a> or <a href="https://www.google.com/search?q=vim+%22map()%22&lr=lang_en"><span class="MissingTag">map()</span></a>  or <a href="https://www.google.com/search?q=vim+%22filter()%22&lr=lang_en"><span class="MissingTag">filter()</span></a> and so on are also available for an
+optional value.
+
+
+<span class="helpExample">        let s:cache = O.none()</span>
+
+<span class="helpExample">        function! GetData()</span>
+<span class="helpExample">          if O.exists(s:cache)</span>
+<span class="helpExample">            return O.get(s:cache)</span>
+<span class="helpExample">          endif</span>
+<span class="helpExample">          let data = DoHeavyProcess()</span>
+<span class="helpExample">          let s:cache = O.some(data)</span>
+<span class="helpExample">          return data</span>
+<span class="helpExample">        endfunction</span>
+
+
+<span class="helpExample">        function! GetInput()</span>
+<span class="helpExample">                &quot; Returns O.some(an input),</span>
+<span class="helpExample">                &quot; or returns O.none() if &lt;C-c&gt;</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        function! GetCommandIfExists(arg)</span>
+<span class="helpExample">                &quot; Returns the detail if `arg` is an existent command</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        &quot; Show the command detail with an input</span>
+<span class="helpExample">        O.map(GetInput(), { input -&gt;</span>
+<span class="helpExample">                \ O.map(GetCommandIfExists(input), { command -&gt;</span>
+<span class="helpExample">                        \ execute('echo ' . command)</span>
+<span class="helpExample">                \ }</span>
+<span class="helpExample">        \ })</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TERM</span>                                    <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional-term" name="Vital.Data.Optional-term">Vital.Data.Optional-term</a>
+
+<span class="Special">{optional}</span>                              <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional-term-optional" name="Vital.Data.Optional-term-optional">Vital.Data.Optional-term-optional</a>
+        <span class="Special">{optional}</span> is an optional value.  It is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of 0 or 1 element
+        actually.
+
+<span class="Special">{none}</span>                                  <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional-term-none" name="Vital.Data.Optional-term-none">Vital.Data.Optional-term-none</a>
+        An optional value as invalid value.
+
+<span class="Special">{some}</span>                                  <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional-term-some" name="Vital.Data.Optional-term-some">Vital.Data.Optional-term-some</a>
+        An optional value which contains a value as valid value.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional-interface" name="Vital.Data.Optional-interface">Vital.Data.Optional-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional-functions" name="Vital.Data.Optional-functions">Vital.Data.Optional-functions</a>
+
+none()                                  <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.none()" name="Vital.Data.Optional.none()">Vital.Data.Optional.none()</a>
+        Returns an optional value as invalid value (<span class="Special">{none}</span>).
+
+some(<span class="Special">{value}</span>)                           <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.some()" name="Vital.Data.Optional.some()">Vital.Data.Optional.some()</a>
+        Returns an optional value which contains <span class="Special">{value}</span> as valid value
+        (<span class="Special">{some}</span>).
+
+new(<span class="Special">{value}</span>, [<span class="Special">{null}</span>])                          <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.new()" name="Vital.Data.Optional.new()">Vital.Data.Optional.new()</a>
+        Same as some(<span class="Special">{value}</span>) usually. If the given <span class="Special">{value}</span> is <a href="https://www.google.com/search?q=vim+%22v:null%22&lr=lang_en"><span class="MissingTag">v:null</span></a>, it
+        returns none().
+
+        Old vim does not have v:null unfortunately. In that case, provide
+        any values at <span class="Special">{null}</span>. It's used instead of v:null.
+
+<span class="helpExample">        new(1) == some(1)</span>
+<span class="helpExample">        new(0) == some(0)</span>
+<span class="helpExample">        new(v:true) == some(v:true)</span>
+<span class="helpExample">        new(v:null) == none()</span>
+
+<span class="helpExample">        new('hello', 'null') == some(1)</span>
+<span class="helpExample">        new('null', 'null') == none()</span>
+<span class="helpExample">        new(v:null, 'null') == none() &quot; v:null is always none</span>
+
+
+is_optional(<span class="Special">{value}</span>)                    <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.is_optional()" name="Vital.Data.Optional.is_optional()">Vital.Data.Optional.is_optional()</a>
+        Returns <span class="Special">{value}</span> is an optional value.  It actually checks that <span class="Special">{value}</span>
+        is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of 0 or 1 element.
+
+empty(<span class="Special">{optional}</span>)                       <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.empty()" name="Vital.Data.Optional.empty()">Vital.Data.Optional.empty()</a>
+        Returns whether <span class="Special">{optional}</span> has an invalid value or not.  If <span class="Special">{optional}</span>
+        has an invalid value, it returns 1.
+
+exists(<span class="Special">{optional}</span>)                      <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.exists()" name="Vital.Data.Optional.exists()">Vital.Data.Optional.exists()</a>
+        Returns whether <span class="Special">{optional}</span> has a valid value or not.  If <span class="Special">{optional}</span>
+        has a valid value, it returns 1.
+
+set(<span class="Special">{optional}</span>, <span class="Special">{value}</span>)                <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.set()" name="Vital.Data.Optional.set()">Vital.Data.Optional.set()</a>
+        Updates <span class="Special">{optional}</span> with <span class="Special">{value}</span>.  The result is a valid optional value
+        which contains <span class="Special">{value}</span>.
+
+unset(<span class="Special">{optional}</span>, <span class="Special">{value}</span>)              <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.unset()" name="Vital.Data.Optional.unset()">Vital.Data.Optional.unset()</a>
+        Removes value which <span class="Special">{optional}</span> contains and makes <span class="Special">{optional}</span> invalid
+        value.  If <span class="Special">{optional}</span> is already invalid, it does nothing.
+
+get(<span class="Special">{optional}</span>)                         <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.get()" name="Vital.Data.Optional.get()">Vital.Data.Optional.get()</a>
+        Returns a contained value in <span class="Special">{optional}</span>.  If <span class="Special">{optional}</span> is an invalid
+        value, it throws an exception.  You can catch it by the prefix
+        &quot;vital: Data.Optional: &quot;
+
+get_or(<span class="Special">{optional}</span>, <span class="Special">{alternative}</span>)       <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.get_or()" name="Vital.Data.Optional.get_or()">Vital.Data.Optional.get_or()</a>
+        Returns a contained value in <span class="Special">{optional}</span>.  If <span class="Special">{optional}</span> is an invalid
+        value, it returns the <span class="Special">{alternative}</span>'s value instead.
+
+<span class="helpExample">        echo O.get_or(O.new(10), { -&gt; -1 }) &quot; 10</span>
+<span class="helpExample">        echo O.get_or(O.none(),  { -&gt; -1 }) &quot; -1</span>
+
+
+get_unsafe(<span class="Special">{optional}</span>)                  <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.get_unsafe()" name="Vital.Data.Optional.get_unsafe()">Vital.Data.Optional.get_unsafe()</a>
+        Returns a contained value in <span class="Special">{optional}</span>.  If <span class="Special">{optional}</span> is an invalid
+        value, the behavior is undefined.
+
+has(<span class="Special">{optional}</span>, <span class="Special">{type}</span>)                 <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.has()" name="Vital.Data.Optional.has()">Vital.Data.Optional.has()</a>
+        Returns a type of <span class="Special">{optional}</span> is <span class="Special">{type}</span>.  It is expected that <span class="Special">{type}</span> is
+        a result of <a href="https://www.google.com/search?q=vim+%22type()%22&lr=lang_en"><span class="MissingTag">type()</span></a>.  If <span class="Special">{optional}</span> is an invalid value, it always
+        returns 0.
+
+apply(<span class="Special">{func}</span>, <span class="Special">{args}</span>...)                <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.apply()" name="Vital.Data.Optional.apply()">Vital.Data.Optional.apply()</a>
+        Applies <span class="Special">{args}</span> to <span class="Special">{func}</span> if all of <span class="Special">{args}</span> are valid optional value.
+        Then it returns the result wrapped as valid optional value.
+        If any of <span class="Special">{args}</span> is an invalid optional value, it doesn't call
+        <span class="Special">{func}</span> and returns an invalid optional value.
+        This is like Applicative in Haskell.
+        When any of <span class="Special">{args}</span> is not an optional value, it throws an exception.
+
+        For example, below is an example to update data in cache.
+
+
+<span class="helpExample">        let s:cache = O.none()</span>
+
+<span class="helpExample">        ...</span>
+
+<span class="helpExample">        function! Update(data, new_value)</span>
+<span class="helpExample">          &quot; Update a:data with a:new_value</span>
+<span class="helpExample">          &quot; This function doesn't consider the case when a:data is invalid</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        ...</span>
+
+<span class="helpExample">        &quot; Update cache only if s:cache has a valid value.</span>
+<span class="helpExample">        &quot; Below invokes Update(O.get(cache), O.get(new_value)) if s:cache has</span>
+<span class="helpExample">        &quot; a valid value.</span>
+<span class="helpExample">        call O.apply(function('Update'), s:cache, O.some(new_value))</span>
+
+map(<span class="Special">{optional}</span>, <span class="Special">{func}</span>)                 <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.map()" name="Vital.Data.Optional.map()">Vital.Data.Optional.map()</a>
+        Maps content of <span class="Special">{optional}</span> by predicate <span class="Special">{func}</span>. If content of
+        <span class="Special">{optional}</span> is none, then <span class="Special">{func}</span> won't be invoked and none will be
+        returned.
+
+<span class="helpExample">        function! Succ(x)</span>
+<span class="helpExample">          return a:x + 1</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo O.map(O.some(1), function('Succ')) &quot; returns O.some(2)</span>
+<span class="helpExample">        echo O.map(O.none(), function('Succ'))  &quot; returns O.none()</span>
+
+
+bind(<span class="Special">{func}</span>, <span class="Special">{args}</span>...)                 <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.bind()" name="Vital.Data.Optional.bind()">Vital.Data.Optional.bind()</a>
+        Applies <span class="Special">{args}</span> to <span class="Special">{func}</span> if all of <span class="Special">{args}</span> are valid optional value.
+        Then it returns the result directly.  This assumes that <span class="Special">{func}</span>'s
+        arguments doesn't care about an optional value and <span class="Special">{func}</span> returns an
+        optional value.
+        When any of <span class="Special">{args}</span> is not an optional value, it throws an exception.
+
+        For example, division with safe way is like below:
+
+
+<span class="helpExample">        function! Div(a, b)</span>
+<span class="helpExample">          if a:b == 0</span>
+<span class="helpExample">            return O.none()</span>
+<span class="helpExample">          endif</span>
+<span class="helpExample">          return O.some(a:a / a:b)</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        function! Sub(a, b)</span>
+<span class="helpExample">            return O.some(a:a - a:b)</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        let f = function('Div')</span>
+<span class="helpExample">        let f2 = function('Sub')</span>
+
+<span class="helpExample">        &quot; Below invokes 10 / (2 - 2)</span>
+<span class="helpExample">        let result = O.bind(f, O.some(10), O.bind(f2, O.some(2), O.some(2)))</span>
+
+<span class="helpExample">        echo O.empty(result) &quot; returns 1 because 10 / 0 occurs an error</span>
+
+
+flat_map(<span class="Special">{func}</span>, <span class="Special">{arg}</span>)         <a class="String" href="./../../vital/Data/Optional.html#vital.Data.Optional.flat_map()" name="vital.Data.Optional.flat_map()">vital.Data.Optional.flat_map()</a>
+        Similar to <a href="https://www.google.com/search?q=vim+%22vital.Data.Optional.bind()%22&lr=lang_en"><span class="MissingTag">vital.Data.Optional.bind()</span></a> for the single argument.
+
+flatten(<span class="Special">{optional}</span>, [<span class="Special">{limit}</span>])          <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.flatten()" name="Vital.Data.Optional.flatten()">Vital.Data.Optional.flatten()</a>
+        Flattens a nested from optional values by default.
+
+<span class="helpExample">        echo O.flatten(O.some(O.some(10)))</span>
+<span class="helpExample">                \ == O.some(10)</span>
+<span class="helpExample">        echo O.flatten(O.some(O.none()))</span>
+<span class="helpExample">                \ == O.none()</span>
+<span class="helpExample">        echo O.flatten(O.none())</span>
+<span class="helpExample">                \ == O.none()</span>
+
+<span class="helpExample">        echo O.flatten(O.some(O.some(O.some(10))))</span>
+<span class="helpExample">                \ == O.some(O.some(10))</span>
+
+        Or flattens nests with a specified limit.
+
+<span class="helpExample">        echo O.flatten(O.some(O.some(O.some(42))), 2)</span>
+<span class="helpExample">                \ == O.some(42)</span>
+
+        Or fully flattens nests if 0 is specified for the limit.
+
+<span class="helpExample">        echo O.flatten(O.none(), 0)</span>
+<span class="helpExample">                \ == O.none()</span>
+
+<span class="helpExample">        echo O.flatten(O.some(O.some(O.some(10))), 0)</span>
+<span class="helpExample">                \ == O.some(O.some(10))</span>
+<span class="helpExample">        echo O.flatten(O.some(O.none()), 0)</span>
+<span class="helpExample">                \ == O.none()</span>
+
+
+optional(<span class="Special">{optional}</span>, {if_some}, {if_none})
+                                        <a class="String" href="./../../vital/Data/Optional.html#vital.Data.Optional.optional()" name="vital.Data.Optional.optional()">vital.Data.Optional.optional()</a>
+        Extracts <span class="Special">{optional}</span>. if the <span class="Special">{optional}</span> is a <span class="Special">{some}</span>, this maps {if_some}
+        to the <span class="Special">{some}</span>. if the <span class="Special">{optional}</span> is a <span class="Special">{none}</span>, this returns {if_none}'s
+        result.
+
+<span class="helpExample">        echo O.optional(O.some(10),</span>
+<span class="helpExample">          \ { x -&gt; string(x) },</span>
+<span class="helpExample">          \ { -&gt; &quot;=)&quot; }</span>
+<span class="helpExample">        \ )</span>
+<span class="helpExample">        &quot; 10</span>
+
+<span class="helpExample">        echo O.optional(O.none(),</span>
+<span class="helpExample">          \ { x -&gt; string(x) },</span>
+<span class="helpExample">          \ { -&gt; &quot;=)&quot; }</span>
+<span class="helpExample">        \ )</span>
+<span class="helpExample">        &quot; =)</span>
+
+
+first({optional_list})                  <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.first()" name="Vital.Data.Optional.first()">Vital.Data.Optional.first()</a>
+        Finds a first <span class="Special">{some}</span>, or <span class="Special">{none}</span> if no <span class="Special">{some}</span> is found.
+
+<span class="helpExample">        echo O.first([O.none(), O.some('sugar'), O.some('sweat'), O.none()])</span>
+<span class="helpExample">        &quot; O.some('sugar')</span>
+
+<span class="helpExample">        echo O.first([O.none()])</span>
+<span class="helpExample">        &quot; O.none()</span>
+
+<span class="helpExample">        echo O.first([])</span>
+<span class="helpExample">        &quot; O.none()</span>
+
+
+last({optional_list})                   <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.last()" name="Vital.Data.Optional.last()">Vital.Data.Optional.last()</a>
+        Finds a last <span class="Special">{some}</span>, or <span class="Special">{none}</span> if no <span class="Special">{some}</span> is found.
+
+<span class="helpExample">        echo O.last([O.none(), O.some('sugar'), O.some('sweat'), O.none()])</span>
+<span class="helpExample">        &quot; O.some('sweat')</span>
+
+<span class="helpExample">        echo O.last([O.none()])</span>
+<span class="helpExample">        &quot; O.none()</span>
+
+<span class="helpExample">        echo O.last([])</span>
+<span class="helpExample">        &quot; O.none()</span>
+
+
+echo(<span class="Special">{optional}</span>, [<span class="Special">{highlight-group}</span>])   <a class="String" href="./../../vital/Data/Optional.html#Vital.Data.Optional.echo()" name="Vital.Data.Optional.echo()">Vital.Data.Optional.echo()</a>
+        Displays an optional value like <a href="https://www.google.com/search?q=vim+%22:echo%22&lr=lang_en"><span class="MissingTag">:echo</span></a>. The format is &quot;Some(...)&quot; or
+        &quot;None&quot;.  If <span class="Special">{highlight-group}</span> is specified, it displays a value
+        with the highlight group.  When <span class="Special">{optional}</span> is not an optional value,
+        it throws an exception.
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl:noet
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

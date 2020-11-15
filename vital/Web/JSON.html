@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Web/JSON</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Web/JSON</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Web/JSON.html" name="vital/Web/JSON.txt">vital/Web/JSON.txt</a>                    JSON parser written in pure Vim script.
+
+Maintainer: mattn &lt;mattn.jp@gmail.com&gt;
+            lambdalisue &lt;lambdalisue@hashnote.net&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON-contents" name="Vital.Web.JSON-contents">Vital.Web.JSON-contents</a>
+
+INTRODUCTION                            <a class="Identifier" href="./../../vital/Web/JSON.html#Vital.Web.JSON-introduction">Vital.Web.JSON-introduction</a>
+INTERFACE                               <a class="Identifier" href="./../../vital/Web/JSON.html#Vital.Web.JSON-interface">Vital.Web.JSON-interface</a>
+  Consts                                <a class="Identifier" href="./../../vital/Web/JSON.html#Vital.Web.JSON-consts">Vital.Web.JSON-consts</a>
+  Functions                             <a class="Identifier" href="./../../vital/Web/JSON.html#Vital.Web.JSON-functions">Vital.Web.JSON-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON-introduction" name="Vital.Web.JSON-introduction">Vital.Web.JSON-introduction</a>
+
+<a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON" name="Vital.Web.JSON">Vital.Web.JSON</a> is JSON parser Library.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON-interface" name="Vital.Web.JSON-interface">Vital.Web.JSON-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">CONSTS</span>                                  <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON-consts" name="Vital.Web.JSON-consts">Vital.Web.JSON-consts</a>
+
+true                                    <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON.true" name="Vital.Web.JSON.true">Vital.Web.JSON.true</a>
+        It is used to indicate <a href="https://www.google.com/search?q=vim+%22'true'%22&lr=lang_en"><span class="MissingTag">'true'</span></a> in JSON string. It is represented as a
+        <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> thus if you assign the value to a variable which name does not
+        start with a capital, &quot;s:&quot;, &quot;w:&quot;, &quot;t:&quot; or &quot;b:&quot; will raise an exception.
+        This returns 1 when you use it as a function.
+
+false                                   <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON.false" name="Vital.Web.JSON.false">Vital.Web.JSON.false</a>
+        It is used to indicate <a href="https://www.google.com/search?q=vim+%22'false'%22&lr=lang_en"><span class="MissingTag">'false'</span></a> in JSON string. It is represented as a
+        <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> thus if you assign the value to a variable which name does not
+        start with a capital, &quot;s:&quot;, &quot;w:&quot;, &quot;t:&quot; or &quot;b:&quot; will raise an exception.
+        This returns 0 when you use it as a function.
+
+null                                    <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON.null" name="Vital.Web.JSON.null">Vital.Web.JSON.null</a>
+        It is used to indicate <a href="https://www.google.com/search?q=vim+%22'null'%22&lr=lang_en"><span class="MissingTag">'null'</span></a> in JSON string. It is represented as a
+        <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> thus if you assign the value to a variable which name does not
+        start with a capital, &quot;s:&quot;, &quot;w:&quot;, &quot;t:&quot; or &quot;b:&quot; will raise an exception.
+        This returns 0 when you use it as a function.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON-functions" name="Vital.Web.JSON-functions">Vital.Web.JSON-functions</a>
+
+encode(<span class="Special">{object}</span>[, <span class="Special">{settings}</span>])          <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON.encode()" name="Vital.Web.JSON.encode()">Vital.Web.JSON.encode()</a>
+        Encode an object into a JSON string. Special tokens
+        (e.g. <a class="Identifier" href="./../../vital/Web/JSON.html#Vital.Web.JSON.true">Vital.Web.JSON.true</a>) are encoded into corresponding javascript
+        tokens (e.g. <a href="https://www.google.com/search?q=vim+%22'true'%22&lr=lang_en"><span class="MissingTag">'true'</span></a>).
+
+<span class="helpExample">        echo s:JSON.encode([s:JSON.true, s:JSON.false, s:JSON.null])</span>
+<span class="helpExample">        &quot; =&gt; '[true, false, null]'</span>
+
+        <span class="Special">{settings}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> which allows the following:
+
+        <a href="https://www.google.com/search?q=vim+%22'indent'%22&lr=lang_en"><span class="MissingTag">'indent'</span></a>
+        The number of spaces used as an indentation. When the value is greater
+        than 0, the encoded JSON will be formatted with the specified indent
+        level. The default value is 0.
+
+<span class="helpExample">        echo s:JSON.encode({'a': 0, 'b': 1})</span>
+<span class="helpExample">        &quot; =&gt; '{&quot;a&quot;:0,&quot;b&quot;:1}'</span>
+<span class="helpExample">        echo s:JSON.encode({'a': 0, 'b': 1}, {'indent': 2})</span>
+<span class="helpExample">        &quot; =&gt; '{</span>
+<span class="helpExample">        &quot;   &quot;a&quot;: 0,</span>
+<span class="helpExample">        &quot;   &quot;b&quot;: 1</span>
+<span class="helpExample">        &quot; }'</span>
+
+decode(<span class="Special">{json}</span>[, <span class="Special">{settings}</span>])            <a class="String" href="./../../vital/Web/JSON.html#Vital.Web.JSON.decode()" name="Vital.Web.JSON.decode()">Vital.Web.JSON.decode()</a>
+        Decode a JSON string into an object that vim can treat.
+        <span class="Special">{settings}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> which allows the following:
+
+        'use_token'
+        Use special tokens (e.g. <a class="Identifier" href="./../../vital/Web/JSON.html#Vital.Web.JSON.true">Vital.Web.JSON.true</a>) to represent
+        corresponding javascript tokens (e.g. <a href="https://www.google.com/search?q=vim+%22'true'%22&lr=lang_en"><span class="MissingTag">'true'</span></a>).
+        Otherwise 1 or 0 are used to represent these.
+        The default value is 0.
+
+<span class="helpExample">        echo s:JSON.decode('[true, false, null]')</span>
+<span class="helpExample">        &quot; =&gt; [1, 0, 0]</span>
+<span class="helpExample">        echo s:JSON.decode('[true, false, null]', {'use_token': 1})</span>
+<span class="helpExample">        &quot; =&gt; [s:JSON.true, s:JSON.false, s:JSON.null]</span>
+
+
+<span class="PreProc">=============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

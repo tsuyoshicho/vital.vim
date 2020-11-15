@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Color</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Color</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/Color.html" name="vital/Color.txt">vital/Color.txt</a>       RGB/HSL/terminal code conversion library
+
+Maintainer: tyru &lt;tyru.exe@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../vital/Color.html#Vital.Color-contents" name="Vital.Color-contents">Vital.Color-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/Color.html#Vital.Color-introduction">Vital.Color-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../vital/Color.html#Vital.Color-interface">Vital.Color-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../vital/Color.html#Vital.Color-functions">Vital.Color-functions</a>
+TODO                            <a class="Identifier" href="./../vital/Color.html#Vital.Color-todo">Vital.Color-todo</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../vital/Color.html#Vital.Color-introduction" name="Vital.Color-introduction">Vital.Color-introduction</a>
+
+<a class="String" href="./../vital/Color.html#Vital.Color" name="Vital.Color">Vital.Color</a> is a color conversion library between RGB/HSL/terminal code.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../vital/Color.html#Vital.Color-interface" name="Vital.Color-interface">Vital.Color-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../vital/Color.html#Vital.Color-functions" name="Vital.Color-functions">Vital.Color-functions</a>
+
+parse(<span class="Special">{str}</span>)            <a class="String" href="./../vital/Color.html#Vital.Color.parse()" name="Vital.Color.parse()">Vital.Color.parse()</a>
+        Parses various color text formats and creates <a class="Identifier" href="./../vital/Color.html#Vital.Color-Color-object">Vital.Color-Color-object</a>.
+        Supported format is:
+        * Hex RGB format
+          * e.g. <span class="Comment">#FFF</span>
+          * e.g. <span class="Comment">#000000</span>
+        * CSS RGB format
+          * e.g. <span class="Comment">rgb(255,255,255)</span>
+          * e.g. <span class="Comment">rgb(100%,0%,0%)</span>
+        * CSS HSL format
+          * e.g. <span class="Comment">hsl(0,50%,100%)</span>
+          * <span class="Comment">%</span> is mandatory
+        * Color name
+          * See $VIMRUNTIME/rgb.txt for color names
+
+<span class="helpExample">        let c1 = s:Color.parse('#012')</span>
+<span class="helpExample">        let c2 = s:Color.parse('#c0ffee')</span>
+<span class="helpExample">        let c3 = s:Color.parse('rgb(100,100,100)')</span>
+<span class="helpExample">        let c3 = s:Color.parse('rgb(0%,100%,100%)')</span>
+<span class="helpExample">        let c4 = s:Color.parse('hsl(0,50%,100%)')</span>
+<span class="helpExample">        let c5 = s:Color.parse('ForestGreen')</span>
+
+rgb(<span class="Special">{red}</span>, <span class="Special">{green}</span>, <span class="Special">{blue}</span>)             <a class="String" href="./../vital/Color.html#Vital.Color.rgb()" name="Vital.Color.rgb()">Vital.Color.rgb()</a>
+        Creates <a class="Identifier" href="./../vital/Color.html#Vital.Color-Color-object">Vital.Color-Color-object</a> with given parameters.
+        The value ranges of <span class="Special">{red}</span>, <span class="Special">{green}</span>, <span class="Special">{blue}</span> are 0-255.
+
+<span class="helpExample">        echo s:Color.rgb(0x00, 0x11, 0x22).as_rgb_hex() == '#001122'</span>
+<span class="helpExample">        echo s:Color.rgb(0x00, 0x11, 0x22).as_rgb_str() == 'rgb(0,17,34)'</span>
+<span class="helpExample">        echo s:Color.rgb(0x00, 0x11, 0x22).as_rgb() == [0.0, 17.0, 34.0]</span>
+
+hsl(<span class="Special">{hue}</span>, <span class="Special">{saturation}</span>, <span class="Special">{lightness}</span>)           <a class="String" href="./../vital/Color.html#Vital.Color.hsl()" name="Vital.Color.hsl()">Vital.Color.hsl()</a>
+        Creates <a class="Identifier" href="./../vital/Color.html#Vital.Color-Color-object">Vital.Color-Color-object</a> with given parameters.
+        The value ranges are:
+        <span class="Special">{hue}</span> = 0-360
+        <span class="Special">{saturation}</span> = 0-100
+        <span class="Special">{lightness}</span> = 0-100
+
+<span class="helpExample">        echo s:Color.hsl(0, 50, 100).as_hsl_str() == 'hsl(0,50%,100%)'</span>
+<span class="helpExample">        echo s:Color.hsl(0, 50, 100).as_hsl() == [0.0, 50.0, 100.0]</span>
+
+xterm(<span class="Special">{code}</span>)           <a class="String" href="./../vital/Color.html#Vital.Color.xterm()" name="Vital.Color.xterm()">Vital.Color.xterm()</a>
+        Creates <a class="Identifier" href="./../vital/Color.html#Vital.Color-Color-object">Vital.Color-Color-object</a> with given parameters.
+        The value range of <span class="Special">{code}</span> is 0-255.
+
+        This converts color name to RGB values internally (so <span class="Comment">.as_rgb()</span>,
+        <span class="Comment">.as_rgb_str()</span>, <span class="Comment">.as_rgb_hex()</span> doesn't lose the precision).
+
+<span class="helpExample">        echo s:Color.xterm(0).as_rgb_hex() == '#000000'</span>
+<span class="helpExample">        echo s:Color.xterm(15).as_rgb_hex() == '#FFFFFF'</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">COLOR OBJECT</span>                            <a class="String" href="./../vital/Color.html#Vital.Color-Color-object" name="Vital.Color-Color-object">Vital.Color-Color-object</a>
+
+                                <a class="String" href="./../vital/Color.html#Vital.Color-Color.eq()" name="Vital.Color-Color.eq()">Vital.Color-Color.eq()</a>
+Color.eq(<span class="Special">{color}</span>)
+        Returns <a href="https://www.google.com/search?q=vim+%22TRUE%22&lr=lang_en"><span class="MissingTag">TRUE</span></a> if this object is equal to <span class="Special">{color}</span>.
+        Returns <a href="https://www.google.com/search?q=vim+%22FALSE%22&lr=lang_en"><span class="MissingTag">FALSE</span></a> otherwise.
+
+                                <a class="String" href="./../vital/Color.html#Vital.Color-Color.distance()" name="Vital.Color-Color.distance()">Vital.Color-Color.distance()</a>
+Color.distance(<span class="Special">{color}</span>)
+        Returns the distance of 3D vector (r, g, b).
+
+                                <a class="String" href="./../vital/Color.html#Vital.Color-Color.as_rgb()" name="Vital.Color-Color.as_rgb()">Vital.Color-Color.as_rgb()</a>
+Color.as_rgb()
+        Returns <span class="Comment">[r, g, b]</span> value.  r, g, b are <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a> values.
+
+                                <a class="String" href="./../vital/Color.html#Vital.Color-Color.as_rgb_str()" name="Vital.Color-Color.as_rgb_str()">Vital.Color-Color.as_rgb_str()</a>
+Color.as_rgb_str()
+        Returns a string like <span class="Comment">rgb({r},{g},{b})</span>.  r, g, b are <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a> values.
+
+                                <a class="String" href="./../vital/Color.html#Vital.Color-Color.as_rgb_hex()" name="Vital.Color-Color.as_rgb_hex()">Vital.Color-Color.as_rgb_hex()</a>
+Color.as_rgb_hex()
+        Returns a string like <span class="Comment">#{r}{g}{b}</span> (e.g. <span class="Comment">#000000</span>, always 7 digits).
+
+                                <a class="String" href="./../vital/Color.html#Vital.Color-Color.as_hsl()" name="Vital.Color-Color.as_hsl()">Vital.Color-Color.as_hsl()</a>
+Color.as_hsl()
+        Returns <span class="Comment">[h, s, l]</span> value.  h, s, l are <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a> values.
+
+                                <a class="String" href="./../vital/Color.html#Vital.Color-Color.as_hsl_str()" name="Vital.Color-Color.as_hsl_str()">Vital.Color-Color.as_hsl_str()</a>
+Color.as_hsl_str()
+        Returns a string like <span class="Comment">hsl({h},{s}%,{l}%)</span>.
+        h, s, l are <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a> values.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TODO</span>                                    <a class="String" href="./../vital/Color.html#Vital.Color-todo" name="Vital.Color-todo">Vital.Color-todo</a>
+
+- Add more terminal codes like Color.xterm()
+- Convert color object to the (exact|nearest) terminal code
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl:noet
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

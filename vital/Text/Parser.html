@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Text/Parser</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Text/Parser</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Text/Parser.html" name="vital/Text/Parser.txt">vital/Text/Parser.txt</a>         parser library.
+
+Maintainer: rbtnn &lt;naru123456789@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                          <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-contents" name="Vital.Text.Parser-contents">Vital.Text.Parser-contents</a>
+
+INTRODUCTION                             <a class="Identifier" href="./../../vital/Text/Parser.html#Vital.Text.Parser-introduction">Vital.Text.Parser-introduction</a>
+INTERFACE                                <a class="Identifier" href="./../../vital/Text/Parser.html#Vital.Text.Parser-interface">Vital.Text.Parser-interface</a>
+  FUNCTIONS                              <a class="Identifier" href="./../../vital/Text/Parser.html#Vital.Text.Parser-functions">Vital.Text.Parser-functions</a>
+OBJECTS                                  <a class="Identifier" href="./../../vital/Text/Parser.html#Vital.Text.Parser-objects">Vital.Text.Parser-objects</a>
+  Parser Object                          <a class="Identifier" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser">Vital.Text.Parser-Parser</a>
+EXAMPLES                                 <a class="Identifier" href="./../../vital/Text/Parser.html#Vital.Text.Parser-examples">Vital.Text.Parser-examples</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                                  <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-introduction" name="Vital.Text.Parser-introduction">Vital.Text.Parser-introduction</a>
+
+<a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser" name="Vital.Text.Parser">Vital.Text.Parser</a> is parser library.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                                        <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-interface" name="Vital.Text.Parser-interface">Vital.Text.Parser-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                                        <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-functions" name="Vital.Text.Parser-functions">Vital.Text.Parser-functions</a>
+
+parser()                                          <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser.parser()" name="Vital.Text.Parser.parser()">Vital.Text.Parser.parser()</a>
+        Creates a new Parser object.
+        A Parser object has exec(<span class="Special">{expr}</span>).
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                                            <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-objects" name="Vital.Text.Parser-objects">Vital.Text.Parser-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Parser Object                                       <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser" name="Vital.Text.Parser-Parser">Vital.Text.Parser-Parser</a>
+
+Parser.exec(<span class="Special">{expr}</span>)                          <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser.exec()" name="Vital.Text.Parser-Parser.exec()">Vital.Text.Parser-Parser.exec()</a>
+        Begins parsing <span class="Special">{expr}</span>.
+
+Parser.end()                                  <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser.end()" name="Vital.Text.Parser-Parser.end()">Vital.Text.Parser-Parser.end()</a>
+        Returns 1 if next() is the end of {lexed_tokens}, otherwise zero.
+
+Parser.next()                                <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser.next()" name="Vital.Text.Parser-Parser.next()">Vital.Text.Parser-Parser.next()</a>
+        Returns the next token.  This function does not consume.
+
+Parser.next_is(<span class="Special">{labels}</span>)                  <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser.next_is()" name="Vital.Text.Parser-Parser.next_is()">Vital.Text.Parser-Parser.next_is()</a>
+        Returns 1 if next().label is contained <span class="Special">{labels}</span>, otherwise zero.
+
+Parser.consume()                          <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser.consume()" name="Vital.Text.Parser-Parser.consume()">Vital.Text.Parser-Parser.consume()</a>
+        Consumes the next token from {lexed_tokens}.  Return this token.
+
+Parser.ignore()                            <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser.ignore()" name="Vital.Text.Parser-Parser.ignore()">Vital.Text.Parser-Parser.ignore()</a>
+        Consumes it while the next token is contained 'ignore_labels'.
+
+Parser.config(<span class="Special">{dict}</span>)                      <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-Parser.config()" name="Vital.Text.Parser-Parser.config()">Vital.Text.Parser-Parser.config()</a>
+        <span class="Special">{dict}</span> is options of this Parser object.
+        <span class="Special">{dict}</span> can have following keys.
+
+                'ignore_labels' : It is used Parser.ignore().
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">EXAMPLES</span>                                          <a class="String" href="./../../vital/Text/Parser.html#Vital.Text.Parser-examples" name="Vital.Text.Parser-examples">Vital.Text.Parser-examples</a>
+
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:L = s:V.import('Text.Lexer')</span>
+<span class="helpExample">        let s:P = s:V.import('Text.Parser')</span>
+
+
+<span class="helpExample">        let s:rules = [</span>
+<span class="helpExample">              \ [ 'NUMBER', '[0-9]\+' ],</span>
+<span class="helpExample">              \ [ 'PLUS', '+' ],</span>
+<span class="helpExample">              \ [ 'MUL', '*' ],</span>
+<span class="helpExample">              \ [ 'MINUS', '-' ],</span>
+<span class="helpExample">              \ [ 'DIV', '/' ],</span>
+<span class="helpExample">              \ [ 'WS', '\s\+' ],</span>
+<span class="helpExample">              \ ]</span>
+
+<span class="helpExample">        let s:lexed_obj = s:L.lexer(s:rules).exec('12 + 2 - 9 * 3 - 18 / 3 * 2')</span>
+<span class="helpExample">        let s:parser_obj = s:P.parser().exec(s:lexed_obj)</span>
+
+<span class="helpExample">        call s:parser_obj.config({ 'ignore_labels' : ['WS'] })</span>
+
+<span class="helpExample">        function! s:parser_obj.number() dict</span>
+<span class="helpExample">          call self.ignore()</span>
+<span class="helpExample">          if self.next_is('NUMBER')</span>
+<span class="helpExample">            return eval(self.consume().matched_text)</span>
+<span class="helpExample">          else</span>
+<span class="helpExample">            throw 'syntax error'</span>
+<span class="helpExample">          endif</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        function! s:parser_obj.term() dict</span>
+<span class="helpExample">          let lhs = self.number()</span>
+<span class="helpExample">          while ! self.end()</span>
+<span class="helpExample">            call self.ignore()</span>
+<span class="helpExample">            if self.next_is(['MUL'])</span>
+<span class="helpExample">              call self.consume()</span>
+<span class="helpExample">              let lhs = lhs * self.number()</span>
+<span class="helpExample">            elseif self.next_is(['DIV'])</span>
+<span class="helpExample">              call self.consume()</span>
+<span class="helpExample">              let lhs = lhs / self.number()</span>
+<span class="helpExample">            else</span>
+<span class="helpExample">              break</span>
+<span class="helpExample">            endif</span>
+<span class="helpExample">          endwhile</span>
+<span class="helpExample">          return lhs</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        function! s:parser_obj.expression() dict</span>
+<span class="helpExample">          let lhs = self.term()</span>
+<span class="helpExample">          while ! self.end()</span>
+<span class="helpExample">            call self.ignore()</span>
+<span class="helpExample">            if self.next_is(['PLUS'])</span>
+<span class="helpExample">              call self.consume()</span>
+<span class="helpExample">              let lhs = lhs + self.term()</span>
+<span class="helpExample">            elseif self.next_is(['MINUS'])</span>
+<span class="helpExample">              call self.consume()</span>
+<span class="helpExample">              let lhs = lhs - self.term()</span>
+<span class="helpExample">            else</span>
+<span class="helpExample">              break</span>
+<span class="helpExample">            endif</span>
+<span class="helpExample">          endwhile</span>
+<span class="helpExample">          return lhs</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:parser_obj.expression()</span>
+<span class="helpExample">        &quot; -25</span>
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

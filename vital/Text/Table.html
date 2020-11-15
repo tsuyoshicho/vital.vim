@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Text/Table</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Text/Table</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Text/Table.html" name="vital/Text/Table.txt">vital/Text/Table.txt</a>          Character table library.
+
+Maintainer: kamichidu &lt;c.kamunagi at gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                        <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-contents" name="Vital.Text.Table-contents">Vital.Text.Table-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-introduction">Vital.Text.Table-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-interface">Vital.Text.Table-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-functions">Vital.Text.Table-functions</a>
+  OBJECTS                         <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-objects">Vital.Text.Table-objects</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                    <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-introduction" name="Vital.Text.Table-introduction">Vital.Text.Table-introduction</a>
+
+<a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table" name="Vital.Text.Table">Vital.Text.Table</a> is a character table formatter. It will make a character
+table such as below:
+
+        +---------+---------+---------+
+        | header1 | header2 | header3 | &lt;- (A) Header Row
+        +---------+---------+---------+
+        | r1c1    | r1c2    | r1c3    | &lt;- (B) Body Row
+        | r2c1    | r2c2    | r2c3    |
+        | r3c1    | r3c2    | r3c3    |
+        +---------+---------+---------+
+        | footer1 | footer2 | footer3 | &lt;- (C) Footer Row
+        +---------+---------+---------+ &lt;- (D) Horizontal Border
+        ^
+        |
+       (E) Vertical Border
+
+        (A) Header Row
+                A table header. It is configured by
+                <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.header()">Vital.Text.Table-Table.header()</a>.
+        (B) Body Row
+                A table body. It is configured by
+                <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.rows()">Vital.Text.Table-Table.rows()</a> or
+                <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.add_row()">Vital.Text.Table-Table.add_row()</a>.
+        (C) Footer Row
+                A table footer. It is configured by
+                <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.footer()">Vital.Text.Table-Table.footer()</a>.
+        (D) Horizontal Border
+                A horizontal border. It is configured by
+                <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.hborder()">Vital.Text.Table-Table.hborder()</a>.
+        (E) Vertical Border
+                A vertical border. It is configured by
+                <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.vborder()">Vital.Text.Table-Table.vborder()</a>.
+
+<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table">Vital.Text.Table</a> is easy to use. You can make a character table such above
+by:
+
+<span class="helpExample">    let s:T = vital#{plugin-name}#new().import('Text.Table')</span>
+<span class="helpExample">    let s:table = s:T.new({</span>
+<span class="helpExample">    \   'columns': [{}, {}, {}],</span>
+<span class="helpExample">    \   'header':  ['header1', 'header2', 'header3'],</span>
+<span class="helpExample">    \   'footer':  ['footer1', 'footer2', 'footer3'],</span>
+<span class="helpExample">    \})</span>
+
+<span class="helpExample">    call s:table.rows([</span>
+<span class="helpExample">    \   ['r1c1', 'r1c2', 'r1c3'],</span>
+<span class="helpExample">    \   ['r2c1', 'r2c2', 'r2c3'],</span>
+<span class="helpExample">    \   ['r3c1', 'r3c2', 'r3c3'],</span>
+<span class="helpExample">    \])</span>
+
+<span class="helpExample">    echo s:table.stringify()</span>
+
+And you can customize the style of table by
+<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.border_style()">Vital.Text.Table-Table.border_style()</a>.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                       <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-interface" name="Vital.Text.Table-interface">Vital.Text.Table-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                       <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-functions" name="Vital.Text.Table-functions">Vital.Text.Table-functions</a>
+
+new([<span class="Special">{config}</span>])                 <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table.new()" name="Vital.Text.Table.new()">Vital.Text.Table.new()</a>
+        Creates a new Table object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table">Vital.Text.Table-Table</a>).
+        You can configure a new Table object via <span class="Special">{config}</span>(<a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>).
+        <span class="Special">{config}</span> takes some attributes below:
+
+        hborder (Default: 1)
+                Same to <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.hborder()">Vital.Text.Table-Table.hborder()</a>.
+        vborder (Default: 1)
+                Same to <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.vborder()">Vital.Text.Table-Table.vborder()</a>.
+        columns (Default: [])
+                Same to <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.columns()">Vital.Text.Table-Table.columns()</a>.
+        header (Default: [])
+                Same to <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.header()">Vital.Text.Table-Table.header()</a>.
+        rows (Default: [])
+                Same to <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.rows()">Vital.Text.Table-Table.rows()</a>.
+        footer (Default: [])
+                Same to <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.footer()">Vital.Text.Table-Table.footer()</a>.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                         <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-objects" name="Vital.Text.Table-objects">Vital.Text.Table-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Table Object                    <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table" name="Vital.Text.Table-Table">Vital.Text.Table-Table</a>
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.hborder()" name="Vital.Text.Table-Table.hborder()">Vital.Text.Table-Table.hborder()</a>
+Table.hborder()
+        Returns 1 If horizontal border will be drawn. Otherwise, 0.
+Table.hborder(<span class="Special">{hborder}</span>)
+        Controls to make a table with/without horizontal border.
+        e.g.
+<span class="helpExample">        table.hborder(1)</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.border_style()" name="Vital.Text.Table-Table.border_style()">Vital.Text.Table-Table.border_style()</a>
+Table.border_style()
+        Returns a border style object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-BorderStyle">Vital.Text.Table-BorderStyle</a>).
+Table.border_style(<span class="Special">{style}</span>)
+        Sets a border style object(). See <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-BorderStyle">Vital.Text.Table-BorderStyle</a>
+        section for more details.
+        e.g.
+<span class="helpExample">        table.border_style({</span>
+<span class="helpExample">        \ 'joint': {</span>
+<span class="helpExample">        \   'row': '+',</span>
+<span class="helpExample">        \ },</span>
+<span class="helpExample">        \ 'border': {</span>
+<span class="helpExample">        \   'left':  '&lt;',</span>
+<span class="helpExample">        \   'right': '&gt;',</span>
+<span class="helpExample">        \ },</span>
+<span class="helpExample">        \})</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.vborder()" name="Vital.Text.Table-Table.vborder()">Vital.Text.Table-Table.vborder()</a>
+Table.vborder()
+        Returns 1 If vertical border will be drawn. Otherwise, 0.
+Table.vborder(<span class="Special">{vborder}</span>)
+        Controls to make a table with/without vertical border.
+        e.g.
+<span class="helpExample">        table.vborder(1)</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.columns()" name="Vital.Text.Table-Table.columns()">Vital.Text.Table-Table.columns()</a>
+Table.columns()
+        Returns column configuration objects.
+Table.columns(<span class="Special">{columns}</span>)
+        Sets column configuration objects(<a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>). If its object already
+        has one or more rows, it will throw an exception. See
+        <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-ColumnConfig">Vital.Text.Table-ColumnConfig</a> section for more details.
+        e.g.
+<span class="helpExample">        table.columns([</span>
+<span class="helpExample">        \ {'halign': 'left',   'valign': 'top',    'width': 30},</span>
+<span class="helpExample">        \ {'halign': 'right',  'valign': 'center',            },</span>
+<span class="helpExample">        \ {'halign': 'center', 'valign': 'bottom',            },</span>
+<span class="helpExample">        \ {                                                   },</span>
+<span class="helpExample">        \])</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.add_column()" name="Vital.Text.Table-Table.add_column()">Vital.Text.Table-Table.add_column()</a>
+Table.add_column(<span class="Special">{column}</span>)
+        Adds column configuration object. If its object already has one or
+        more rows, it will throw an exception. See
+        <a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-ColumnConfig">Vital.Text.Table-ColumnConfig</a> section for more details.
+        e.g.
+<span class="helpExample">        table.add_column({'halign': 'left', 'valign': 'top', 'width': 30})</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.header()" name="Vital.Text.Table-Table.header()">Vital.Text.Table-Table.header()</a>
+Table.header()
+        Returns a header row object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Row">Vital.Text.Table-Row</a>).
+Table.header(<span class="Special">{headers}</span>)
+        Sets a header row object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Row">Vital.Text.Table-Row</a>). If given
+        <span class="Special">{headers}</span> size is greater than its columns size, it will throw an
+        exception.
+        e.g.
+<span class="helpExample">        table.header(['header1', 'header1', 'header1'])</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.rows()" name="Vital.Text.Table-Table.rows()">Vital.Text.Table-Table.rows()</a>
+Table.rows()
+        Returns a row object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Row">Vital.Text.Table-Row</a>).
+Table.rows(<span class="Special">{rows}</span>)
+        Sets a row object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Row">Vital.Text.Table-Row</a>). If given any row of <span class="Special">{rows}</span>
+        size is greater than its columns size, it will throw an exception.
+        e.g.
+<span class="helpExample">        table.rows([</span>
+<span class="helpExample">        \ ['row1column1', 'row1column2', 'row1column3'],</span>
+<span class="helpExample">        \ ['row2column1', 'row2column2', 'row2column3'],</span>
+<span class="helpExample">        \ ['row3column1', 'row3column2', 'row3column3'],</span>
+<span class="helpExample">        \])</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.add_row()" name="Vital.Text.Table-Table.add_row()">Vital.Text.Table-Table.add_row()</a>
+Table.add_row(<span class="Special">{row}</span>)
+        Adds a row object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Row">Vital.Text.Table-Row</a>). If given <span class="Special">{row}</span> size is
+        greater than its columns size, it will throw an exception.
+        e.g.
+<span class="helpExample">        table.add_row(['column1', 'column2', 'column3'])</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.footer()" name="Vital.Text.Table-Table.footer()">Vital.Text.Table-Table.footer()</a>
+Table.footer()
+        Returns a footer row object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Row">Vital.Text.Table-Row</a>).
+Table.footer(<span class="Special">{footers}</span>)
+        Sets a footer row object(<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-Row">Vital.Text.Table-Row</a>). If given <span class="Special">{footer}</span>
+        size is greater than its columns size, it will throw an exception.
+        e.g.
+<span class="helpExample">        table.footer(['footer1', 'footer2', 'footer3'])</span>
+
+
+                                <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Table.stringify()" name="Vital.Text.Table-Table.stringify()">Vital.Text.Table-Table.stringify()</a>
+Table.stringify([<span class="Special">{tstyle}</span>])
+        Makes a table by configuration. Returns a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> which has each table
+        row strings. And it can take a table style object
+        (<a class="Identifier" href="./../../vital/Text/Table.html#Vital.Text.Table-TableStyle">Vital.Text.Table-TableStyle</a>).
+        e.g.
+<span class="helpExample">        &quot; [</span>
+<span class="helpExample">        &quot;   ['+------+------+------+'],</span>
+<span class="helpExample">        &quot;   ['| h1   | h2   | h3   |'],</span>
+<span class="helpExample">        &quot;   ['+------+------+------+'],</span>
+<span class="helpExample">        &quot;   ['| r1c1 | r1c2 | r1c3 |'],</span>
+<span class="helpExample">        &quot;   ['| r2c1 | r2c2 | r2c3 |'],</span>
+<span class="helpExample">        &quot;   ['+------+------+------+'],</span>
+<span class="helpExample">        &quot;   ['| f1   | f2   | f3   |'],</span>
+<span class="helpExample">        &quot;   ['+------+------+------+'],</span>
+<span class="helpExample">        &quot; ]</span>
+<span class="helpExample">        echo table.stringify()</span>
+
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Row Object                      <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-Row" name="Vital.Text.Table-Row">Vital.Text.Table-Row</a>
+
+Row Object is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> containing <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>, <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a>, <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a> values.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Column Config Object            <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-ColumnConfig" name="Vital.Text.Table-ColumnConfig">Vital.Text.Table-ColumnConfig</a>
+
+ColumnConfig.halign             <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-ColumnConfig.halign" name="Vital.Text.Table-ColumnConfig.halign">Vital.Text.Table-ColumnConfig.halign</a>
+        Specify a horizontal alignment for its column. &quot;left&quot;, &quot;right&quot; and
+        &quot;center&quot; are supported. Default is &quot;left&quot;.
+
+        +---------------------------+
+        | &quot;left&quot;  &quot;center&quot;  &quot;right&quot; |
+        +---------------------------+
+
+ColumnConfig.valign             <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-ColumnConfig.valign" name="Vital.Text.Table-ColumnConfig.valign">Vital.Text.Table-ColumnConfig.valign</a>
+        Specify a vertical alignment for its column. &quot;top&quot;, &quot;bottom&quot; and
+        &quot;center&quot; are supported. Default is &quot;top&quot;.
+
+        +----------+
+        | &quot;top&quot;    |
+        | &quot;center&quot; |
+        | &quot;bottom&quot; |
+        +----------+
+
+ColumnConfig.width              <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-ColumnConfig.width" name="Vital.Text.Table-ColumnConfig.width">Vital.Text.Table-ColumnConfig.width</a>
+        Specify a column width for its column. It is number of characters
+        similar to <a href="https://www.google.com/search?q=vim+%22'columns'%22&lr=lang_en"><span class="MissingTag">'columns'</span></a>. Default is depends on data(no wrapping).
+
+        &lt;- width  -&gt;
+        +----------+
+        |          |
+        +----------+
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Table Style Object              <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-TableStyle" name="Vital.Text.Table-TableStyle">Vital.Text.Table-TableStyle</a>
+
+TableStyle.max_width            <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-TableStyle.max_width" name="Vital.Text.Table-TableStyle.max_width">Vital.Text.Table-TableStyle.max_width</a>
+        Specify a table width for whole table. It is number of characters
+        similar to <a href="https://www.google.com/search?q=vim+%22'columns'%22&lr=lang_en"><span class="MissingTag">'columns'</span></a>. Default is 0 (unlimited).
+
+        &lt;- width   -&gt;
+        +---+---+---+
+        |   |   |   |
+        +---+---+---+
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Border Style Object             <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-BorderStyle" name="Vital.Text.Table-BorderStyle">Vital.Text.Table-BorderStyle</a>
+
+BorderStyle.joint               <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-BorderStyle.joint" name="Vital.Text.Table-BorderStyle.joint">Vital.Text.Table-BorderStyle.joint</a>
+        Configures a border joint character(s). It's okay to use multi-byte
+        characters and multiple characters. The kinds of joint you can specify
+        by <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> are described below:
+
+        (A) top_left      (B) top      (C) top_right
+        (D) head_left     (E) head     (F) head_right
+        (G) left          (H) row      (I) right
+        (J) foot_left     (K) foot     (L) foot_right
+        (M) bottom_left   (<span class="Special">N</span>) bottom   (O) bottom_right
+
+        (A)------(B)------(B)------(C)
+         |        |        |        |
+        (D)------(E)------(E)------(F)
+         |        |        |        |
+        (G)------(H)------(H)------(I)
+         |        |        |        |
+        (J)------(K)------(K)------(L)
+         |        |        |        |
+        (M)------(<span class="Special">N</span>)------(<span class="Special">N</span>)------(O)
+
+BorderStyle.border              <a class="String" href="./../../vital/Text/Table.html#Vital.Text.Table-BorderStyle.border" name="Vital.Text.Table-BorderStyle.border">Vital.Text.Table-BorderStyle.border</a>
+
+        Configures a border character(s). It's okay to use multi-byte
+        characters and multiple characters. The kinds of border you can
+        specify by <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> are described below:
+
+        (a) top      (b) head     (c) row
+        (d) foot     (e) bottom   (f) left
+        (g) column   (h) right
+
+         +---(a)---+---(a)---+---(a)---+
+        (f)       (g)       (g)       (h)
+         +---(b)---+---(b)---+---(b)---+
+        (f)       (g)       (g)       (h)
+         +---(c)---+---(c)---+---(c)---+
+        (f)       (g)       (g)       (h)
+         +---(d)---+---(d)---+---(d)---+
+        (f)       (g)       (g)       (h)
+         +---(e)---+---(e)---+---(e)---+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

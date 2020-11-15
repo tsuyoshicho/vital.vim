@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Web/HTTP</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.String { color: #032f62; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Web/HTTP</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Web/HTTP.html" name="vital/Web/HTTP.txt">vital/Web/HTTP.txt</a>    simple HTTP client library.
+
+Maintainer: mattn &lt;mattn.jp@gmail.com&gt;
+            thinca &lt;thinca+vim@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-contents" name="Vital.Web.HTTP-contents">Vital.Web.HTTP-contents</a>
+
+INTRODUCTION                            <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-introduction">Vital.Web.HTTP-introduction</a>
+INTERFACE                               <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-interface">Vital.Web.HTTP-interface</a>
+  Functions                             <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-functions">Vital.Web.HTTP-functions</a>
+  Response                              <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-response">Vital.Web.HTTP-response</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-introduction" name="Vital.Web.HTTP-introduction">Vital.Web.HTTP-introduction</a>
+
+<a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP" name="Vital.Web.HTTP">Vital.Web.HTTP</a> is an HTTP Utilities Library.  It provides a simple HTTP
+client.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-interface" name="Vital.Web.HTTP-interface">Vital.Web.HTTP-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-functions" name="Vital.Web.HTTP-functions">Vital.Web.HTTP-functions</a>
+
+get(<span class="Special">{url}</span> [, <span class="Special">{param}</span> [, <span class="Special">{header}</span>]])     <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.get()" name="Vital.Web.HTTP.get()">Vital.Web.HTTP.get()</a>
+        Send a GET request to the server.
+        This is just a wrapper of <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.request()">Vital.Web.HTTP.request()</a>.
+
+post(<span class="Special">{url}</span> [, <span class="Special">{param}</span> [, <span class="Special">{header}</span>]])    <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.post()" name="Vital.Web.HTTP.post()">Vital.Web.HTTP.post()</a>
+        Send a POST request to the server.
+        This is just a wrapper of <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.request()">Vital.Web.HTTP.request()</a>.
+
+request(<span class="Special">{settings}</span>)                     <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.request()" name="Vital.Web.HTTP.request()">Vital.Web.HTTP.request()</a>
+request(<span class="Special">{url}</span> [, <span class="Special">{settings}</span>])
+request(<span class="Special">{method}</span>, <span class="Special">{url}</span> [, <span class="Special">{settings}</span>])
+        Send a request to the server.
+        This function requires one of the clients, &quot;curl&quot; or &quot;wget&quot;.
+        <span class="Special">{settings}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> which contains the following items:
+
+        &quot;url&quot;           Required
+                URL of a server.
+
+        &quot;method&quot;        Default: &quot;GET&quot;
+                HTTP Method, such as GET, HEAD, POST, PUT, DELETE, or PATCH.
+
+        &quot;param&quot;         Default: (None)
+                GET parameters.  This is a string or a dictionary.
+                If dictionary, it is converted to a string by
+                <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.encodeURI()">Vital.Web.HTTP.encodeURI()</a>.
+                This is appended to url.
+
+        &quot;data&quot;          Default: (None)
+                POST data.  This is a string, a list, or a dictionary.
+                If it is a dictionary, it is converted to a string by
+                <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.encodeURI()">Vital.Web.HTTP.encodeURI()</a>.
+
+        &quot;headers&quot;       Default: (None)
+                Request headers.  This is a dictionary.
+
+        &quot;contentType&quot;   Default: (None)
+                Content-Type for &quot;data&quot;.
+                This is one of &quot;headers&quot;.  This is used preferentially.
+
+        &quot;outputFile&quot;    Default: (None)
+                Output the result to this file.
+                &quot;content&quot; of the result become empty when this is specified.
+
+        &quot;timeout&quot;       Default: (None)
+                Network timeout by seconds.
+
+        &quot;username&quot;      Default: (None)
+                User name for an HTTP authentication.
+
+        &quot;password&quot;      Default: (None)
+                Password for an HTTP authentication.
+
+        &quot;bearerToken&quot;   Default: (None)
+                Bearer token for an HTTP authentication (OAuth2).
+
+        &quot;maxRedirect&quot;   Default: 20
+                Maximum number of redirections.
+                The default is 20, which is usually far more than necessary.
+
+        &quot;retry&quot;         Default: 1
+                Maximum number of retries.
+
+        &quot;client&quot;        Default: [&quot;python&quot;, &quot;curl&quot;, &quot;wget&quot;,
+                                        &quot;python3&quot;, &quot;python2&quot;]
+                Candidate list of HTTP client to use for a request.
+                The first available one is used.
+                A string as an HTTP client is also possible.
+                See also <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-client">Vital.Web.HTTP-client</a>.
+
+        &quot;command&quot;
+                Command name for a client.  You should use with &quot;client&quot;.
+                This is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> that has client name as key and has the
+                command as value.
+                This maybe becomes like the following.
+<span class="helpExample">                {</span>
+<span class="helpExample">                  &quot;curl&quot;: &quot;/usr/bin/curl&quot;,</span>
+<span class="helpExample">                  &quot;wget&quot;: &quot;/usr/local/bin/wget&quot;,</span>
+<span class="helpExample">                }</span>
+
+        &quot;authMethod&quot;    Default: (None)
+                (This is only valid for &quot;curl&quot; interface.)
+                Specify the authorization method.
+                The value must be in [<a href="https://www.google.com/search?q=vim+%22'basic'%22&lr=lang_en"><span class="MissingTag">'basic'</span></a>, <a href="https://www.google.com/search?q=vim+%22'digest'%22&lr=lang_en"><span class="MissingTag">'digest'</span></a>, <a href="https://www.google.com/search?q=vim+%22'ntlm'%22&lr=lang_en"><span class="MissingTag">'ntlm'</span></a>, <a href="https://www.google.com/search?q=vim+%22'negotiate'%22&lr=lang_en"><span class="MissingTag">'negotiate'</span></a>,
+                'oauth2']
+                The default value is None, and then use &quot;anyauth&quot;.
+
+        &quot;gzipDecompress&quot;        Default: 0
+                Attempt to decompress response data as if it was gzipped
+
+        &quot;unixSocket&quot;    Default: (None)
+                Use --unix-sokect (only curl &gt;= 7.40.0)
+
+parseHeader(<span class="Special">{headers}</span>)                  <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.parseHeader()" name="Vital.Web.HTTP.parseHeader()">Vital.Web.HTTP.parseHeader()</a>
+        Parse <span class="Special">{headers}</span> list to a dictionary.
+        Duplicated fields are overwritten.
+
+encodeURI(<span class="Special">{param}</span>)                      <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.encodeURI()" name="Vital.Web.HTTP.encodeURI()">Vital.Web.HTTP.encodeURI()</a>
+        Encode params as URI query.
+
+decodeURI(<span class="Special">{str}</span>)                        <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.decodeURI()" name="Vital.Web.HTTP.decodeURI()">Vital.Web.HTTP.decodeURI()</a>
+        Decode string as URI params.
+
+encodeURIComponent(<span class="Special">{str}</span>)               <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.encodeURIComponent()" name="Vital.Web.HTTP.encodeURIComponent()">Vital.Web.HTTP.encodeURIComponent()</a>
+        Encode param as URI components.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">RESPONSE</span>                                <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-response" name="Vital.Web.HTTP-response">Vital.Web.HTTP-response</a>
+
+<a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.request()">Vital.Web.HTTP.request()</a>, <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.get()">Vital.Web.HTTP.get()</a>, and <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.post()">Vital.Web.HTTP.post()</a>
+return data structure as <a href="https://www.google.com/search?q=vim+%22Directory%22&lr=lang_en"><span class="MissingTag">Directory</span></a> like following.
+
+<span class="helpExample">        {</span>
+<span class="helpExample">          &quot;header&quot;: [</span>
+<span class="helpExample">            &quot;Content-Type: text/html&quot;,</span>
+<span class="helpExample">            &quot;Content-Length: 310&quot;</span>
+<span class="helpExample">          ],</span>
+<span class="helpExample">          &quot;allHeaders&quot;: [</span>
+<span class="helpExample">            &quot;Set-Cookie: k1=v1; Path=/&quot;,</span>
+<span class="helpExample">            &quot;Content-Type: text/html&quot;,</span>
+<span class="helpExample">            &quot;Content-Length: 310&quot;</span>
+<span class="helpExample">          ],</span>
+<span class="helpExample">          &quot;content&quot;: &quot;&lt;html&gt; .....&quot;,</span>
+<span class="helpExample">          &quot;status&quot;: 200,</span>
+<span class="helpExample">          &quot;statusText&quot;: &quot;OK&quot;,</span>
+<span class="helpExample">          &quot;success&quot;: 1,</span>
+<span class="helpExample">          &quot;redirectInfo&quot;: [],</span>
+<span class="helpExample">        }</span>
+
+&quot;header&quot;
+                The header lines of a response.  This can convert to
+                <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> by <a class="Identifier" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP.parseHeader()">Vital.Web.HTTP.parseHeader()</a>.
+
+&quot;allHeaders&quot;
+                All of header lines that includes redirectInfo.
+
+&quot;content&quot;
+                The content of a response.
+
+&quot;status&quot;
+                The http status code of a response.
+                If the code couldn't take, this is 0.
+
+&quot;statusText&quot;
+                The http status code text of a response.
+                If the code couldn't take, this is the empty string.
+
+&quot;success&quot;
+                This is 1 if the &quot;status&quot; is 2xx.
+
+&quot;redirectInfo&quot;
+                When the request was redirected, the redirected responses are
+                stored.  Form of these are the same as a response.
+
+
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">CLIENT</span>                                  <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-client" name="Vital.Web.HTTP-client">Vital.Web.HTTP-client</a>
+
+The following can be used.
+(TODO: More document.  Especially about limitation.)
+
+python                                  <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-client-python" name="Vital.Web.HTTP-client-python">Vital.Web.HTTP-client-python</a>
+        &quot;python&quot; as &quot;python3&quot; or &quot;python2&quot; auto select.
+        (High priority for &quot;python3&quot;.)
+
+curl                                    <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-client-curl" name="Vital.Web.HTTP-client-curl">Vital.Web.HTTP-client-curl</a>
+        Use curl command.
+
+        <span class="String"><a href="http://curl.haxx.se/">http://curl.haxx.se/</a></span>
+
+wget                                    <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-client-wget" name="Vital.Web.HTTP-client-wget">Vital.Web.HTTP-client-wget</a>
+        Use wget command.
+
+        <span class="String"><a href="http://www.gnu.org/software/wget/">http://www.gnu.org/software/wget/</a></span>
+
+python3                                 <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-client-python3" name="Vital.Web.HTTP-client-python3">Vital.Web.HTTP-client-python3</a>
+        Use Python3's urllib.request library via <a href="https://www.google.com/search?q=vim+%22if_pyth.txt%22&lr=lang_en"><span class="MissingTag">if_pyth.txt</span></a>.
+
+python2                                 <a class="String" href="./../../vital/Web/HTTP.html#Vital.Web.HTTP-client-python2" name="Vital.Web.HTTP-client-python2">Vital.Web.HTTP-client-python2</a>
+        Use Python2's urllib2 library via <a href="https://www.google.com/search?q=vim+%22if_pyth.txt%22&lr=lang_en"><span class="MissingTag">if_pyth.txt</span></a>.
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

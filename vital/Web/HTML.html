@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Web/HTML</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Web/HTML</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Web/HTML.html" name="vital/Web/HTML.txt">vital/Web/HTML.txt</a>                    HTML parser written in pure Vim script.
+
+Maintainer: mattn &lt;mattn.jp@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML-contents" name="Vital.Web.HTML-contents">Vital.Web.HTML-contents</a>
+
+INTRODUCTION                            <a class="Identifier" href="./../../vital/Web/HTML.html#Vital.Web.HTML-introduction">Vital.Web.HTML-introduction</a>
+INTERFACE                               <a class="Identifier" href="./../../vital/Web/HTML.html#Vital.Web.HTML-interface">Vital.Web.HTML-interface</a>
+  Functions                             <a class="Identifier" href="./../../vital/Web/HTML.html#Vital.Web.HTML-functions">Vital.Web.HTML-functions</a>
+  Structures                            <a class="Identifier" href="./../../vital/Web/HTML.html#Vital.Web.HTML-structures">Vital.Web.HTML-structures</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML-introduction" name="Vital.Web.HTML-introduction">Vital.Web.HTML-introduction</a>
+
+<a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML" name="Vital.Web.HTML">Vital.Web.HTML</a> is HTML parser Library. This is based on <a class="Identifier" href="./../../vital/Web/XML.html#Vital.Web.XML">Vital.Web.XML</a>.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML-interface" name="Vital.Web.HTML-interface">Vital.Web.HTML-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML-functions" name="Vital.Web.HTML-functions">Vital.Web.HTML-functions</a>
+
+parse(<span class="Special">{content}</span>)                        <a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML.parse()" name="Vital.Web.HTML.parse()">Vital.Web.HTML.parse()</a>
+        Parse content into DOM object.
+
+parseFile(<span class="Special">{file}</span>)                       <a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML.parseFile()" name="Vital.Web.HTML.parseFile()">Vital.Web.HTML.parseFile()</a>
+        Parse html file into DOM object.
+
+parseURL(<span class="Special">{url}</span>)                         <a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML.parseURL()" name="Vital.Web.HTML.parseURL()">Vital.Web.HTML.parseURL()</a>
+        Get and parse html into DOM object.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">STRUCTURES</span>                              <a class="String" href="./../../vital/Web/HTML.html#Vital.Web.HTML-structures" name="Vital.Web.HTML-structures">Vital.Web.HTML-structures</a>
+
+DOM object is structured as <a href="https://www.google.com/search?q=vim+%22Directory%22&lr=lang_en"><span class="MissingTag">Directory</span></a> like following.
+
+<span class="helpExample">        {</span>
+<span class="helpExample">          &quot;name&quot;: &quot;a&quot;,</span>
+<span class="helpExample">          &quot;attr&quot;: {</span>
+<span class="helpExample">            &quot;href&quot;: &quot;<a href="http://example.com">http://example.com</a>&quot;,</span>
+<span class="helpExample">            &quot;title&quot;: &quot;example&quot;,</span>
+<span class="helpExample">          },</span>
+<span class="helpExample">          &quot;child&quot;: [...]</span>
+<span class="helpExample">        }</span>
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

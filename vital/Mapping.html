@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Mapping</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Mapping</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/Mapping.html" name="vital/Mapping.txt">vital/Mapping.txt</a>             Utilities for mapping / abbreviation.
+
+Maintainer: tyru    &lt;tyru.exe@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping-contents" name="Vital.Mapping-contents">Vital.Mapping-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/Mapping.html#Vital.Mapping-introduction">Vital.Mapping-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../vital/Mapping.html#Vital.Mapping-interface">Vital.Mapping-interface</a>
+  Functions                       <a class="Identifier" href="./../vital/Mapping.html#Vital.Mapping-functions">Vital.Mapping-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../vital/Mapping.html#Vital.Mapping-introduction" name="Vital.Mapping-introduction">Vital.Mapping-introduction</a>
+
+<a class="String" href="./../vital/Mapping.html#Vital.Mapping" name="Vital.Mapping">Vital.Mapping</a> is a utility functions related to <a href="https://www.google.com/search?q=vim+%22:map%22&lr=lang_en"><span class="MissingTag">:map</span></a>, <a href="https://www.google.com/search?q=vim+%22:unmap%22&lr=lang_en"><span class="MissingTag">:unmap</span></a>,
+<a href="https://www.google.com/search?q=vim+%22:abbreviate%22&lr=lang_en"><span class="MissingTag">:abbreviate</span></a>, <a href="https://www.google.com/search?q=vim+%22:unabbreviate%22&lr=lang_en"><span class="MissingTag">:unabbreviate</span></a> commands.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../vital/Mapping.html#Vital.Mapping-interface" name="Vital.Mapping-interface">Vital.Mapping-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../vital/Mapping.html#Vital.Mapping-functions" name="Vital.Mapping-functions">Vital.Mapping-functions</a>
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.execute_abbr_command()" name="Vital.Mapping.execute_abbr_command()">Vital.Mapping.execute_abbr_command()</a>
+execute_abbr_command(<span class="Special">{mode}</span>, <span class="Special">{dict}</span>, <span class="Special">{lhs}</span>, <span class="Special">{rhs}</span>)
+        Execute <span class="Comment">get_abbr_command(mode, dict, lhs, rhs)</span> result.
+        See <a href="https://www.google.com/search?q=vim+%22Mapping.get_abbr_command()%22&lr=lang_en"><span class="MissingTag">Mapping.get_abbr_command()</span></a>.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.execute_map_command()" name="Vital.Mapping.execute_map_command()">Vital.Mapping.execute_map_command()</a>
+execute_map_command(<span class="Special">{mode}</span>, <span class="Special">{dict}</span>, <span class="Special">{lhs}</span>, <span class="Special">{rhs}</span>)
+        Execute <span class="Comment">get_map_command(mode, dict, lhs, rhs)</span> result.
+        See <a href="https://www.google.com/search?q=vim+%22Mapping.get_map_command()%22&lr=lang_en"><span class="MissingTag">Mapping.get_map_command()</span></a>.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.execute_unmap_command()" name="Vital.Mapping.execute_unmap_command()">Vital.Mapping.execute_unmap_command()</a>
+execute_unmap_command(<span class="Special">{mode}</span>, <span class="Special">{dict}</span>, <span class="Special">{lhs}</span>)
+        Execute <span class="Comment">get_unmap_command(mode, dict, lhs)</span> result.
+        See <a href="https://www.google.com/search?q=vim+%22Mapping.get_unmap_command()%22&lr=lang_en"><span class="MissingTag">Mapping.get_unmap_command()</span></a>.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.get_all_modes()" name="Vital.Mapping.get_all_modes()">Vital.Mapping.get_all_modes()</a>
+get_all_modes()
+        Returns string which represents all mode characters (&quot;noiclxs&quot;).
+        <span class="Todo">NOTE</span>: &quot;v&quot; is not contained. Because &quot;x&quot; and &quot;s&quot; already mean &quot;v&quot;.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.get_all_modes_list()" name="Vital.Mapping.get_all_modes_list()">Vital.Mapping.get_all_modes_list()</a>
+get_all_modes_list()
+        Returns <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> which represents all mode characters.
+        Same as <span class="Comment">split(get_all_modes(), '\zs')</span> .
+        See <a href="https://www.google.com/search?q=vim+%22Mapping.get_all_modes()%22&lr=lang_en"><span class="MissingTag">Mapping.get_all_modes()</span></a>.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.get_abbr_command()" name="Vital.Mapping.get_abbr_command()">Vital.Mapping.get_abbr_command()</a>
+get_abbr_command(<span class="Special">{mode}</span>, <span class="Special">{dict}</span>, <span class="Special">{lhs}</span>, <span class="Special">{rhs}</span>)
+        Constructs <a href="https://www.google.com/search?q=vim+%22:abbreviate%22&lr=lang_en"><span class="MissingTag">:abbreviate</span></a> command string.
+        <span class="Special">{mode}</span> is a character of mode.
+        <span class="Special">{dict}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> of options.
+        <span class="Special">{lhs}</span> and <span class="Special">{rhs}</span> are strings of lhs/rhs of <a href="https://www.google.com/search?q=vim+%22:map%22&lr=lang_en"><span class="MissingTag">:map</span></a> command.
+        The options can be created by <a href="https://www.google.com/search?q=vim+%22Mapping.options_chars2dict()%22&lr=lang_en"><span class="MissingTag">Mapping.options_chars2dict()</span></a> or
+        <a href="https://www.google.com/search?q=vim+%22maparg()%22&lr=lang_en"><span class="MissingTag">maparg()</span></a>'s return value when <span class="Special">{dict}</span> is non-zero.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.get_map_command()" name="Vital.Mapping.get_map_command()">Vital.Mapping.get_map_command()</a>
+get_map_command(<span class="Special">{mode}</span>, <span class="Special">{dict}</span>, <span class="Special">{lhs}</span>, <span class="Special">{rhs}</span>)
+        Constructs <a href="https://www.google.com/search?q=vim+%22:map%22&lr=lang_en"><span class="MissingTag">:map</span></a> command string.
+        <span class="Special">{mode}</span> is a character of mode.
+        <span class="Special">{dict}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> of options.
+        <span class="Special">{lhs}</span> and <span class="Special">{rhs}</span> are strings of lhs/rhs of <a href="https://www.google.com/search?q=vim+%22:map%22&lr=lang_en"><span class="MissingTag">:map</span></a> command.
+        The options can be created by <a href="https://www.google.com/search?q=vim+%22Mapping.options_chars2dict()%22&lr=lang_en"><span class="MissingTag">Mapping.options_chars2dict()</span></a> or
+        <a href="https://www.google.com/search?q=vim+%22maparg()%22&lr=lang_en"><span class="MissingTag">maparg()</span></a>'s return value when <span class="Special">{dict}</span> is non-zero.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.get_unabbr_command()" name="Vital.Mapping.get_unabbr_command()">Vital.Mapping.get_unabbr_command()</a>
+get_unabbr_command(<span class="Special">{mode}</span>, <span class="Special">{dict}</span>, <span class="Special">{lhs}</span>)
+        Constructs <a href="https://www.google.com/search?q=vim+%22:unabbreviate%22&lr=lang_en"><span class="MissingTag">:unabbreviate</span></a> command string.
+        <span class="Special">{mode}</span> is a character of mode.
+        <span class="Special">{dict}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> of options.
+        <span class="Special">{lhs}</span> is a string of lhs of <a href="https://www.google.com/search?q=vim+%22:map%22&lr=lang_en"><span class="MissingTag">:map</span></a> command.
+        The options can be created by <a href="https://www.google.com/search?q=vim+%22Mapping.options_chars2dict()%22&lr=lang_en"><span class="MissingTag">Mapping.options_chars2dict()</span></a> or
+        <a href="https://www.google.com/search?q=vim+%22maparg()%22&lr=lang_en"><span class="MissingTag">maparg()</span></a>'s return value when <span class="Special">{dict}</span> is non-zero.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.get_unmap_command()" name="Vital.Mapping.get_unmap_command()">Vital.Mapping.get_unmap_command()</a>
+get_unmap_command(<span class="Special">{mode}</span>, <span class="Special">{dict}</span>, <span class="Special">{lhs}</span>)
+        Constructs <a href="https://www.google.com/search?q=vim+%22:unabbreviate%22&lr=lang_en"><span class="MissingTag">:unabbreviate</span></a> command string.
+        <span class="Special">{mode}</span> is a character of mode.
+        <span class="Special">{dict}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> of options.
+        <span class="Special">{lhs}</span> is a string of lhs of <a href="https://www.google.com/search?q=vim+%22:map%22&lr=lang_en"><span class="MissingTag">:map</span></a> command.
+        The options can be created by <a href="https://www.google.com/search?q=vim+%22Mapping.options_chars2dict()%22&lr=lang_en"><span class="MissingTag">Mapping.options_chars2dict()</span></a> or
+        <a href="https://www.google.com/search?q=vim+%22maparg()%22&lr=lang_en"><span class="MissingTag">maparg()</span></a>'s return value when <span class="Special">{dict}</span> is non-zero.
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.options_chars2dict()" name="Vital.Mapping.options_chars2dict()">Vital.Mapping.options_chars2dict()</a>
+options_chars2dict(<span class="Special">{chars}</span>)
+        <span class="Special">{chars}</span> is a string which represents characters of options.
+        The return value is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> which is same as <a href="https://www.google.com/search?q=vim+%22maparg()%22&lr=lang_en"><span class="MissingTag">maparg()</span></a>'s
+        return value when <span class="Special">{dict}</span> is non-zero.
+
+        <span class="PreProc">chars   key</span>
+        &quot;e&quot;     expr
+        &quot;b&quot;     buffer
+        &quot;s&quot;     silent
+        &quot;S&quot;     script
+        &quot;u&quot;     unique
+        &quot;r&quot;     noremap (inverse)
+        &quot;n&quot;     nowait
+
+        Example:
+<span class="helpExample">        options_chars2dict(&quot;bs&quot;) = {</span>
+<span class="helpExample">          &quot;expr&quot;: 0,</span>
+<span class="helpExample">          &quot;buffer&quot;: 1,</span>
+<span class="helpExample">          &quot;silent&quot;: 1,</span>
+<span class="helpExample">          &quot;script&quot;: 0,</span>
+<span class="helpExample">          &quot;unique&quot;: 0,</span>
+<span class="helpExample">          &quot;noremap&quot;: 1,</span>
+<span class="helpExample">          &quot;nowait&quot;: 0,</span>
+<span class="helpExample">        }</span>
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.options_chars2raw()" name="Vital.Mapping.options_chars2raw()">Vital.Mapping.options_chars2raw()</a>
+options_chars2raw(<span class="Special">{chars}</span>)
+        Same as <span class="Comment">options_dict2raw(options_chars2dict(chars))</span> .
+        See <a href="https://www.google.com/search?q=vim+%22Mapping.options_dict2raw()%22&lr=lang_en"><span class="MissingTag">Mapping.options_dict2raw()</span></a> and <a href="https://www.google.com/search?q=vim+%22Mapping.options_chars2dict()%22&lr=lang_en"><span class="MissingTag">Mapping.options_chars2dict()</span></a>.
+
+        Example:
+<span class="helpExample">        options_dict2chars('eb') = '&lt;expr&gt;&lt;buffer&gt;'</span>
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.options_dict2chars()" name="Vital.Mapping.options_dict2chars()">Vital.Mapping.options_dict2chars()</a>
+options_dict2chars(<span class="Special">{dict}</span>)
+        Converts <span class="Special">{dict}</span> to characters of options.
+
+        Example:
+<span class="helpExample">        options_dict2chars({'expr': 1, 'buffer': 1}) = 'eb'</span>
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.options_dict2raw()" name="Vital.Mapping.options_dict2raw()">Vital.Mapping.options_dict2raw()</a>
+options_dict2raw(<span class="Special">{dict}</span>)
+        <span class="Special">{dict}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> which represents options.
+        See <a href="https://www.google.com/search?q=vim+%22Mapping.options_chars2dict()%22&lr=lang_en"><span class="MissingTag">Mapping.options_chars2dict()</span></a> for the options.
+
+        Example:
+<span class="helpExample">        options_dict2raw({'expr': 1, 'buffer': 1}) = '&lt;expr&gt;&lt;buffer&gt;'</span>
+
+                                <a class="String" href="./../vital/Mapping.html#Vital.Mapping.is_mode_char()" name="Vital.Mapping.is_mode_char()">Vital.Mapping.is_mode_char()</a>
+is_mode_char(<span class="Special">{char}</span>)
+        Returns non-zero if <span class="Special">{char}</span> is a character one of
+        &quot;v&quot;, &quot;n&quot;, &quot;o&quot;, &quot;i&quot;, &quot;c&quot;, &quot;l&quot;, &quot;x&quot;, &quot;s&quot;.
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

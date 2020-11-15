@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Math</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Math</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/Math.html" name="vital/Math.txt">vital/Math.txt</a>        Mathematical functions
+
+Maintainer: ujihisa &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                        <a class="String" href="./../vital/Math.html#Vital.Math-contents" name="Vital.Math-contents">Vital.Math-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/Math.html#Vital.Math-introduction">Vital.Math-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../vital/Math.html#Vital.Math-interface">Vital.Math-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../vital/Math.html#Vital.Math-functions">Vital.Math-functions</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                                    <a class="String" href="./../vital/Math.html#Vital.Math-introduction" name="Vital.Math-introduction">Vital.Math-introduction</a>
+
+<a class="String" href="./../vital/Math.html#Vital.Math" name="Vital.Math">Vital.Math</a> provides some bitwise operators.
+If vim provides builtin functions, uses these directly.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                                       <a class="String" href="./../vital/Math.html#Vital.Math-interface" name="Vital.Math-interface">Vital.Math-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                                       <a class="String" href="./../vital/Math.html#Vital.Math-functions" name="Vital.Math-functions">Vital.Math-functions</a>
+
+fib(<span class="Special">{number}</span>)                           <a class="String" href="./../vital/Math.html#Vital.Math.fib()" name="Vital.Math.fib()">Vital.Math.fib()</a>
+        <span class="Special">{number}</span>th fib, begins with 0, 1.
+
+<span class="helpExample">        fib(0) == 0</span>
+<span class="helpExample">        fib(1) == 1</span>
+<span class="helpExample">        fib(10) == 55</span>
+<span class="helpExample">        fib(48) == 512559680</span>
+<span class="helpExample">        fib(49) == -811192543</span>
+
+        <span class="Todo">Note</span> that Vim cannot handle big numbers. This is not
+        <a class="Identifier" href="./../vital/Math.html#Vital.Math.fib()">Vital.Math.fib()</a>'s issue but Vim's limitation.
+
+modulo(<span class="Special">{m}</span>, <span class="Special">{n}</span>)                        <a class="String" href="./../vital/Math.html#Vital.Math.modulo()" name="Vital.Math.modulo()">Vital.Math.modulo()</a>
+        Return modulo.  This behaves like Scheme's one.
+
+<span class="helpExample">        modulo(10, 3) == 1</span>
+<span class="helpExample">        modulo(-10, 3) == 2</span>
+<span class="helpExample">        modulo(10, -3) == -2</span>
+<span class="helpExample">        modulo(-10, -3) == -1</span>
+
+
+lcm(<span class="Special">{values}</span>)                           <a class="String" href="./../vital/Math.html#Vital.Math.lcm()" name="Vital.Math.lcm()">Vital.Math.lcm()</a>
+        Return least common multiple number of elements in <span class="Special">{values}</span>.
+        If at least one of <span class="Special">{values}</span> is 0, lcm returns 0.
+
+<span class="helpExample">        lcm([2, 3]) == 6</span>
+<span class="helpExample">        lcm([2, -3]) == 6</span>
+<span class="helpExample">        lcm([7, 2, 3, 2]) == 42</span>
+<span class="helpExample">        lcm([0]) == 0</span>
+<span class="helpExample">        lcm([2, 3, 0]) == 0</span>
+
+
+gcd(<span class="Special">{values}</span>)                           <a class="String" href="./../vital/Math.html#Vital.Math.gcd()" name="Vital.Math.gcd()">Vital.Math.gcd()</a>
+        Return greatest common divisor of elements in <span class="Special">{values}</span>.
+
+        If all elements of <span class="Special">{values}</span> are 0, gcd returns 0.
+        If at least one of <span class="Special">{values}</span> is not 0, gcd returns greatest common
+        divisor of non zero elements.
+
+<span class="helpExample">        gcd([2, 3]) == 1</span>
+<span class="helpExample">        gcd([20, -30]) == 10</span>
+<span class="helpExample">        gcd([5, 20, 30]) == 5</span>
+<span class="helpExample">        gcd([0]) == 0</span>
+<span class="helpExample">        gcd([4, 0, 6]) == 2</span>
+<span class="helpExample">        gcd([0, 0, 0]) == 0</span>
+
+
+sum(<span class="Special">{values}</span>)                           <a class="String" href="./../vital/Math.html#Vital.Math.sum()" name="Vital.Math.sum()">Vital.Math.sum()</a>
+        Return all sum of elements in <span class="Special">{values}</span>.
+
+        If <span class="Special">{values}</span> included not a number elements, throw an exception.
+        If <span class="Special">{values}</span> is empty list, returns 0.
+
+<span class="helpExample">        sum([1, 2, 3, 4, 5]) == 15</span>
+<span class="helpExample">        sum([1, 2, 3.2, 4, 5.3]) == 15.5</span>
+<span class="helpExample">        sum([1, 2, '3', 4, 5])  &quot; throw exception</span>
+<span class="helpExample">        sum([]) == 0</span>
+
+
+round(<span class="Special">{expr}</span> [, <span class="Special">{digits}</span>])              <a class="String" href="./../vital/Math.html#Vital.Math.round()" name="Vital.Math.round()">Vital.Math.round()</a>
+        Round off <span class="Special">{expr}</span> to <span class="Special">{digits}</span> digits after the decimal point and
+        return it as a Float.
+        If <span class="Special">{digits}</span> is omitted, it defaults to 0.
+        If <span class="Special">{expr}</span> lies halfway between two values, then use the larger
+        one (away from zero).
+        <span class="Special">{expr}</span> must evaluate to a Float or a Number.
+
+<span class="helpExample">        round(2.675) == 3</span>
+<span class="helpExample">        round(2.675, 2) == 2.68</span>
+<span class="helpExample">        round(-2.675, 2) == -2.68</span>
+<span class="helpExample">        round(5.127, -1) == 10.0</span>
+<span class="helpExample">        round(5.127, 20) == 5.127</span>
+
+
+str2nr(<span class="Special">{expr}</span> [, <span class="Special">{base}</span>])               <a class="String" href="./../vital/Math.html#Vital.Math.str2nr()" name="Vital.Math.str2nr()">Vital.Math.str2nr()</a>
+        Convert string <span class="Special">{expr}</span> to a number.
+        <span class="Special">{base}</span> is the conversion base, it can be from 2 to 36.
+        When <span class="Special">{base}</span> is omitted base 10 is used.  This also means that
+        a leading zero doesn't cause octal conversion to be used, as
+        with the default String to Number conversion.
+        <span class="Special">[a-z]</span> characters in <span class="Special">{expr}</span> are treated equally with <span class="Special">[A-Z]</span>.
+
+<span class="helpExample">        str2nr(&quot;10&quot;) == 10</span>
+<span class="helpExample">        str2nr(&quot;010&quot;) == 10</span>
+<span class="helpExample">        str2nr(&quot;10&quot;, 2) == 2</span>
+<span class="helpExample">        str2nr(&quot;FF&quot;, 16) == 255</span>
+<span class="helpExample">        str2nr(&quot;ZZ&quot;, 36) == 1295</span>
+<span class="helpExample">        str2nr(&quot;ff&quot;, 16) == 255</span>
+<span class="helpExample">        str2nr(&quot;Ff&quot;, 16) == 255</span>
+
+
+nr2str(<span class="Special">{expr}</span> [, <span class="Special">{base}</span>])               <a class="String" href="./../vital/Math.html#Vital.Math.nr2str()" name="Vital.Math.nr2str()">Vital.Math.nr2str()</a>
+        Convert number <span class="Special">{expr}</span> to string.
+         <span class="Special">{base}</span> is the conversion base, it can be from 2 to 36.
+         When <span class="Special">{base}</span> is omitted base 10 is used.
+
+<span class="helpExample">        nr2str(10) == &quot;10&quot;</span>
+<span class="helpExample">        nr2str(10, 2) == &quot;1010&quot;</span>
+<span class="helpExample">        nr2str(255, 16) == &quot;FF&quot;</span>
+<span class="helpExample">        nr2str(1295, 36) == &quot;ZZ&quot;</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Interpreter/Brainf__k</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Interpreter/Brainf__k</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Interpreter/Brainf__k.html" name="vital/Interpreter/Brainf__k.txt">vital/Interpreter/Brainf__k.txt</a>       Brainf**k interpreter
+
+Maintainer: ujihisa  &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k-contents" name="Vital.Interpreter.Brainf__k-contents">Vital.Interpreter.Brainf__k-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k-introduction">Vital.Interpreter.Brainf__k-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k-interface">Vital.Interpreter.Brainf__k-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k-functions">Vital.Interpreter.Brainf__k-functions</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                        <a class="String" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k-introduction" name="Vital.Interpreter.Brainf__k-introduction">Vital.Interpreter.Brainf__k-introduction</a>
+
+<a class="String" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k" name="Vital.Interpreter.Brainf__k">Vital.Interpreter.Brainf__k</a> provides 2 implementations of Brainf**k
+interpreter in pure Vim script and in lua with using <a href="https://www.google.com/search?q=vim+%22if_lua%22&lr=lang_en"><span class="MissingTag">if_lua</span></a>.
+
+Brainf**k is a programming language <span class="String"><a href="http://en.wikipedia.org/wiki/Brainf**k">http://en.wikipedia.org/wiki/Brainf**k</a></span>
+
+
+<span class="helpExample">        let s:B = s:V.import('Interpreter.Brainf__k')</span>
+<span class="helpExample">        let s:hello_world =</span>
+<span class="helpExample">        \ &quot;++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;.+++.------.--------.&gt;+.&gt;.&quot;</span>
+<span class="helpExample">        echo s:B.run(s:hello_world)</span>
+
+This will print out &quot;Hello World!&quot;. If you have <a href="https://www.google.com/search?q=vim+%22+lua%22&lr=lang_en"><span class="MissingTag">+lua</span></a>, you can also use
+run_lua_parse_execute() instead of run(). <span class="Todo">Note</span> that run() is just an alias of
+run_vim_parse_execute().
+
+
+<span class="helpExample">        &quot; Only if you have if_lua</span>
+<span class="helpExample">        &quot; This is much faster than the previous example.</span>
+<span class="helpExample">        let s:B = s:V.import('Interpreter.Brainf__k')</span>
+<span class="helpExample">        let s:hello_world =</span>
+<span class="helpExample">        \ &quot;++++++++++[&gt;+++++++&gt;++++++++++&gt;+++&gt;+&lt;&lt;&lt;&lt;-]&gt;++.&gt;+.+++++++..+++.&gt;++.&lt;&lt;+++++++++++++++.&gt;.+++.------.--------.&gt;+.&gt;.&quot;</span>
+<span class="helpExample">        echo s:B.run_lua_parse_execute(s:hello_world)</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k-interface" name="Vital.Interpreter.Brainf__k-interface">Vital.Interpreter.Brainf__k-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k-functions" name="Vital.Interpreter.Brainf__k-functions">Vital.Interpreter.Brainf__k-functions</a>
+
+run(<span class="Special">{string}</span>)                           <a class="String" href="./../../vital/Interpreter/Brainf__k.html#Vital.Interpreter.Brainf__k.run()" name="Vital.Interpreter.Brainf__k.run()">Vital.Interpreter.Brainf__k.run()</a>
+        Parse and execute the given brainf**k source code with using pure Vim
+        script implementation.
+
+<span class="helpExample">        run('+[]') &quot; infinite loop</span>
+
+
+<span class="Statement">TODO</span>
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

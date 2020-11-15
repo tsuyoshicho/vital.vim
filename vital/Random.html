@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Random</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Random</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/Random.html" name="vital/Random.txt">vital/Random.txt</a>      Random utility frontend library
+
+Maintainer: thinca &lt;thinca+vim@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../vital/Random.html#Vital.Random-contents" name="Vital.Random-contents">Vital.Random-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/Random.html#Vital.Random-introduction">Vital.Random-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../vital/Random.html#Vital.Random-interface">Vital.Random-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../vital/Random.html#Vital.Random-functions">Vital.Random-functions</a>
+OBJECTS                         <a class="Identifier" href="./../vital/Random.html#Vital.Random-objects">Vital.Random-objects</a>
+  Random Object                   <a class="Identifier" href="./../vital/Random.html#Vital.Random-Random">Vital.Random-Random</a>
+  Generator Object                <a class="Identifier" href="./../vital/Random.html#Vital.Random-Generator">Vital.Random-Generator</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../vital/Random.html#Vital.Random-introduction" name="Vital.Random-introduction">Vital.Random-introduction</a>
+
+<a class="String" href="./../vital/Random.html#Vital.Random" name="Vital.Random">Vital.Random</a> is a Random utility frontend library.
+
+                                        <a class="String" href="./../vital/Random.html#Vital.Random-synopsis" name="Vital.Random-synopsis">Vital.Random-synopsis</a>
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:Random = s:V.import('Random')</span>
+
+<span class="helpExample">        &quot; Generate a random number.</span>
+<span class="helpExample">        echo s:Random.next()</span>
+<span class="helpExample">        &quot; =&gt; 854122453</span>
+
+<span class="helpExample">        &quot; Generate 1 or more and 6 or less random number.</span>
+<span class="helpExample">        echo s:Random.range(1, 7)</span>
+<span class="helpExample">        &quot; =&gt; 1</span>
+
+<span class="helpExample">        &quot; Get a sample value from a list.</span>
+<span class="helpExample">        echo s:Random.sample(range(10))</span>
+<span class="helpExample">        &quot; =&gt; 8</span>
+
+<span class="helpExample">        &quot; Shuffle a list.</span>
+<span class="helpExample">        echo s:Random.shuffle(range(10))</span>
+<span class="helpExample">        &quot; =&gt; [2, 3, 0, 9, 1, 6, 7, 5, 8, 4]</span>
+
+<span class="helpExample">        &quot; Make a new Random Object.</span>
+<span class="helpExample">        let s:R = s:Random.new()</span>
+
+<span class="helpExample">        &quot; Make a new Random Object with Generator.</span>
+<span class="helpExample">        let s:R = s:Random.new('Xor128')</span>
+
+<span class="helpExample">        &quot; Make a new Random Object with seed.</span>
+<span class="helpExample">        let s:seed = s:Random.next()</span>
+<span class="helpExample">        let s:R = s:Random.new('', s:seed)</span>
+<span class="helpExample">        echo s:R.next(3)</span>
+<span class="helpExample">        &quot; =&gt; [-962538367, 815574453, 655578969]</span>
+
+<span class="helpExample">        &quot; Reset the seed.</span>
+<span class="helpExample">        call s:R.seed(s:seed)</span>
+<span class="helpExample">        echo s:R.next(3)</span>
+<span class="helpExample">        &quot; =&gt; [-962538367, 815574453, 655578969]</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../vital/Random.html#Vital.Random-interface" name="Vital.Random-interface">Vital.Random-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../vital/Random.html#Vital.Random-functions" name="Vital.Random-functions">Vital.Random-functions</a>
+
+new([<span class="Special">{generator}</span> [, <span class="Special">{seed}</span>]])   <a class="String" href="./../vital/Random.html#Vital.Random.new()" name="Vital.Random.new()">Vital.Random.new()</a>
+        Create a new Random Object(<a class="Identifier" href="./../vital/Random.html#Vital.Random-Random">Vital.Random-Random</a>).
+        <span class="Special">{generator}</span> is a generator name or a generator object.
+        A name of a generator is a portion of the last of a module name like
+        &quot;Random.*&quot;.  For example, &quot;Xor128&quot;.
+        See <a class="Identifier" href="./../vital/Random.html#Vital.Random-Generator">Vital.Random-Generator</a> about a generator object.
+        If <span class="Special">{seed}</span> is omitted, this is created from <a class="Identifier" href="./../vital/Random.html#Vital.Random.next()">Vital.Random.next()</a>.
+
+make_seed()                     <a class="String" href="./../vital/Random.html#Vital.Random.make_seed()" name="Vital.Random.make_seed()">Vital.Random.make_seed()</a>
+        Make a seed from current time and so on.
+        This does not assume being used continuously.
+        This is used to initialize the internal common random generator.
+        You can use <a class="Identifier" href="./../vital/Random.html#Vital.Random.next()">Vital.Random.next()</a> to initialize your Random Object.
+
+next()                          <a class="String" href="./../vital/Random.html#Vital.Random.next()" name="Vital.Random.next()">Vital.Random.next()</a>
+next(<span class="Special">{n}</span>)
+        Shortcut to <a class="Identifier" href="./../vital/Random.html#Vital.Random-Random.next()">Vital.Random-Random.next()</a>.
+
+seed(<span class="Special">{seeds}</span>)                   <a class="String" href="./../vital/Random.html#Vital.Random.seed()" name="Vital.Random.seed()">Vital.Random.seed()</a>
+        Shortcut to <a class="Identifier" href="./../vital/Random.html#Vital.Random-Random.seed()">Vital.Random-Random.seed()</a>.
+
+generate_canonical()            <a class="String" href="./../vital/Random.html#Vital.Random.generate_canonical()" name="Vital.Random.generate_canonical()">Vital.Random.generate_canonical()</a>
+        Shortcut to <a class="Identifier" href="./../vital/Random.html#Vital.Random-Random.generate_canonical()">Vital.Random-Random.generate_canonical()</a>.
+
+range(<span class="Special">{to}</span>)                     <a class="String" href="./../vital/Random.html#Vital.Random.range()" name="Vital.Random.range()">Vital.Random.range()</a>
+range(<span class="Special">{from}</span>, <span class="Special">{to}</span>)
+        Shortcut to <a class="Identifier" href="./../vital/Random.html#Vital.Random-Random.range()">Vital.Random-Random.range()</a>.
+
+bool()                          <a class="String" href="./../vital/Random.html#Vital.Random.bool()" name="Vital.Random.bool()">Vital.Random.bool()</a>
+        Shortcut to <a class="Identifier" href="./../vital/Random.html#Vital.Random-Random.bool()">Vital.Random-Random.bool()</a>.
+
+sample(<span class="Special">{list}</span>)                  <a class="String" href="./../vital/Random.html#Vital.Random.sample()" name="Vital.Random.sample()">Vital.Random.sample()</a>
+sample(<span class="Special">{list}</span>, <span class="Special">{n}</span>)
+        Shortcut to <a class="Identifier" href="./../vital/Random.html#Vital.Random-Random.sample()">Vital.Random-Random.sample()</a>.
+
+shuffle(<span class="Special">{list}</span>)                 <a class="String" href="./../vital/Random.html#Vital.Random.shuffle()" name="Vital.Random.shuffle()">Vital.Random.shuffle()</a>
+        Shortcut to <a class="Identifier" href="./../vital/Random.html#Vital.Random-Random.shuffle()">Vital.Random-Random.shuffle()</a>.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                                 <a class="String" href="./../vital/Random.html#Vital.Random-objects" name="Vital.Random-objects">Vital.Random-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Random Object                   <a class="String" href="./../vital/Random.html#Vital.Random-Random" name="Vital.Random-Random">Vital.Random-Random</a>
+
+A Random Object generates some useful random numbers from a generator.
+You can choose the generator to be used freely.
+
+Random.next()                   <a class="String" href="./../vital/Random.html#Vital.Random-Random.next()" name="Vital.Random-Random.next()">Vital.Random-Random.next()</a>
+Random.next(<span class="Special">{n}</span>)
+        Get a next random number or <span class="Special">{n}</span> next random numbers in the sequence.
+
+Random.seed(<span class="Special">{seeds}</span>)            <a class="String" href="./../vital/Random.html#Vital.Random-Random.seed()" name="Vital.Random-Random.seed()">Vital.Random-Random.seed()</a>
+        Set seeds by a <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a> or a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of numbers.
+
+<span class="helpExample">        &quot; Create two objects which generate the same random number sequence.</span>
+<span class="helpExample">        let s:player1 = s:Random.new()</span>
+<span class="helpExample">        let s:player2 = s:Random.new()</span>
+<span class="helpExample">        let s:seed = s:Random.next()</span>
+<span class="helpExample">        call s:player1.seed(s:seed)</span>
+<span class="helpExample">        call s:player2.seed(s:seed)</span>
+
+Random.generate_canonical()     <a class="String" href="./../vital/Random.html#Vital.Random-Random.generate_canonical()" name="Vital.Random-Random.generate_canonical()">Vital.Random-Random.generate_canonical()</a>
+        Get a random float number in [0.0, 1.0).
+
+<span class="helpExample">        echo s:R.generate_canonical()</span>
+<span class="helpExample">        &quot; 0.618474</span>
+<span class="helpExample">        echo s:R.generate_canonical()</span>
+<span class="helpExample">        &quot; 0.350191</span>
+
+Random.range(<span class="Special">{to}</span>)              <a class="String" href="./../vital/Random.html#Vital.Random-Random.range()" name="Vital.Random-Random.range()">Vital.Random-Random.range()</a>
+        Get a random number in [0, <span class="Special">{to}</span>).
+        If <span class="Special">{to}</span> is a <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a>, returns a <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a>.
+        If <span class="Special">{to}</span> is a <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a>, returns a <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a>.
+
+<span class="helpExample">        echo s:R.range(5)</span>
+<span class="helpExample">        &quot; 4</span>
+<span class="helpExample">        echo s:R.range(5)</span>
+<span class="helpExample">        &quot; 0</span>
+
+Random.range(<span class="Special">{from}</span>, <span class="Special">{to}</span>)
+        Get a random number in [<span class="Special">{from}</span>, <span class="Special">{to}</span>).
+        If <span class="Special">{from}</span> and <span class="Special">{to}</span> is a <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a>, returns a <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a>.
+        If <span class="Special">{from}</span> or <span class="Special">{to}</span> is a <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a>, returns a <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a>.
+
+<span class="helpExample">        echo s:R.range(1, 6)</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:R.range(1, 6)</span>
+<span class="helpExample">        &quot; 3</span>
+
+Random.bool()                   <a class="String" href="./../vital/Random.html#Vital.Random-Random.bool()" name="Vital.Random-Random.bool()">Vital.Random-Random.bool()</a>
+        Get a random number in 0 or 1.
+
+<span class="helpExample">        echo s:R.bool()</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:R.bool()</span>
+<span class="helpExample">        &quot; 0</span>
+
+Random.sample(<span class="Special">{list}</span>)           <a class="String" href="./../vital/Random.html#Vital.Random-Random.sample()" name="Vital.Random-Random.sample()">Vital.Random-Random.sample()</a>
+Random.sample(<span class="Special">{list}</span>, <span class="Special">{n}</span>)
+        Choose a random element or <span class="Special">{n}</span> random elements from the <span class="Special">{list}</span>.
+
+<span class="helpExample">        echo s:R.sample(range(5))</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:R.sample(range(5), 3)</span>
+<span class="helpExample">        &quot; [3, 1, 4]</span>
+
+Random.shuffle(<span class="Special">{list}</span>)          <a class="String" href="./../vital/Random.html#Vital.Random-Random.shuffle()" name="Vital.Random-Random.shuffle()">Vital.Random-Random.shuffle()</a>
+        Shuffle the <span class="Special">{list}</span>.
+
+<span class="helpExample">        let s:list = range(5)</span>
+<span class="helpExample">        echo s:R.shuffle(s:list)</span>
+<span class="helpExample">        &quot; [3, 1, 0, 2, 4]</span>
+<span class="helpExample">        echo s:list</span>
+<span class="helpExample">        &quot; [3, 1, 0, 2, 4]</span>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Generator Object                <a class="String" href="./../vital/Random.html#Vital.Random-Generator" name="Vital.Random-Generator">Vital.Random-Generator</a>
+
+A Generator Object generates random number sequence.
+
+Generator.next()                <a class="String" href="./../vital/Random.html#Vital.Random-Generator.next()" name="Vital.Random-Generator.next()">Vital.Random-Generator.next()</a>
+        Get the next random number in the sequence.
+
+Generator.min()                 <a class="String" href="./../vital/Random.html#Vital.Random-Generator.min()" name="Vital.Random-Generator.min()">Vital.Random-Generator.min()</a>
+        Get the smallest value in the output range.
+
+Generator.max()                 <a class="String" href="./../vital/Random.html#Vital.Random-Generator.max()" name="Vital.Random-Generator.max()">Vital.Random-Generator.max()</a>
+        Get the largest value in the output range.
+
+Generator.seed(<span class="Special">{seeds}</span>)         <a class="String" href="./../vital/Random.html#Vital.Random-Generator.seed()" name="Vital.Random-Generator.seed()">Vital.Random-Generator.seed()</a>
+        Set seeds by a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of numbers which initializes the generator.
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/List</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/List</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Data/List.html" name="vital/Data/List.txt">vital/Data/List.txt</a>           list utilities library.
+
+Maintainer: ujihisa &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-contents" name="Vital.Data.List-contents">Vital.Data.List-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List-introduction">Vital.Data.List-introduction</a>
+TERM                            <a href="https://www.google.com/search?q=vim+%22Vital.Data.List.term%22&lr=lang_en"><span class="MissingTag">Vital.Data.List.term</span></a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List-interface">Vital.Data.List-interface</a>
+  Functions                       <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List-functions">Vital.Data.List-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-introduction" name="Vital.Data.List-introduction">Vital.Data.List-introduction</a>
+
+<a class="String" href="./../../vital/Data/List.html#Vital.Data.List" name="Vital.Data.List">Vital.Data.List</a> is a list utilities library.  It provides some functions to
+manipulate <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>.
+
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:L = s:V.import(&quot;Data.List&quot;)</span>
+
+<span class="helpExample">        echo s:L.cons(1, [2, 3])</span>
+<span class="helpExample">        &quot; [1, 2, 3]</span>
+
+<span class="helpExample">        echo s:L.conj([2, 3], 1)</span>
+<span class="helpExample">        &quot; [2, 3, 1]</span>
+
+<span class="helpExample">        echo s:L.foldl('v:memo + v:val', 0, range(1, 10))</span>
+<span class="helpExample">        &quot; 55 := 1+2+3+4+5+6+7+8+9+10</span>
+
+<span class="helpExample">        echo s:L.count({ x -&gt; x % 2 == 0 }, [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot;=&gt; 2</span>
+
+<span class="helpExample">        echo s:L.intersect(['a', 'b', 'c'], ['b', 'c'])</span>
+<span class="helpExample">        &quot; ['b', 'c']</span>
+
+<span class="helpExample">        s:L.new(3, { i -&gt; i * 2 })</span>
+<span class="helpExample">        &quot;=&gt; [0, 2, 4]</span>
+
+<span class="helpExample">        echo s:L.permutations([1, 2, 3])</span>
+<span class="helpExample">        &quot; [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TERM</span>                                    <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-term" name="Vital.Data.List-term">Vital.Data.List-term</a>
+
+<span class="Special">{function}</span>                              <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-term-function" name="Vital.Data.List-term-function">Vital.Data.List-term-function</a>
+        <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> or <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>(as expression). We recommend you just to use
+        Vim's <a href="https://www.google.com/search?q=vim+%22expr-lambda%22&lr=lang_en"><span class="MissingTag">expr-lambda</span></a> notation to pass this.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-interface" name="Vital.Data.List-interface">Vital.Data.List-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-functions" name="Vital.Data.List-functions">Vital.Data.List-functions</a>
+
+new(<span class="Special">{size}</span>, <span class="Special">{f}</span>)                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.new()" name="Vital.Data.List.new()">Vital.Data.List.new()</a>
+        Creates a new <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> with given arguments. The given <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> <span class="Special">{f}</span> is
+        called for <span class="Special">{size}</span> times with index.
+
+        <span class="Todo">Note</span> that's vital Data.List does not provide a new wrapper list
+        dictionary or whatever. It simply uses Vim's <a href="https://www.google.com/search?q=vim+%22Lists%22&lr=lang_en"><span class="MissingTag">Lists</span></a>.
+
+<span class="helpExample">        s:L.new(3, { i -&gt; i * 2 })</span>
+<span class="helpExample">        &quot;=&gt; [0, 2, 4]</span>
+
+<span class="helpExample">        s:L.new(4, { -&gt; 'hello' })</span>
+<span class="helpExample">        &quot;=&gt; ['hello', 'hello', 'hello', 'hello']</span>
+
+        Basically this function is equivalent to the following one line.
+
+<span class="helpExample">        new(size, f) == map(range(a:size), a:f)</span>
+
+
+
+pop(<span class="Special">{list}</span>)                             <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.pop()" name="Vital.Data.List.pop()">Vital.Data.List.pop()</a>
+        Removes the last element from <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> and returns the element,
+        as if the <span class="Special">{list}</span> is a stack.
+
+        Destructive. This modifies <span class="Special">{list}</span>.
+
+
+push(<span class="Special">{list}</span>, <span class="Special">{val}</span>)                     <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.push()" name="Vital.Data.List.push()">Vital.Data.List.push()</a>
+        Appends <span class="Special">{val}</span> to the end of <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> and returns the list itself,
+        as if the <span class="Special">{list}</span> is a stack.
+
+        Destructive. This modifies <span class="Special">{list}</span>.
+
+
+shift(<span class="Special">{list}</span>)                           <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.shift()" name="Vital.Data.List.shift()">Vital.Data.List.shift()</a>
+        Removes the first element from <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> and returns the element.
+
+        Destructive. This modifies <span class="Special">{list}</span>.
+
+
+unshift(<span class="Special">{list}</span>, <span class="Special">{val}</span>)                  <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.unshift()" name="Vital.Data.List.unshift()">Vital.Data.List.unshift()</a>
+        Inserts <span class="Special">{val}</span> to the head of <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> and returns the list
+        itself.
+
+        Destructive. This modifies <span class="Special">{list}</span>.
+
+
+cons(<span class="Special">{val}</span>, <span class="Special">{list}</span>)                     <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.cons()" name="Vital.Data.List.cons()">Vital.Data.List.cons()</a>
+        Makes new <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> which first item is <span class="Special">{val}</span> and the rest of items are
+        <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span>.
+        See also: <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List.conj()">Vital.Data.List.conj()</a>
+
+<span class="helpExample">        echo s:L.cons(1, [2, 3])</span>
+<span class="helpExample">        &quot; [1, 2, 3]</span>
+<span class="helpExample">        echo s:L.cons(1, [])</span>
+<span class="helpExample">        &quot; [1]</span>
+<span class="helpExample">        echo s:L.cons([1], [2, 3])</span>
+<span class="helpExample">        &quot; [[1], 2, 3]</span>
+<span class="helpExample">        echo s:L.cons([1], 2)</span>
+<span class="helpExample">        &quot; ERROR: E745</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+uncons(<span class="Special">{list}</span>)                  <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.uncons()" name="Vital.Data.List.uncons()">Vital.Data.List.uncons()</a>
+        Returns a pair of a head element and tail elements.
+        <span class="Special">{list}</span> must be nonempty, otherwise it throws an error.
+
+<span class="helpExample">        echo s:L.uncons([1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; [1, [2, 3, 4, 5]]</span>
+<span class="helpExample">        echo s:L.uncons([1])</span>
+<span class="helpExample">        &quot; [1, []]</span>
+<span class="helpExample">        echo s:L.uncons([])</span>
+<span class="helpExample">        &quot; ERROR: vital: Data.List: ...</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+conj(<span class="Special">{list}</span>, <span class="Special">{val}</span>)                     <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.conj()" name="Vital.Data.List.conj()">Vital.Data.List.conj()</a>
+        Makes new <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> which first items are <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> and the final
+        item is <span class="Special">{val}</span>.
+        See also: <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List.cons()">Vital.Data.List.cons()</a>
+
+<span class="helpExample">        echo s:L.conj([2, 3], 1)</span>
+<span class="helpExample">        &quot; [2, 3, 1]</span>
+<span class="helpExample">        echo s:L.conj([], 1)</span>
+<span class="helpExample">        &quot; [1]</span>
+<span class="helpExample">        echo s:L.conj([2, 3], [1])</span>
+<span class="helpExample">        &quot; [2, 3, [1]]</span>
+<span class="helpExample">        echo s:L.conj(2, [1])</span>
+<span class="helpExample">        &quot; ERROR: E745</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+map(<span class="Special">{list}</span>, <span class="Special">{function}</span>)                 <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.map()" name="Vital.Data.List.map()">Vital.Data.List.map()</a>
+        Use this if you'd like to keep the original list. Vim's built-in
+        <a href="https://www.google.com/search?q=vim+%22map()%22&lr=lang_en"><span class="MissingTag">map()</span></a> destroys the given <span class="Special">{list}</span>, but this doesn't.
+
+        Generalized map(). The followings are different of <a href="https://www.google.com/search?q=vim+%22map()%22&lr=lang_en"><span class="MissingTag">map()</span></a>:
+        * Don't require taking the index as the argument
+           (See the section of 'If <span class="Special">{expr2}</span> is a Funcref...' in <a href="https://www.google.com/search?q=vim+%22map()%22&lr=lang_en"><span class="MissingTag">map()</span></a>)
+        * Don't require copying
+           (See the section of 'The operation is done in-place' in <a href="https://www.google.com/search?q=vim+%22map()%22&lr=lang_en"><span class="MissingTag">map()</span></a>)
+        * Remove v:key support
+        * Don't modify <span class="Special">{list}</span> itself.
+
+<span class="helpExample">        function! Succ(x) abort</span>
+<span class="helpExample">          return a:x + 1</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.map(range(0, 4), function('Succ'))</span>
+<span class="helpExample">        &quot; [1, 2, 3, 4, 5]</span>
+<span class="helpExample">        echo s:L.map(range(0, 4), 'v:val + 1')</span>
+<span class="helpExample">        &quot; [1, 2, 3, 4, 5]</span>
+
+        But this maybe slower than builtin <a href="https://www.google.com/search?q=vim+%22map()%22&lr=lang_en"><span class="MissingTag">map()</span></a>.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+filter(<span class="Special">{list}</span>, <span class="Special">{function}</span>)              <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.filter()" name="Vital.Data.List.filter()">Vital.Data.List.filter()</a>
+        Use this if you'd like to keep the original list. Vim's built-in
+        <a href="https://www.google.com/search?q=vim+%22filter()%22&lr=lang_en"><span class="MissingTag">filter()</span></a> destroys the given <span class="Special">{list}</span>, but this doesn't.
+
+        Generalized filter(). The followings are different of <a href="https://www.google.com/search?q=vim+%22filter()%22&lr=lang_en"><span class="MissingTag">filter()</span></a>:
+        * Don't require taking the index as the argument
+           (See the section of 'If <span class="Special">{expr2}</span> is a Funcref...' in <a href="https://www.google.com/search?q=vim+%22filter()%22&lr=lang_en"><span class="MissingTag">filter()</span></a>)
+        * Don't require copying
+           (See the section of 'The operation is done in-place' in <a href="https://www.google.com/search?q=vim+%22filter()%22&lr=lang_en"><span class="MissingTag">filter()</span></a>)
+        * Remove v:key support
+        * Don't modify <span class="Special">{list}</span> itself.
+
+<span class="helpExample">        function! Even(x) abort</span>
+<span class="helpExample">          return a:x % 2 is 0</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        let xs = range(0, 9)</span>
+<span class="helpExample">        echo s:L.filter(xs, function('Even'))</span>
+<span class="helpExample">        &quot; [0, 2, 4, 6, 8]</span>
+<span class="helpExample">        echo s:L.filter(xs, 'v:val % 2 is 0')</span>
+<span class="helpExample">        &quot; [0, 2, 4, 6, 8]</span>
+
+        But this maybe slower than builtin <a href="https://www.google.com/search?q=vim+%22filter()%22&lr=lang_en"><span class="MissingTag">filter()</span></a>.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+uniq(<span class="Special">{list}</span>)                    <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.uniq()" name="Vital.Data.List.uniq()">Vital.Data.List.uniq()</a>
+        Removes duplicate elements from <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span>, nondestructively.  In
+        particular, it keeps only the first occurrence of each element.
+        See also: <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List.uniq_by()">Vital.Data.List.uniq_by()</a>
+
+<span class="helpExample">        uniq(['vim', 'emacs', 'vim', 'vim']) == ['vim', 'emacs']</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+uniq_by(<span class="Special">{list}</span>, <span class="Special">{function}</span>)                     <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.uniq_by()" name="Vital.Data.List.uniq_by()">Vital.Data.List.uniq_by()</a>
+        Removes duplicate elements from <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span>, nondestructively.  In
+        particular, it keeps only the first occurrence of each element.  The
+        uniqueness is judged with the value <span class="Special">{function}</span> to which a formula is
+        applied.
+        See also: <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List.uniq()">Vital.Data.List.uniq()</a>
+
+<span class="helpExample">        uniq_by(</span>
+<span class="helpExample">        \ ['vim', 'Vim', 'VIM', 'emacs', 'Emacs', 'EMACS', 'gVim', 'GVIM'],</span>
+<span class="helpExample">        \ 'tolower(v:val)') == ['vim', 'emacs', 'gVim']</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+clear(<span class="Special">{list}</span>)                           <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.clear()" name="Vital.Data.List.clear()">Vital.Data.List.clear()</a>
+        Removes all the items of <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span>.  Returns the empty list.
+
+        Destructive. This modifies <span class="Special">{list}</span>.
+
+
+concat(<span class="Special">{list}</span>)                          <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.concat()" name="Vital.Data.List.concat()">Vital.Data.List.concat()</a>
+        Concatenates <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> of lists.
+
+<span class="helpExample">        echo s:L.concat([[1], [2, 3]])</span>
+<span class="helpExample">        &quot; [1, 2, 3]</span>
+
+        This is similar to <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List.flatten()">Vital.Data.List.flatten()</a> but this doesn't
+        flatten recursively.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+flatten(<span class="Special">{list}</span> [, <span class="Special">{limit}</span>])             <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.flatten()" name="Vital.Data.List.flatten()">Vital.Data.List.flatten()</a>
+        Take each <span class="Special">{list}</span> elements in <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> into a new <span class="Special">{list}</span>
+        recursively.  When the <span class="Special">{limit}</span> argument is given, the function keeps
+        nested items by the <span class="Special">{limit}</span> is maximum size.
+
+<span class="helpExample">        echo s:L.flatten([[1], [2, 3]])</span>
+<span class="helpExample">        &quot; [1, 2, 3]</span>
+<span class="helpExample">        echo s:L.flatten([[1], 2, 3])</span>
+<span class="helpExample">        &quot; [1, 2, 3]</span>
+<span class="helpExample">        echo s:L.flatten([[['a']], [[['b']], 'c']], 2)</span>
+<span class="helpExample">        &quot; ['a', ['b'], 'c']</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+sort(<span class="Special">{list}</span>, <span class="Special">{function}</span>)                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.sort()" name="Vital.Data.List.sort()">Vital.Data.List.sort()</a>
+        Sorts the items in <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> in-place.  Returns <span class="Special">{list}</span>. When
+        <span class="Special">{function}</span> is a <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>, this function returns the same result as
+        <a href="https://www.google.com/search?q=vim+%22sort()%22&lr=lang_en"><span class="MissingTag">sort()</span></a>. When <span class="Special">{function}</span> is a <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> expression, this function uses
+        <span class="Special">{function}</span> to compare items.  Inside <span class="Special">{function}</span> a:a and a:b have the
+        value of the current items.  The evaluating result of <span class="Special">{function}</span> must
+        have zero if they are equal, 1 or bigger if a:a sorts after the a:b,
+        -1 or smaller if a:a sorts before a:b.
+
+<span class="helpExample">        function! MyCompare(i1, i2)</span>
+<span class="helpExample">          return a:i1 ==</span>
+<span class="helpExample">            \ a:i2 ?        0 :</span>
+<span class="helpExample">            \ a:i1 &gt; a:i2 ? 1 :</span>
+<span class="helpExample">            \               -1</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        let list = ['pineapple', 'orange', 'banana', 'apple']</span>
+<span class="helpExample">        echo s:L.sort(copy(list), function('MyCompare'))</span>
+<span class="helpExample">        &quot; ['apple', 'banana', 'orange', 'pineapple']</span>
+
+<span class="helpExample">        echo s:L.sort([3, 1, 2], 'a:a - a:b')</span>
+<span class="helpExample">        &quot; [1, 2, 3]</span>
+
+<span class="helpExample">        echo s:L.sort(copy(list), 'len(a:a)-len(a:b)')</span>
+<span class="helpExample">        &quot; ['apple', 'orange', 'banana', 'pineapple']</span>
+
+        Notice:
+        If you use <span class="Special">{function}</span> as <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> expression, this function gives up
+        job safety (thread safety). It may not work correctly. Please use
+        lambda expression or partial applying of function if it can be used.
+
+        Destructive. This modifies <span class="Special">{list}</span>.
+
+sort_by(<span class="Special">{list}</span>, <span class="Special">{function}</span>)                     <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.sort_by()" name="Vital.Data.List.sort_by()">Vital.Data.List.sort_by()</a>
+        Returns a sorted <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> with key in <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span>.
+
+<span class="helpExample">        function! Lookup(x)</span>
+<span class="helpExample">          return a:x.field</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        let list = [{'field': 'pineapple'}, {'field': 'orange'}, {'field': 'banana'}, {'field': 'apple'}]</span>
+
+<span class="helpExample">        echo s:L.sort_by(copy(list), 'v:val.field')</span>
+<span class="helpExample">        &quot; [{'field': 'apple'}, {'field': 'banana'}, {'field': 'orange'}, {'field': 'pineapple'}]</span>
+
+<span class="helpExample">        echo s:L.sort_by(copy(list), function('Lookup'))</span>
+<span class="helpExample">        &quot; [{'field': 'apple'}, {'field': 'banana'}, {'field': 'orange'}, {'field': 'pineapple'}]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+max_by(<span class="Special">{list}</span>, <span class="Special">{function}</span>)                      <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.max_by()" name="Vital.Data.List.max_by()">Vital.Data.List.max_by()</a>
+        Returns a maximum value in <span class="Special">{list}</span> through given <span class="Special">{function}</span>.
+        Returns 0 if <span class="Special">{list}</span> is empty.
+        &quot;v:val&quot; can be used in <span class="Special">{function}</span> if <span class="Special">{function}</span> is string expression.
+
+<span class="helpExample">        echo s:L.max_by(</span>
+<span class="helpExample">        \ ['pineapple', 'orange', 'banana', 'apple'],</span>
+<span class="helpExample">        \ 'len(v:val)')</span>
+<span class="helpExample">        &quot; pineapple</span>
+<span class="helpExample">        echo s:L.max_by([20, -50, -15, 30], function('abs'))</span>
+<span class="helpExample">        &quot; -50</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+min_by(<span class="Special">{list}</span>, <span class="Special">{function}</span>)                      <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.min_by()" name="Vital.Data.List.min_by()">Vital.Data.List.min_by()</a>
+        Returns a minimum value in <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> through given <span class="Special">{function}</span>.
+        Returns 0 if <span class="Special">{list}</span> is empty.
+        &quot;v:val&quot; can be used in <span class="Special">{function}</span> if <span class="Special">{function}</span> is string expression.
+
+<span class="helpExample">        echo s:L.min_by(</span>
+<span class="helpExample">        \ ['pineapple', 'orange', 'banana', 'apple'],</span>
+<span class="helpExample">        \ 'len(v:val)')</span>
+<span class="helpExample">        &quot; apple</span>
+<span class="helpExample">        echo s:L.min_by([20, -50, -15, 30], function('abs'))</span>
+<span class="helpExample">        &quot; -15</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+char_range(<span class="Special">{from}</span>, <span class="Special">{to}</span>)                <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.char_range()" name="Vital.Data.List.char_range()">Vital.Data.List.char_range()</a>
+        Returns a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of letters from <span class="Special">{from}</span> to <span class="Special">{to}</span>.
+
+
+has(<span class="Special">{list}</span>, <span class="Special">{value}</span>)                    <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.has()" name="Vital.Data.List.has()">Vital.Data.List.has()</a>
+        Returns Number 1 if <span class="Special">{value}</span> is in <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span>, otherwise zero.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+has_index(<span class="Special">{list}</span>, <span class="Special">{index}</span>)              <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.has_index()" name="Vital.Data.List.has_index()">Vital.Data.List.has_index()</a>
+        Returns Number 1 if can point to <span class="Special">{index}</span> for <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span>, otherwise
+        zero.  If <span class="Special">{index}</span> is negative Number, this function returns zero.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+span(<span class="Special">{function}</span>, <span class="Special">{list}</span>)                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.span()" name="Vital.Data.List.span()">Vital.Data.List.span()</a>
+        Returns a list of two lists where concatenation of them is
+        equal to <span class="Special">{list}</span>, all the items of the first list satisfy <span class="Special">{function}</span> and
+        the first item of the second list does not satisfy <span class="Special">{function}</span>.
+        If <span class="Special">{function}</span> is the string expression, <a href="https://www.google.com/search?q=vim+%22v:val%22&lr=lang_en"><span class="MissingTag">v:val</span></a> has the value of the
+        current item.
+
+<span class="helpExample">        function! Under5(x) abort</span>
+<span class="helpExample">          return a:x &lt; 5</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.span('v:val &lt; 5', [1, 3, 5, 2])</span>
+<span class="helpExample">        &quot; [[1, 3], [5, 2]]</span>
+<span class="helpExample">        echo s:L.span(function('Under5'), [1, 3, 5, 2])</span>
+<span class="helpExample">        &quot; [[1, 3], [5, 2]]</span>
+
+<span class="helpExample">        echo s:L.span('v:val==1', [1, 2])</span>
+<span class="helpExample">        &quot; [[1], [2]]</span>
+<span class="helpExample">        echo s:L.span('v:val &gt; 3', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; [[], [1, 2, 3, 4, 5]]</span>
+<span class="helpExample">        echo s:L.span('v:val &lt; 3', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; [[1, 2], [3, 4, 5]]</span>
+
+        If you know Haskell, this span() is like Haskell's Data.List.span just
+        for your info.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+break(<span class="Special">{function}</span>, <span class="Special">{list}</span>)                       <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.break()" name="Vital.Data.List.break()">Vital.Data.List.break()</a>
+        Returns a list of two lists where concatenation of them is
+        equal to <span class="Special">{list}</span>, all the items of the first list do not satisfy
+        <span class="Special">{function}</span> and the first item of the second list satisfies <span class="Special">{function}</span>.
+        If <span class="Special">{function}</span> is the string expression, <a href="https://www.google.com/search?q=vim+%22v:val%22&lr=lang_en"><span class="MissingTag">v:val</span></a> has the value of the
+        current item.
+
+<span class="helpExample">        function! Is5(x) abort</span>
+<span class="helpExample">          return a:x &lt; 5</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.break('v:val == 5', [1, 3, 5, 2])</span>
+<span class="helpExample">        &quot; [[1, 3], [5, 2]]</span>
+<span class="helpExample">        echo s:L.break(function('Is5'), [1, 3, 5, 2])</span>
+<span class="helpExample">        &quot; [[1, 3], [5, 2]]</span>
+
+<span class="helpExample">        echo s:L.break(&quot;v:val==1&quot;, [1, 2])</span>
+<span class="helpExample">        &quot; [[], [1, 2]]</span>
+<span class="helpExample">        echo s:L.break('v:val &gt; 3', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; [[1, 2, 3], [4, 5]]</span>
+<span class="helpExample">        echo s:L.break('v:val &lt; 3', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; [[], [1, 2, 3, 4, 5]]</span>
+
+        If you know Haskell, this break() is like Haskell's Data.List.break
+        just for your info.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+take_while(<span class="Special">{function}</span>, <span class="Special">{list}</span>)          <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.take_while()" name="Vital.Data.List.take_while()">Vital.Data.List.take_while()</a>
+        Returns a list which is from the beginning of the given <span class="Special">{list}</span> to an
+        element that all of them satisfies given expression <span class="Special">{function}</span>.
+        If <span class="Special">{function}</span> is the string expression, <a href="https://www.google.com/search?q=vim+%22v:val%22&lr=lang_en"><span class="MissingTag">v:val</span></a> has the value of the
+        current item.
+
+<span class="helpExample">        function! Under5(x) abort</span>
+<span class="helpExample">          return a:x &lt; 5</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.take_while('v:val &lt; 5', [1, 3, 5, 2])</span>
+<span class="helpExample">        &quot; [1, 3]</span>
+<span class="helpExample">        echo s:L.take_while(function('Under5'), [1, 3, 5, 2])</span>
+<span class="helpExample">        &quot; [1, 3]</span>
+
+<span class="helpExample">        echo s:L.take_while('v:val == 1', [1, 2])</span>
+<span class="helpExample">        &quot; [1]</span>
+<span class="helpExample">        echo s:L.take_while('v:val &gt; 3', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; []</span>
+<span class="helpExample">        echo s:L.take_while('v:val &lt; 3', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; [1, 2]</span>
+
+        If you know Haskell, this take_while() is like Haskell's
+        Data.List.takeWhile just for your info.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+drop_while(<span class="Special">{function}</span>, <span class="Special">{list}</span>)          <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.drop_while()" name="Vital.Data.List.drop_while()">Vital.Data.List.drop_while()</a>
+        Returns the suffix remaining after <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List.take_while()">Vital.Data.List.take_while()</a>.
+        If <span class="Special">{function}</span> is the string expression, <a href="https://www.google.com/search?q=vim+%22v:val%22&lr=lang_en"><span class="MissingTag">v:val</span></a> has the value of the
+        current item.
+
+<span class="helpExample">        function! Under5(x) abort</span>
+<span class="helpExample">          return a:x &lt; 5</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.drop_while('v:val &lt; 5', [1, 3, 5, 2])</span>
+<span class="helpExample">        &quot; [5, 2]</span>
+<span class="helpExample">        echo s:L.drop_while(function('Under5'), [1, 3, 5, 2])</span>
+<span class="helpExample">        &quot; [5, 2]</span>
+
+<span class="helpExample">        echo s:L.drop_while(&quot;v:val==1&quot;, [1, 2])</span>
+<span class="helpExample">        &quot; [2]</span>
+<span class="helpExample">        echo s:L.drop_while('v:val &gt; 3', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; [1, 2, 3, 4, 5]</span>
+<span class="helpExample">        echo s:L.drop_while('v:val &lt; 3', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot; [3, 4, 5]</span>
+
+        If you know Haskell, this drop_while() is like Haskell's
+        Data.List.dropWhile just for your info.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+all(<span class="Special">{function}</span>, <span class="Special">{list}</span>)                 <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.all()" name="Vital.Data.List.all()">Vital.Data.List.all()</a>
+        Returns Number 1 if all the items in <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> fulfill the
+        condition <span class="Special">{function}</span>, zero otherwise.
+        If <span class="Special">{list}</span> is empty, this function returns 1.
+
+<span class="helpExample">        function! Even(x) abort</span>
+<span class="helpExample">          return a:x % 2 == 0</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.all('v:val % 2 == 0', [2, 8, 4, 6])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.all(function('Even'), [2, 8, 4, 6])</span>
+<span class="helpExample">        &quot; 1</span>
+
+<span class="helpExample">        echo s:L.all('v:val % 2 == 1', [2, 8, 4, 6])</span>
+<span class="helpExample">        &quot; 0</span>
+<span class="helpExample">        echo s:L.all('v:val % 2 == 0', [2, 8, 5, 6])</span>
+<span class="helpExample">        &quot; 0</span>
+<span class="helpExample">        echo s:L.all('0 &lt; v:val', [2, 8, 4, 6])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.all('0 &lt; v:val', [2, 0, 4, 6])</span>
+<span class="helpExample">        &quot; 0</span>
+
+        If you know Haskell, this all() is like Haskell's Prelude.all just for
+        your info.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+any(<span class="Special">{function}</span>, <span class="Special">{list}</span>)                 <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.any()" name="Vital.Data.List.any()">Vital.Data.List.any()</a>
+        Returns Number 1 if at least one item in <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> fulfills the
+        condition <span class="Special">{function}</span>, zero otherwise.  If <span class="Special">{list}</span> is empty, this
+        function returns 0.
+
+<span class="helpExample">        function! Even(x) abort</span>
+<span class="helpExample">          return a:x % 2 == 0</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.any('v:val % 2 == 0', [2, 8, 4, 6])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.any(function('Even'), [2, 8, 4, 6])</span>
+<span class="helpExample">        &quot; 1</span>
+
+<span class="helpExample">        echo s:L.any('v:val % 2 == 1', [2, 8, 4, 6])</span>
+<span class="helpExample">        &quot; 0</span>
+<span class="helpExample">        echo s:L.any('v:val % 2 == 0', [2, 8, 5, 6])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.any('0 &lt; v:val', [2, 8, 4, 6])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.any('0 &lt; v:val', [2, 0, 4, 6])</span>
+<span class="helpExample">        &quot; 1</span>
+
+        If you know Haskell, this any() is like Haskell's Prelude.any just for
+        your info.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+and(<span class="Special">{list}</span>)                             <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.and()" name="Vital.Data.List.and()">Vital.Data.List.and()</a>
+        Returns Number 1 if all the items of <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> <span class="Special">{list}</span> are non-zero
+        Numbers, zero otherwise.  If <span class="Special">{list}</span> is empty, this function returns 1.
+
+<span class="helpExample">        echo s:L.and([1, 2, 3, 1])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.and([1, 0, 3, 1])</span>
+<span class="helpExample">        &quot; 0</span>
+<span class="helpExample">        echo s:L.and([0, 0, 0, 0])</span>
+<span class="helpExample">        &quot; 0</span>
+
+        If you know Haskell, this and() is like Haskell's Prelude.and just for
+        your info.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+or(<span class="Special">{list}</span>)                              <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.or()" name="Vital.Data.List.or()">Vital.Data.List.or()</a>
+        Returns Number 1 if at least one item in List <span class="Special">{list}</span> is non-zero,
+        zero otherwise.  If <span class="Special">{list}</span> is empty, this function returns 0.
+
+<span class="helpExample">        echo s:L.or([1, 2, 3, 1])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.or([1, 0, 3, 1])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.or([0, 0, 0, 0])</span>
+<span class="helpExample">        &quot; 0</span>
+
+        If you know Haskell, this or() is like Haskell's Prelude.or just for
+        your info.
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+
+partition(<span class="Special">{function}</span>, <span class="Special">{list}</span>)           <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.partition()" name="Vital.Data.List.partition()">Vital.Data.List.partition()</a>
+        Gives a <span class="Special">{function}</span> as predicate. Takes a tuple. The tuple's first
+        field is elements that satisfies the predicate. The second field is
+        elements that doesn't satisfy the predicate.
+        Behaves like Haskell's Data.List.partition().
+
+<span class="helpExample">        function! Even(x) abort</span>
+<span class="helpExample">          return a:x % 2 == 0</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        s:L.partition(function('Even'), range(5))</span>
+<span class="helpExample">        &quot; [[0, 2, 4], [1, 3]]</span>
+<span class="helpExample">        s:L.partition('v:val % 2 == 0', range(5))</span>
+<span class="helpExample">        &quot; [[0, 2, 4], [1, 3]]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{list}</span>.
+
+map_accum(<span class="Special">{function}</span>, <span class="Special">{xs}</span>, <span class="Special">{init}</span>)             <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.map_accum()" name="Vital.Data.List.map_accum()">Vital.Data.List.map_accum()</a>
+        This is similar to <a href="https://www.google.com/search?q=vim+%22map()%22&lr=lang_en"><span class="MissingTag">map()</span></a> but the followings are different:
+        * it doesn't destroy <span class="Special">{xs}</span>
+        * it holds previous accumulator
+        * you also have to specify initial accumulator value
+        * you also have to let <span class="Special">{function}</span> return the next accumulator value
+
+<span class="helpExample">        function! Plus(x, y) abort</span>
+<span class="helpExample">          return [a:x + a:y, a:y]</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.map_accum('[v:val + v:memo, v:memo]', [1, 2, 3], 10)</span>
+<span class="helpExample">        &quot; [11, 12, 13]</span>
+<span class="helpExample">        echo s:L.map_accum(function('Plus'), [1, 2, 3], 10)</span>
+<span class="helpExample">        &quot; [11, 12, 13]</span>
+
+<span class="helpExample">        echo s:L.map_accum('[v:val + v:memo, v:memo + 1]', [1, 2, 3], 10)</span>
+<span class="helpExample">        &quot; [11, 13, 15]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+foldl(<span class="Special">{function}</span>, <span class="Special">{init}</span>, <span class="Special">{xs}</span>)         <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.foldl()" name="Vital.Data.List.foldl()">Vital.Data.List.foldl()</a>
+        Reduces the list <span class="Special">{xs}</span> using the binary operator <span class="Special">{function}</span>, from left
+        to right. The starting value of the reduction (typically the
+        left-identity of the operator) is <span class="Special">{init}</span>.
+        Behaves like Haskell's Data.List.foldl().
+
+        foldl(f, z, [x1, x2, ..., xn]) ==
+          f(... f(f(z, x1), x2) ..., xn)
+
+<span class="helpExample">        function! Plus(x, y) abort</span>
+<span class="helpExample">          return a:x + a:y</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        function! Pair(x, y) abort</span>
+<span class="helpExample">          return [a:x, a:y]</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.foldl('v:memo + v:val', 0, range(1, 10))</span>
+<span class="helpExample">        &quot; 55 := 1+2+3+4+5+6+7+8+9+10</span>
+
+<span class="helpExample">        echo s:L.foldl(function('Plus'), 0, range(1, 10))</span>
+<span class="helpExample">        &quot; 55</span>
+
+<span class="helpExample">        echo s:L.foldl(function('Pair'), 0, [1, 2])</span>
+<span class="helpExample">        &quot; [[0, 1], 2]</span>
+
+        See also: foldl1, foldr, foldr1
+        If you know Haskell, this foldl() is like Haskell's Data.List.foldl
+        just for your info.
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+
+foldl1(<span class="Special">{function}</span>, <span class="Special">{xs}</span>)                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.foldl1()" name="Vital.Data.List.foldl1()">Vital.Data.List.foldl1()</a>
+        Sames <a href="https://www.google.com/search?q=vim+%22Data.List.foldl()%22&lr=lang_en"><span class="MissingTag">Data.List.foldl()</span></a>, but doesn't take the initial value. Takes
+        the first element from <span class="Special">{xs}</span> as the initial value.
+        Behaves like Haskell's Data.List.foldl1().
+
+<span class="helpExample">        function! Plus(x, y) abort</span>
+<span class="helpExample">          return a:x + a:y</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        function! Pair(x, y) abort</span>
+<span class="helpExample">          return [a:x, a:y]</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.foldl1('v:memo + v:val', range(1, 10))</span>
+<span class="helpExample">        &quot; 55</span>
+<span class="helpExample">        echo s:L.foldl1(function('Plus'), range(1, 10))</span>
+<span class="helpExample">        &quot; 55</span>
+<span class="helpExample">        echo s:L.foldl1(function('Pair'), [0, 1, 2])</span>
+<span class="helpExample">        &quot; [[0, 1], 2]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+foldr(<span class="Special">{function}</span>, <span class="Special">{init}</span>, <span class="Special">{xs}</span>)         <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.foldr()" name="Vital.Data.List.foldr()">Vital.Data.List.foldr()</a>
+        Reduces the list <span class="Special">{xs}</span> using the binary operator <span class="Special">{function}</span>, from right
+        to left. The starting value of the reduction (typically the
+        right-identity of the operator) is <span class="Special">{init}</span>.
+        Behaves like Haskell's Data.List.foldr().
+
+<span class="helpExample">        function! Plus(x, y) abort</span>
+<span class="helpExample">          return a:x + a:y</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        function! Pair(x, y) abort</span>
+<span class="helpExample">          return [a:x, a:y]</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.foldr('v:val + v:memo', 0, range(1, 10))</span>
+<span class="helpExample">        &quot; 55</span>
+
+<span class="helpExample">        echo s:L.foldr(function('Plus'), 0, range(1, 10))</span>
+<span class="helpExample">        &quot; 55</span>
+
+<span class="helpExample">        echo s:L.foldr(function('Pair'), [], [1, 2])</span>
+<span class="helpExample">        &quot; [1, [2, []]]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+foldr1(<span class="Special">{function}</span>, <span class="Special">{xs}</span>)                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.foldr1()" name="Vital.Data.List.foldr1()">Vital.Data.List.foldr1()</a>
+        Sames <a href="https://www.google.com/search?q=vim+%22Data.List.foldr()%22&lr=lang_en"><span class="MissingTag">Data.List.foldr()</span></a>, but doesn't take the initial value. Takes
+        the last element from <span class="Special">{xs}</span> as the initial value.
+        Behaves like Haskell's Data.List.foldr1().
+
+<span class="helpExample">        function! Plus(x, y) abort</span>
+<span class="helpExample">          return a:x + a:y</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        function! Pair(x, y) abort</span>
+<span class="helpExample">          return [a:x, a:y]</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.foldr1('v:val + v:memo', range(1, 10))</span>
+<span class="helpExample">        &quot; 55</span>
+
+<span class="helpExample">        echo s:L.foldr1(function('Plus'), range(1, 10))</span>
+<span class="helpExample">        &quot; 55</span>
+
+<span class="helpExample">        echo s:L.foldr1(function('Pair'), [1, 2, []])</span>
+<span class="helpExample">        &quot; [1, [2, []]]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+count(<span class="Special">{f}</span>, <span class="Special">{xs}</span>)                                <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.count()" name="Vital.Data.List.count()">Vital.Data.List.count()</a>
+        <span class="Todo">NOTE</span>: This is different to Vim script's native <a href="https://www.google.com/search?q=vim+%22count()%22&lr=lang_en"><span class="MissingTag">count()</span></a> function.
+        <span class="Todo">NOTE</span>: This is experimental. Unlike other Data.List functions, you
+        can't provide a string represated pseudo function to <span class="Special">{f}</span>.
+
+        Returns number of items in <span class="Special">{xs}</span> that satisfies the given predicate
+        function <span class="Special">{f}</span>.
+
+<span class="helpExample">        echo s:L.count({ x -&gt; x == 2 }, [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot;=&gt; 1</span>
+
+<span class="helpExample">        echo s:L.count({ x -&gt; x % 2 == 0 }, [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot;=&gt; 2</span>
+
+<span class="helpExample">        function! s:f(x)</span>
+<span class="helpExample">          return a:x % 2 == 0</span>
+<span class="helpExample">        endfunction</span>
+<span class="helpExample">        echo s:L.count(function('s:f', [1, 2, 3, 4, 5])</span>
+<span class="helpExample">        &quot;=&gt; 2</span>
+
+        It scans from left to right. O(n).
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+zip(...)                                <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.zip()" name="Vital.Data.List.zip()">Vital.Data.List.zip()</a>
+        Unifies lists in parallel. If the length of the lists is different,
+        adjusts for shorter list, longer list is sliced.
+        Behaves like python's zip().
+
+<span class="helpExample">        echo s:L.zip([1, 2, 3], [4, 5, 6])</span>
+<span class="helpExample">        &quot; [[1, 4], [2, 5], [3, 6]]</span>
+<span class="helpExample">        echo s:L.zip([1, 2, 3], [4, 5, 6], [7, 8, 9])</span>
+<span class="helpExample">        &quot; [[1, 4, 7], [2, 5, 8], [3, 6, 9]]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+zip_fill(<span class="Special">{list}</span>, <span class="Special">{list}</span>, <span class="Special">{elem}</span>)        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.zip_fill()" name="Vital.Data.List.zip_fill()">Vital.Data.List.zip_fill()</a>
+        Similar to <a class="Identifier" href="./../../vital/Data/List.html#Vital.Data.List.zip()">Vital.Data.List.zip()</a>, but goes until the longer one.
+
+<span class="helpExample">        echo s:L.zip_fill([1, 2, 3, 10, 20], [4, 5, 6], 100)</span>
+<span class="helpExample">        &quot; [[1, 4], [2, 5], [3, 6], [10, 100], [20, 100]]</span>
+<span class="helpExample">        echo s:L.zip_fill([1, 2, 3], [4, 5, 6, 10, 20], 200)</span>
+<span class="helpExample">        &quot; [[1, 4], [2, 5], [3, 6], [200, 10], [200, 20]]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+with_index(<span class="Special">{list}</span> [, <span class="Special">{offset}</span>])         <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.with_index()" name="Vital.Data.List.with_index()">Vital.Data.List.with_index()</a>
+        Returns <span class="Special">{list}</span> with index. <span class="Special">{offset}</span> means the base of index.
+        If you specify <span class="Special">{offset}</span>, index starts with <span class="Special">{offset}</span>.
+
+<span class="helpExample">        echo s:L.with_index(['a', 'b', 'c'])</span>
+<span class="helpExample">        &quot; [['a', 0], ['b', 1], ['c', 2]]</span>
+<span class="helpExample">        echo s:L.with_index(['a', 'b', 'c'], 2)</span>
+<span class="helpExample">        &quot; [['a', 2], ['b', 3], ['c', 4]]</span>
+
+        This function is useful when used with <a href="https://www.google.com/search?q=vim+%22:for%22&lr=lang_en"><span class="MissingTag">:for</span></a>.
+        For example, when you have lines as a list of string and you want to
+        output a line with a line number to each line, you may write as below.
+
+<span class="helpExample">        for idx in range(1, len(lines))</span>
+<span class="helpExample">                echo idx.': '.lines[idx]</span>
+<span class="helpExample">        endfor</span>
+
+        This procedure can be rewritten using with_index() as below.
+
+<span class="helpExample">        for [line, idx] in s:L.with_index(lines, 1)</span>
+<span class="helpExample">                echo idx.': '.line</span>
+<span class="helpExample">        endfor</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+find(<span class="Special">{list}</span>, <span class="Special">{default}</span>, <span class="Special">{function}</span>)                      <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.find()" name="Vital.Data.List.find()">Vital.Data.List.find()</a>
+        Returns the first value in <span class="Special">{list}</span> where the given <span class="Special">{function}</span> is
+        satisfied. <span class="Special">{default}</span> is returned when no item satisfies <span class="Special">{function}</span>.
+        <span class="Special">{function}</span> must be a <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> or a <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>.
+
+<span class="helpExample">        function! MyPredicate(x)</span>
+<span class="helpExample">          return a:x % 2 == 0</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.find([1, 2, 3, 1, 2, 3], '*not-found*', function('MyPredicate'))</span>
+<span class="helpExample">        &quot; 2</span>
+<span class="helpExample">        echo s:L.find([1, 2, 3, 1, 2, 3], '*not-found*', 'v:val % 2 == 0')</span>
+<span class="helpExample">        &quot; 2</span>
+<span class="helpExample">        echo s:L.find([1, 2, 3], '*not-found*', 'v:val % 10 == 0')</span>
+<span class="helpExample">        &quot; '*not-found*'</span>
+
+        If you know Haskell, this find() is like Haskell's Data.List.find
+        just for your info.
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+
+                                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.find_index()" name="Vital.Data.List.find_index()">Vital.Data.List.find_index()</a>
+find_index(<span class="Special">{list}</span>, <span class="Special">{function}</span> [, <span class="Special">{start}</span> [, <span class="Special">{default}</span>]])
+        Returns the lowest index in <span class="Special">{list}</span> where the given <span class="Special">{function}</span> is
+        satisfied.
+        If you specify <span class="Special">{start}</span>, start looking at the item with index <span class="Special">{start}</span>
+        (may be negative for an item relative to the end).
+        <span class="Special">{default}</span> is returned when no item satisfies <span class="Special">{function}</span>. If <span class="Special">{default}</span>
+        is omitted, -1 is used.
+
+<span class="helpExample">        function! Odd(x) abort</span>
+<span class="helpExample">          return a:x % 2 == 1</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.find_index([0, 1, 2, 3], 'v:val % 2 == 1')</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.find_index([0, 1, 2, 3], function('Odd'))</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.find_index([0, 1, 2, 3], 'v:val &gt; 10')</span>
+<span class="helpExample">        &quot; -1</span>
+
+<span class="helpExample">        echo s:L.find_index([0, 1, 2, 3], 'v:val % 2 == 1', 1)</span>
+<span class="helpExample">        &quot; 2</span>
+
+<span class="helpExample">        let default_val = -10</span>
+<span class="helpExample">        let constant_false_expr = '0'</span>
+<span class="helpExample">        echo s:L.find_index([0, 1, 2, 3], constant_false_expr, 0, default_val)</span>
+<span class="helpExample">        &quot; -10</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+                                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.find_last_index()" name="Vital.Data.List.find_last_index()">Vital.Data.List.find_last_index()</a>
+find_last_index(<span class="Special">{list}</span>, <span class="Special">{function}</span> [, <span class="Special">{start}</span> [, <span class="Special">{default}</span>]])
+        Similar to find_index but this returns the highest index.
+        Traversing is done in reverse order.
+
+<span class="helpExample">        function! Odd(x) abort</span>
+<span class="helpExample">          return a:x % 2 == 1</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.find_last_index([0, 1, 2, 3], 'v:val % 2 == 1')</span>
+<span class="helpExample">        &quot; 3</span>
+<span class="helpExample">        echo s:L.find_last_index([0, 1, 2, 3], function('Odd'))</span>
+<span class="helpExample">        &quot; 3</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+                                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.find_indices()" name="Vital.Data.List.find_indices()">Vital.Data.List.find_indices()</a>
+find_indices(<span class="Special">{list}</span>, <span class="Special">{function}</span> [, <span class="Special">{start}</span>])
+        Similar to find_index but this returns all of indices specifying
+        <span class="Special">{function}</span>.
+        When no indices found, empty list is returned.
+
+<span class="helpExample">        function! Odd(x) abort</span>
+<span class="helpExample">          return a:x % 2 == 1</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:L.find_indices([0, 1, 2, 3], 'v:val % 2 == 1')</span>
+<span class="helpExample">        &quot; [1, 3]</span>
+<span class="helpExample">        echo s:L.find_indices([0, 1, 2, 3], function('Odd'))</span>
+<span class="helpExample">        &quot; [1, 3]</span>
+
+<span class="helpExample">        echo s:L.find_indices([0, 1, 2, 3], 'v:val &gt; 10')</span>
+<span class="helpExample">        &quot; []</span>
+
+<span class="helpExample">        echo s:L.find_indices([0, 1, 2, 3], 'v:val % 2 == 1', 2)</span>
+<span class="helpExample">        &quot; [3]</span>
+<span class="helpExample">        echo s:L.find_indices([0, 1, 2, 3], 'v:val % 2 == 1', 1)</span>
+<span class="helpExample">        &quot; [1, 3]</span>
+<span class="helpExample">        echo s:L.find_indices([0, 1, 2, 3], 'v:val % 2 == 1', -2)</span>
+<span class="helpExample">        &quot; [3]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+has_common_items(<span class="Special">{list1}</span>, <span class="Special">{list2}</span>)      <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.has_common_items()" name="Vital.Data.List.has_common_items()">Vital.Data.List.has_common_items()</a>
+        Returns non-zero if a:list1 and a:list2 have a common item, otherwise
+        zero.
+
+<span class="helpExample">        echo s:L.has_common_items(['a', 'b', 'c'], ['b', 'c'])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.has_common_items(['a', 'c'], ['b', 'c'])</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.has_common_items(['a'], ['b', 'c'])</span>
+<span class="helpExample">        &quot; 0</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+
+intersect(<span class="Special">{list1}</span>, <span class="Special">{list2}</span>)             <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.intersect()" name="Vital.Data.List.intersect()">Vital.Data.List.intersect()</a>
+        Returns a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of common items between <span class="Special">{list1}</span> and <span class="Special">{list2}</span>, and it's
+        unordered and uniquified.
+
+<span class="helpExample">        echo s:L.intersect(['a', 'b', 'c'], ['b', 'c'])</span>
+<span class="helpExample">        &quot; ['b', 'c']</span>
+<span class="helpExample">        echo s:L.intersect(['a', 'c'], ['b', 'c'])</span>
+<span class="helpExample">        &quot; ['c']</span>
+<span class="helpExample">        echo s:L.intersect(['a', 'a'], ['a', 'a'])</span>
+<span class="helpExample">        &quot; ['a']</span>
+<span class="helpExample">        echo s:L.intersect(['a'], ['b', 'c'])</span>
+<span class="helpExample">        &quot; []</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+group_by(<span class="Special">{list}</span>, <span class="Special">{function}</span>)            <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.group_by()" name="Vital.Data.List.group_by()">Vital.Data.List.group_by()</a>
+        Returns a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> grouped by the result of <span class="Special">{function}</span>.
+        &quot;v:val&quot; can be used in <span class="Special">{function}</span> if <span class="Special">{function}</span> is a string expression.
+
+<span class="helpExample">        echo s:L.group_by(['a', 'b', 'ab'], 'len(v:val)')</span>
+<span class="helpExample">        &quot; {'1': ['a', 'b'], '2': ['ab']}</span>
+<span class="helpExample">        echo s:L.group_by(['a', 'b', 'ab'], function('len'))</span>
+<span class="helpExample">        &quot; {'1': ['a', 'b'], '2': ['ab']}</span>
+
+<span class="helpExample">        echo s:L.group_by(['a', 'b', 'ab'], 'v:val[0]')</span>
+<span class="helpExample">        &quot; {'a': ['a', 'ab'], 'b': ['b']}</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+                                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.binary_search()" name="Vital.Data.List.binary_search()">Vital.Data.List.binary_search()</a>
+binary_search(<span class="Special">{list}</span>, <span class="Special">{target}</span>, [<span class="Special">{func}</span>, [<span class="Special">{dict}</span>]])
+        Returns the index in <span class="Special">{list}</span> where the item has a value equal to
+        <span class="Special">{target}</span> by binary search.  <span class="Special">{list}</span> must be sorted.  If <span class="Special">{target}</span> is not
+        found, it returns -1.
+        When <span class="Special">{func}</span> is given, it is used to check the lhs of <span class="Special">{func}</span> is less
+        than the rhs of <span class="Special">{func}</span>.  <span class="Special">{func}</span> is the same as <a href="https://www.google.com/search?q=vim+%22sort()%22&lr=lang_en"><span class="MissingTag">sort()</span></a> of <span class="Special">{func}</span>.
+        You can reuse <span class="Special">{func}</span> used for <a href="https://www.google.com/search?q=vim+%22sort()%22&lr=lang_en"><span class="MissingTag">sort()</span></a> to search with
+        <a href="https://www.google.com/search?q=vim+%22Vital.Data.List.binary_search%22&lr=lang_en"><span class="MissingTag">Vital.Data.List.binary_search</span></a>.
+        <span class="Special">{dict}</span> is used as &quot;self&quot; in &quot;dict&quot; function.
+
+<span class="helpExample">        echo s:L.binary_search([1, 3, 5, 7], 3)</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.binary_search([1, 3, 5, 7], 2)</span>
+<span class="helpExample">        &quot; -1</span>
+
+<span class="helpExample">        function! CompareWithFirstElem(a, b)</span>
+<span class="helpExample">                return a:a[0] &lt; a:b[0] ? -1 : a:a[0] &gt; a:b[0] ? 1 : 0</span>
+<span class="helpExample">        endfunction</span>
+<span class="helpExample">        echo s:L.binary_search([[1, 'd'], [3, 'c'], [5, 'b'], [7, 'a']], [3, 'c'], 'CompareWithFirstElem')</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.binary_search([[1, 'd'], [3, 'c'], [5, 'b'], [7, 'a']], [10, 'c'], 'CompareWithFirstElem')</span>
+<span class="helpExample">        &quot; -1</span>
+
+        You can control the condition for the search by <span class="Special">{func}</span>.  Below example
+        shows the way to search a list by its length.
+
+<span class="helpExample">        let CompareByLength = {}</span>
+<span class="helpExample">        function! CompareByLength.func(a, b) dict</span>
+<span class="helpExample">                return len(a:a) - len(a:b)</span>
+<span class="helpExample">        endfunction</span>
+<span class="helpExample">        echo s:L.binary_search(['a', 'aa', 'aaa'], 'vi', CompareByLength.func, CompareByLength)</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:L.binary_search(['a', 'aa', 'aaa'], 'vivi', CompareByLength.func, CompareByLength)</span>
+<span class="helpExample">        &quot; -1</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+product(<span class="Special">{lists}</span>)                        <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.product()" name="Vital.Data.List.product()">Vital.Data.List.product()</a>
+        Returns Cartesian product of elements in the <span class="Special">{lists}</span>.
+
+<span class="helpExample">        echo s:L.product([[1, 2], [4, 5]])</span>
+<span class="helpExample">        &quot; [[1, 4], [1, 5], [2, 4], [2, 5]]</span>
+<span class="helpExample">        echo s:L.product([range(2), range(2), range(2)])</span>
+<span class="helpExample">        &quot; [[0, 0, 0], [0, 0, 1], [0, 1, 0], [0, 1, 1], [1, 0, 0], [1, 0, 1], [1, 1, 0], [1, 1, 1]]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+permutations(<span class="Special">{list}</span> [, <span class="Special">{r}</span>])            <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.permutations()" name="Vital.Data.List.permutations()">Vital.Data.List.permutations()</a>
+        Returns successive <span class="Special">{r}</span> length permutations of elements in the <span class="Special">{list}</span>.
+        If <span class="Special">{r}</span> is not specified, then <span class="Special">{r}</span> defaults to the length of the <span class="Special">{list}</span>
+        and all possible full-length permutations are generated.
+
+<span class="helpExample">        echo s:L.permutations([1, 2, 3])</span>
+<span class="helpExample">        &quot; [[1, 2, 3], [1, 3, 2], [2, 1, 3], [2, 3, 1], [3, 1, 2], [3, 2, 1]]</span>
+<span class="helpExample">        echo s:L.permutations([1, 2, 3], 2)</span>
+<span class="helpExample">        &quot; [[1, 2] , [1, 3], [2, 1], [2, 3], [3, 1], [3, 2]]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+combinations(<span class="Special">{list}</span>, <span class="Special">{r}</span>)               <a class="String" href="./../../vital/Data/List.html#Vital.Data.List.combinations()" name="Vital.Data.List.combinations()">Vital.Data.List.combinations()</a>
+        Returns successive <span class="Special">{r}</span> length combinations of elements in the <span class="Special">{list}</span>.
+
+<span class="helpExample">        echo s:L.combinations([1, 2, 3, 4], 2)</span>
+<span class="helpExample">        &quot; [[1, 2], [1, 3], [1, 4], [2, 3], [2, 4], [3, 4]]</span>
+<span class="helpExample">        echo s:L.combinations([5, 2, 3, 1], 3)</span>
+<span class="helpExample">        &quot; [[5, 2, 3], [5, 2, 1], [5, 3, 1], [2, 3, 1]]</span>
+
+
+        Non-destructive. This does not modify <span class="Special">{xs}</span>.
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

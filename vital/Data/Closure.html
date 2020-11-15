@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/Closure</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/Closure</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Data/Closure.html" name="vital/Data/Closure.txt">vital/Data/Closure.txt</a>        Provide Closure object.
+
+Maintainer: thinca &lt;thinca+vim@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-contents" name="Vital.Data.Closure-contents">Vital.Data.Closure-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-introduction">Vital.Data.Closure-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-interface">Vital.Data.Closure-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-functions">Vital.Data.Closure-functions</a>
+OBJECTS                         <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-objects">Vital.Data.Closure-objects</a>
+  Closure Object                  <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure">Vital.Data.Closure-Closure</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-introduction" name="Vital.Data.Closure-introduction">Vital.Data.Closure-introduction</a>
+
+<a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure" name="Vital.Data.Closure">Vital.Data.Closure</a> provides Closure object.
+
+<span class="helpExample">        let C = vital#{plugin-name}#new().import('Data.Closure')</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TERM</span>                                    <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term" name="Vital.Data.Closure-term">Vital.Data.Closure-term</a>
+
+<span class="Special">{callable}</span>                              <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-callable" name="Vital.Data.Closure-term-callable">Vital.Data.Closure-term-callable</a>
+        A <span class="Special">{callable}</span> is one of the followings.
+        - A <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>
+          - <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_funcref()">Vital.Data.Closure.from_funcref()</a>
+        - A string of function name which begins from &quot;*&quot;
+          - <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_funcname()">Vital.Data.Closure.from_funcname()</a>
+        - An ex command string which begins from &quot;:&quot;
+          - <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_command()">Vital.Data.Closure.from_command()</a>
+        - A <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of ex command strings which begin from &quot;:&quot;
+          - <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_command()">Vital.Data.Closure.from_command()</a>
+        - An operator string such as '+', '%', or '=~#'
+          - <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_operator()">Vital.Data.Closure.from_operator()</a>
+        - An <a href="https://www.google.com/search?q=vim+%22expr%22&lr=lang_en"><span class="MissingTag">expr</span></a> string which begins from &quot;=&quot;
+          - <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_expr()">Vital.Data.Closure.from_expr()</a>
+        - A Closure object(<a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure">Vital.Data.Closure-Closure</a>)
+        - A <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> that is arguments of <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.build()">Vital.Data.Closure.build()</a>.
+
+<span class="Special">{arglist}</span>                               <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-arglist" name="Vital.Data.Closure-term-arglist">Vital.Data.Closure-term-arglist</a>
+        This is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> for the arguments of the function.
+
+<span class="Special">{args}</span>...                               <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-args" name="Vital.Data.Closure-term-args">Vital.Data.Closure-term-args</a>
+        This is variadic for the function.
+
+<span class="Special">{context}</span>                               <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-context" name="Vital.Data.Closure-term-context">Vital.Data.Closure-term-context</a>
+        This is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> that is treated as <a href="https://www.google.com/search?q=vim+%22self%22&lr=lang_en"><span class="MissingTag">self</span></a> of <span class="Special">{function}</span>.
+
+<span class="Special">{binding}</span>                               <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-binding" name="Vital.Data.Closure-term-binding">Vital.Data.Closure-term-binding</a>
+        <span class="Special">{binding}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>.  You can access to this Dictionary from
+        <span class="Special">{expr}</span> or <span class="Special">{command}</span> as local variables.
+        <span class="Todo">Note</span> that the key for <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> must start with a capital.
+
+        When <span class="Special">{binding}</span> is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>, a new <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> will be
+        created as new <span class="Special">{binding}</span>, and all dictionaries are extended to the new
+        dictionary.
+
+        If local variable is changed, <span class="Special">{binding}</span> will change similarly.  This
+        feature is available in Vim 7.3.560 or later.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-interface" name="Vital.Data.Closure-interface">Vital.Data.Closure-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-functions" name="Vital.Data.Closure-functions">Vital.Data.Closure-functions</a>
+
+                                        <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.build()" name="Vital.Data.Closure.build()">Vital.Data.Closure.build()</a>
+build(<span class="Special">{callable}</span> [, <span class="Special">{arglist}</span>][, <span class="Special">{context}</span>])
+        Builds a Closure object(<a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure">Vital.Data.Closure-Closure</a>) from <span class="Special">{callable}</span>.
+
+        It is <span class="Special">{arglist}</span> when the second argument or subsequent ones is a list.
+        It is <span class="Special">{context}</span> when the second argument or subsequent ones is a
+        dictionary.
+        See <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure">Vital.Data.Closure-Closure</a> for detail of <span class="Special">{arglist}</span> and
+        <span class="Special">{context}</span>.
+
+call(<span class="Special">{callable}</span>, <span class="Special">{args}</span>...)             <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.call()" name="Vital.Data.Closure.call()">Vital.Data.Closure.call()</a>
+        Shortcut version of <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.apply()">Vital.Data.Closure.apply()</a>.
+        <span class="Special">{args}</span>... is treated as <span class="Special">{arglist}</span>.
+
+                                        <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.apply()" name="Vital.Data.Closure.apply()">Vital.Data.Closure.apply()</a>
+apply(<span class="Special">{callable}</span> [, <span class="Special">{arglist}</span>][, <span class="Special">{context}</span>])
+        Builds a Closure object by <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.build()">Vital.Data.Closure.build()</a> and calls it.
+        See <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.build()">Vital.Data.Closure.build()</a> for detail of arguments.
+
+                                        <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_funcref()" name="Vital.Data.Closure.from_funcref()">Vital.Data.Closure.from_funcref()</a>
+from_funcref(<span class="Special">{funcref}</span> [, <span class="Special">{arglist}</span>][, <span class="Special">{context}</span>])
+        Builds a Closure object from <span class="Special">{funcref}</span>.
+        See <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure">Vital.Data.Closure-Closure</a> for detail of <span class="Special">{arglist}</span> and
+        <span class="Special">{context}</span>.
+
+                                        <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_funcname()" name="Vital.Data.Closure.from_funcname()">Vital.Data.Closure.from_funcname()</a>
+from_funcname(<span class="Special">{funcname}</span> [, <span class="Special">{arglist}</span>][, <span class="Special">{context}</span>])
+        Builds a Closure object from <span class="Special">{funcname}</span>.
+        There may be &quot;*&quot; prefix in <span class="Special">{funcname}</span>.
+        <span class="Special">{funcname}</span> is a builtin function or global function.
+        See <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure">Vital.Data.Closure-Closure</a> for detail of <span class="Special">{arglist}</span> and
+        <span class="Special">{context}</span>.
+
+from_expr(<span class="Special">{expr}</span> [, <span class="Special">{binding}</span>])         <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_expr()" name="Vital.Data.Closure.from_expr()">Vital.Data.Closure.from_expr()</a>
+        Builds a Closure object from <span class="Special">{expr}</span> string.
+        There may be &quot;=&quot; prefix in <span class="Special">{expr}</span>.
+        You can use <a href="https://www.google.com/search?q=vim+%22a:%22&lr=lang_en"><span class="MissingTag">a:</span></a> as the arguments.
+        See <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-binding">Vital.Data.Closure-term-binding</a> about <span class="Special">{binding}</span>.
+
+from_command(<span class="Special">{command}</span> [, <span class="Special">{binding}</span>])   <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_command()" name="Vital.Data.Closure.from_command()">Vital.Data.Closure.from_command()</a>
+        Builds a Closure object from <span class="Special">{command}</span>.
+        <span class="Special">{command}</span> is a String or a List of strings.
+        You can use <a href="https://www.google.com/search?q=vim+%22a:%22&lr=lang_en"><span class="MissingTag">a:</span></a> as the arguments.
+        See <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-binding">Vital.Data.Closure-term-binding</a> about <span class="Special">{binding}</span>.
+
+from_operator(<span class="Special">{operator}</span>)               <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_operator()" name="Vital.Data.Closure.from_operator()">Vital.Data.Closure.from_operator()</a>
+        Builds a Closure object from <span class="Special">{operator}</span>.
+        <span class="Special">{operator}</span> is an operator string such as '+', '%', or '=~#'
+
+from_method(<span class="Special">{object}</span>, <span class="Special">{method}</span>)         <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.from_method()" name="Vital.Data.Closure.from_method()">Vital.Data.Closure.from_method()</a>
+        Builds a Closure object from <span class="Special">{object}</span>(Dictionary) and the name of
+        <span class="Special">{method}</span>.
+
+compose(<span class="Special">{callables}</span>)                    <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.compose()" name="Vital.Data.Closure.compose()">Vital.Data.Closure.compose()</a>
+        Builds a new composed Closure objects from <span class="Special">{callables}</span>.
+        <span class="Special">{callables}</span> is a List of callable(<a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-callable">Vital.Data.Closure-term-callable</a>).
+
+        For example, there are the functions named &quot;F&quot;, &quot;G&quot;, &quot;H&quot;:
+
+<span class="helpExample">        compose(['*F', '*G', '*H']).call({args}) == F(G(H({args})))</span>
+
+        Other example:
+
+<span class="helpExample">        let sortuniq = C.compose(['*uniq', '*sort'])</span>
+<span class="helpExample">        echo sortuniq.call([2, 4, 2, 1, 3, 4, 5, 1, 5, 3])</span>
+<span class="helpExample">        &quot; =&gt; [1, 2, 3, 4, 5]</span>
+
+is_closure(<span class="Special">{expr}</span>)                      <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.is_closure()" name="Vital.Data.Closure.is_closure()">Vital.Data.Closure.is_closure()</a>
+        Returns true when the <span class="Special">{expr}</span> is a Closure object.
+
+is_callable(<span class="Special">{expr}</span>)                     <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.is_callable()" name="Vital.Data.Closure.is_callable()">Vital.Data.Closure.is_callable()</a>
+        Returns true when the <span class="Special">{expr}</span> is callable.
+        See also <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-callable">Vital.Data.Closure-term-callable</a>.
+
+sweep_functions()                       <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.sweep_functions()" name="Vital.Data.Closure.sweep_functions()">Vital.Data.Closure.sweep_functions()</a>
+        Sweeps garbage functions.
+        <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.to_function()">Vital.Data.Closure-Closure.to_function()</a> with <span class="Special">{limit}</span> creates a
+        function, but can not delete the function itself.
+        As a result, the function remains as garbage.
+        This function sweeps it.
+        This is automatically called by <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.build()">Vital.Data.Closure.build()</a>.
+
+is_binding_supported()          <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure.is_binding_supported()" name="Vital.Data.Closure.is_binding_supported()">Vital.Data.Closure.is_binding_supported()</a>
+        Returns true when the <span class="Special">{binding}</span> feature supports local changing.
+        See also <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-binding">Vital.Data.Closure-term-binding</a>.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                                 <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-objects" name="Vital.Data.Closure-objects">Vital.Data.Closure-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Closure Object                  <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure" name="Vital.Data.Closure-Closure">Vital.Data.Closure-Closure</a>
+
+A Closure object has following members.
+
+- function(<a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>)
+- arglist(<a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-arglist">Vital.Data.Closure-term-arglist</a>)
+  - Part of head of arguments.
+- context(<a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-term-context">Vital.Data.Closure-term-context</a>)
+
+Closure object can call the <span class="Special">{function}</span> with <span class="Special">{arglist}</span>, and with <span class="Special">{context}</span>.
+Example:
+<span class="helpExample">        let closure = C.from_funcname('strftime', ['%Y%m%d'])</span>
+<span class="helpExample">        echo closure.call(1412686257)</span>
+
+Closure.call(<span class="Special">{args}</span>...)         <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.call()" name="Vital.Data.Closure-Closure.call()">Vital.Data.Closure-Closure.call()</a>
+        Shortcut version of <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.apply()">Vital.Data.Closure-Closure.apply()</a>.
+        <span class="Special">{args}</span>... is treated as <span class="Special">{arglist}</span>.
+
+Closure.apply(<span class="Special">{arglist}</span>)        <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.apply()" name="Vital.Data.Closure-Closure.apply()">Vital.Data.Closure-Closure.apply()</a>
+        Calls this Closure object with <span class="Special">{arglist}</span>.
+
+Closure.with_args(<span class="Special">{args}</span>...)    <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.with_args()" name="Vital.Data.Closure-Closure.with_args()">Vital.Data.Closure-Closure.with_args()</a>
+        Shortcut version of <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.with_arglist()">Vital.Data.Closure-Closure.with_arglist()</a>.
+        <span class="Special">{args}</span>... is treated as <span class="Special">{arglist}</span>.
+
+Closure.with_arglist(<span class="Special">{arglist}</span>) <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.with_arglist()" name="Vital.Data.Closure-Closure.with_arglist()">Vital.Data.Closure-Closure.with_arglist()</a>
+        Creates a new Closure object which has the <span class="Special">{arglist}</span>.
+        <span class="Special">{arglist}</span> is appended to the existing arglist.
+
+<span class="helpExample">        let get_win_var = C.from_funcname('getwinvar')</span>
+<span class="helpExample">        let get_current_win_var = get_win_var.with_arglist([0])</span>
+<span class="helpExample">        let get_current_win_scope = get_current_win_var.with_arglist([''])</span>
+<span class="helpExample">        echo get_current_win_scope.call() is getwinvar(0, '')</span>
+
+Closure.with_context(<span class="Special">{context}</span>) <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.with_context()" name="Vital.Data.Closure-Closure.with_context()">Vital.Data.Closure-Closure.with_context()</a>
+        Creates a new Closure object which has the <span class="Special">{context}</span>.
+        <span class="Special">{context}</span> is replaced by the argument.
+
+Closure.compose(<span class="Special">{callable}</span>)     <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.compose()" name="Vital.Data.Closure-Closure.compose()">Vital.Data.Closure-Closure.compose()</a>
+        Same as `C.compose([<span class="Special">{callable}</span>, self])`.
+        See also <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.compose()">Vital.Data.Closure.compose()</a>.
+
+Closure.to_function([<span class="Special">{limit}</span>])  <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.to_function()" name="Vital.Data.Closure-Closure.to_function()">Vital.Data.Closure-Closure.to_function()</a>
+        Defines a new function for this closure and return its <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>.
+        <span class="Todo">Note</span> that the function remains after this closure was deleted.
+        When the <span class="Special">{limit}</span> is supplied, the function will be marked as delete
+        after the function is called <span class="Special">{limit}</span> times.
+        See also <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure.sweep_functions()">Vital.Data.Closure.sweep_functions()</a>.
+
+Closure.delete_function()       <a class="String" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.delete_function()" name="Vital.Data.Closure-Closure.delete_function()">Vital.Data.Closure-Closure.delete_function()</a>
+        Deletes the function made by <a class="Identifier" href="./../../vital/Data/Closure.html#Vital.Data.Closure-Closure.to_function()">Vital.Data.Closure-Closure.to_function()</a>.
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

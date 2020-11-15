@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Vim/BufferManager</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Vim/BufferManager</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Vim/BufferManager.html" name="vital/Vim/BufferManager.txt">vital/Vim/BufferManager.txt</a>   buffer manager.
+
+Maintainers: thinca &lt;thinca+vim@gmail.com&gt;
+             ujihisa &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                        <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-contents" name="Vital.Vim.BufferManager-contents">Vital.Vim.BufferManager-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-introduction">Vital.Vim.BufferManager-introduction</a>
+USAGE                           <a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-usage">Vital.Vim.BufferManager-usage</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-interface">Vital.Vim.BufferManager-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-functions">Vital.Vim.BufferManager-functions</a>
+OBJECTS                         <a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-objects">Vital.Vim.BufferManager-objects</a>
+  Manger Object                   <a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager">Vital.Vim.BufferManager-Manager</a>
+CONFIG                          <a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-config">Vital.Vim.BufferManager-config</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                    <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-introduction" name="Vital.Vim.BufferManager-introduction">Vital.Vim.BufferManager-introduction</a>
+
+<a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager" name="Vital.Vim.BufferManager">Vital.Vim.BufferManager</a> is a Vim's buffer manager library.  This manager
+stores the opened buffers, and reuses the opened window when opening a new
+buffer.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                           <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-usage" name="Vital.Vim.BufferManager-usage">Vital.Vim.BufferManager-usage</a>
+
+<span class="helpExample">        let BM = V.import('Vim.BufferManager')</span>
+<span class="helpExample">        let m = BM.new()  &quot; creates new manager</span>
+<span class="helpExample">        &quot; opens a new buffer named &quot;buffer name&quot; to a new window</span>
+<span class="helpExample">        call m.open('buffer name')</span>
+<span class="helpExample">        &quot; opens a new buffer to same window (reused automatically)</span>
+<span class="helpExample">        call m.open('buffer 2')</span>
+
+<span class="helpExample">        echo m.config('range')         &quot; gets the config value</span>
+<span class="helpExample">        call m.config('range', 'all')  &quot; sets the config value</span>
+
+<span class="helpExample">        let m2 = BM.new()  &quot; creates new manager</span>
+<span class="helpExample">        &quot; each managers are independent</span>
+<span class="helpExample">        call m2.open('buffer 3')</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                       <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-interface" name="Vital.Vim.BufferManager-interface">Vital.Vim.BufferManager-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                       <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-functions" name="Vital.Vim.BufferManager-functions">Vital.Vim.BufferManager-functions</a>
+
+                                <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager.new()" name="Vital.Vim.BufferManager.new()">Vital.Vim.BufferManager.new()</a>
+new([<span class="Special">{config}</span> [, <span class="Special">{user-config}</span>]])
+        Creates a new Manager object(<a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager">Vital.Vim.BufferManager-Manager</a>).
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                         <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-objects" name="Vital.Vim.BufferManager-objects">Vital.Vim.BufferManager-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Manger Object                   <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager" name="Vital.Vim.BufferManager-Manager">Vital.Vim.BufferManager-Manager</a>
+
+                                <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.open()" name="Vital.Vim.BufferManager-Manager.open()">Vital.Vim.BufferManager-Manager.open()</a>
+Manager.open(<span class="Special">{bufname}</span> [, <span class="Special">{config}</span>])
+        Opens a buffer.
+        First, this function searches a window that is opening a managed
+        buffer from range(<a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-config-range">Vital.Vim.BufferManager-config-range</a>).
+        If a window is found, it moves to the window and opens a buffer.
+        If it is not found, opens a buffer by
+        opener(<a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-config-opener">Vital.Vim.BufferManager-config-opener</a>).
+        The return value is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> which contains following attributes
+
+        &quot;loaded&quot;
+        A boolean which indicate whether the buffer was newly loaded or not.
+
+        &quot;newwin&quot;
+        A boolean which indicate whether the buffer was opened in a new
+        window.
+
+        &quot;newbuf&quot;
+        A boolean which indicate whether the buffer was newly opened (in other
+        word, listed).
+
+        &quot;bufnr&quot;
+        A <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a> which indicate the buffer index (<a href="https://www.google.com/search?q=vim+%22bufnr()%22&lr=lang_en"><span class="MissingTag">bufnr()</span></a>).
+
+        &quot;bufname&quot;
+        The <span class="Special">{bufname}</span>.
+
+Manager.opened(<span class="Special">{info}</span>)          <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.opened()" name="Vital.Vim.BufferManager-Manager.opened()">Vital.Vim.BufferManager-Manager.opened()</a>
+        This is called when a buffer is opened via
+        Manager.open()(<a class="Identifier" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.open()">Vital.Vim.BufferManager-Manager.open()</a>).
+        <span class="Special">{info}</span> is a return value of Manager.open().
+        User can overwrite this function and use as hook function.
+
+Manager.close([<span class="Special">{range}</span>])        <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.close()" name="Vital.Vim.BufferManager-Manager.close()">Vital.Vim.BufferManager-Manager.close()</a>
+        Closes the <span class="Special">{range}</span> buffer if it exists.
+
+Manager.config()                <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.config()" name="Vital.Vim.BufferManager-Manager.config()">Vital.Vim.BufferManager-Manager.config()</a>
+        Gets the config as <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>.
+Manager.config(<span class="Special">{config}</span>)
+        Sets the config by <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>.  All values are overwritten.
+Manager.config(<span class="Special">{config-name}</span>)
+        Gets the config value.
+Manager.config(<span class="Special">{config-name}</span>, <span class="Special">{value}</span>)
+        Sets the config value.
+
+Manager.user_config(<span class="Special">{config}</span>)  <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.user_config()" name="Vital.Vim.BufferManager-Manager.user_config()">Vital.Vim.BufferManager-Manager.user_config()</a>
+        Sets variable name of user's config.
+        User can customize the behavior via the variable.
+        If <span class="Special">{config}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>, variable name can be set per config.
+
+<span class="helpExample">        manager.user_config({'opener': 'g:your_plugin_opener'})</span>
+
+
+Manager.is_managed(<span class="Special">{bufnr}</span>)     <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.is_managed()" name="Vital.Vim.BufferManager-Manager.is_managed()">Vital.Vim.BufferManager-Manager.is_managed()</a>
+        If the specified <span class="Special">{bufnr}</span> is managed by this Manager, returns true.
+
+                                <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.add()" name="Vital.Vim.BufferManager-Manager.add()">Vital.Vim.BufferManager-Manager.add()</a>
+Manager.add(<span class="Special">{bufnr}</span> [, <span class="Special">{bufname}</span>])
+        Adds a buffer to this for managing.  The buffer must exist.
+
+Manager.list()                  <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.list()" name="Vital.Vim.BufferManager-Manager.list()">Vital.Vim.BufferManager-Manager.list()</a>
+        Get the list of the buffer numbers that managed by this Manager.
+
+Manager.nearest([<span class="Special">{range}</span>])      <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.nearest()" name="Vital.Vim.BufferManager-Manager.nearest()">Vital.Vim.BufferManager-Manager.nearest()</a>
+        Searches the nearest managed buffer.  Returns the position and buffer
+        number by the form like [<span class="Special">{tabpagenr}</span>, <span class="Special">{winnr}</span>, <span class="Special">{bufnr}</span>].  If the
+        <span class="Special">{range}</span> argument is present and not zero, searches current tabpage
+        only.  If the buffer is not found, returns empty list.
+
+Manager.move([<span class="Special">{range}</span>])         <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.move()" name="Vital.Vim.BufferManager-Manager.move()">Vital.Vim.BufferManager-Manager.move()</a>
+        Moves to the nearest managed buffer.  Returns true if focus moved or
+        was already staying in the managed buffer.
+
+Manager.do(<span class="Special">{cmd}</span>)               <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-Manager.do()" name="Vital.Vim.BufferManager-Manager.do()">Vital.Vim.BufferManager-Manager.do()</a>
+        Executes &quot;:execute <span class="Special">{cmd}</span> bufnr&quot; for each managed buffers.  If <span class="Special">{cmd}</span>
+        includes &quot;%s&quot;, it is replaced by bufnr.
+        Example:
+<span class="helpExample">        call Manager.do('bwipeout')</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONFIG</span>                          <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-config" name="Vital.Vim.BufferManager-config">Vital.Vim.BufferManager-config</a>
+
+Priority:
+method argument &gt; user config &gt; config
+
+opener                          <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-config-opener" name="Vital.Vim.BufferManager-config-opener">Vital.Vim.BufferManager-config-opener</a>
+        Way to open a new window.  This is one of followings:
+        - A command as <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+        - A <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> to open a window.
+          This <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> receives <span class="Special">{bufname}</span> as first argument.
+        - A <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> that starts with &quot;=&quot;.
+          This is treated as <a href="https://www.google.com/search?q=vim+%22expr%22&lr=lang_en"><span class="MissingTag">expr</span></a>, and result is an opener.
+
+range                           <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-config-range" name="Vital.Vim.BufferManager-config-range">Vital.Vim.BufferManager-config-range</a>
+        Range which searches a window.
+        &quot;current&quot;
+                Current window only.
+        &quot;tabpage&quot;
+                Current tabpage.
+        &quot;all&quot;
+                Windows of all tabpages.
+
+mods                            <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-config-mods" name="Vital.Vim.BufferManager-config-mods">Vital.Vim.BufferManager-config-mods</a>
+        A command modifiers used when opening a buffer.
+        See <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.open()">Vital.Vim.Buffer.open()</a> for more detail.
+
+cmdarg                          <a class="String" href="./../../vital/Vim/BufferManager.html#Vital.Vim.BufferManager-config-cmdarg" name="Vital.Vim.BufferManager-config-cmdarg">Vital.Vim.BufferManager-config-cmdarg</a>
+        A command attribute used when opening a buffer.
+        See <a class="Identifier" href="./../../vital/Vim/Buffer.html#Vital.Vim.Buffer.open()">Vital.Vim.Buffer.open()</a> for more detail.
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

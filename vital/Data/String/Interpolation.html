@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/String/Interpolation</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.String { color: #032f62; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/String/Interpolation</h1>
+<a href="./../../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../../vital/Data/String/Interpolation.html" name="vital/Data/String/Interpolation.txt">vital/Data/String/Interpolation.txt</a>   String interpolation in Vim
+
+Maintainer: haya14busa &lt;hayabusa1419@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                        <a class="String" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation-contents" name="Vital.Data.String.Interpolation-contents">Vital.Data.String.Interpolation-contents</a>
+
+INTRODUCTION            <a class="Identifier" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation-introduction">Vital.Data.String.Interpolation-introduction</a>
+INTERFACE               <a class="Identifier" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation-interface">Vital.Data.String.Interpolation-interface</a>
+  Functions               <a class="Identifier" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation-functions">Vital.Data.String.Interpolation-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                    <a class="String" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation-introduction" name="Vital.Data.String.Interpolation-introduction">Vital.Data.String.Interpolation-introduction</a>
+
+        <a class="String" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation" name="Vital.Data.String.Interpolation">Vital.Data.String.Interpolation</a> is String interpolation library.
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:I = s:V.import(&quot;Data.String.Interpolation&quot;)</span>
+
+<span class="helpExample">        echo s:I.interpolate('Hi, ${name}!', {'name': 'haya14busa'})</span>
+<span class="helpExample">        &quot; =&gt; Hi, haya14busa!</span>
+<span class="helpExample">        let s:name = 'haya14busa'</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                       <a class="String" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation-interface" name="Vital.Data.String.Interpolation-interface">Vital.Data.String.Interpolation-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                       <a class="String" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation-functions" name="Vital.Data.String.Interpolation-functions">Vital.Data.String.Interpolation-functions</a>
+
+interpolate(<span class="Special">{str}</span> [,<span class="Special">{context}</span>]) <a class="String" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation.interpolate()" name="Vital.Data.String.Interpolation.interpolate()">Vital.Data.String.Interpolation.interpolate()</a>
+                                <a class="String" href="./../../../vital/Data/String/Interpolation.html#Vital.Data.String.Interpolation-${}" name="Vital.Data.String.Interpolation-${}">Vital.Data.String.Interpolation-${}</a>
+        String interpolation[1] allows you to build string with evaluating
+        expressions inside <span class="Comment">${}</span> in the <span class="Special">{string}</span>. You can pass a <span class="Special">{context}</span>
+        dictionary to evaluate <span class="Comment">${expr}</span>. <span class="Todo">NOTE</span>: Invalid key in <span class="Special">{context}</span> is
+        skipped like '000' in a:.
+
+        [1]: <span class="String"><a href="http://en.wikipedia.org/wiki/String_interpolation">http://en.wikipedia.org/wiki/String_interpolation</a></span>
+
+<span class="helpExample">        echo s:I.interpolate('Hi, ${name}!', {'name': 'haya14busa'})</span>
+<span class="helpExample">        &quot; =&gt; Hi, haya14busa!</span>
+
+<span class="helpExample">        let scores = [</span>
+<span class="helpExample">        \   {'name': 'haya14busa', 'score': 14},</span>
+<span class="helpExample">        \   {'name': 'tom', 'score': 32}</span>
+<span class="helpExample">        \ ]</span>
+<span class="helpExample">        for score in scores</span>
+<span class="helpExample">          echo s:I.interpolate('Hi, ${name}. Your SCORE is ${score}!', score)</span>
+<span class="helpExample">        endfor</span>
+<span class="helpExample">        &quot; =&gt; Hi, haya14busa. Your SCORE is 14!</span>
+<span class="helpExample">        &quot; =&gt; Hi, tom. Your SCORE is 32!</span>
+
+<span class="helpExample">        &quot; You can just pass :h internal-variables as a context.</span>
+<span class="helpExample">        function! s:IIFE() abort</span>
+<span class="helpExample">          let name = 'haya14busa'</span>
+<span class="helpExample">          return s:I.interpolate('Hi, ${name}!', l:)</span>
+<span class="helpExample">        endfunction</span>
+<span class="helpExample">        echo s:IIFE()</span>
+<span class="helpExample">        &quot; =&gt; Hi, haya14busa!</span>
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:fdm=marker:
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../../index.html">main help file</a> - <a href="./../../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

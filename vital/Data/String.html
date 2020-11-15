@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/String</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/String</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Data/String.html" name="vital/Data/String.txt">vital/Data/String.txt</a>         string utilities library.
+
+Maintainer: ujihisa &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String-contents" name="Vital.Data.String-contents">Vital.Data.String-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Data/String.html#Vital.Data.String-introduction">Vital.Data.String-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Data/String.html#Vital.Data.String-interface">Vital.Data.String-interface</a>
+  Functions                       <a class="Identifier" href="./../../vital/Data/String.html#Vital.Data.String-functions">Vital.Data.String-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Data/String.html#Vital.Data.String-introduction" name="Vital.Data.String-introduction">Vital.Data.String-introduction</a>
+
+<a class="String" href="./../../vital/Data/String.html#Vital.Data.String" name="Vital.Data.String">Vital.Data.String</a> is String Utilities Library.
+It provides some functions to manipulate <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:S = s:V.import(&quot;Data.String&quot;)</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Data/String.html#Vital.Data.String-interface" name="Vital.Data.String-interface">Vital.Data.String-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Data/String.html#Vital.Data.String-functions" name="Vital.Data.String-functions">Vital.Data.String-functions</a>
+
+replace(<span class="Special">{str}</span>, <span class="Special">{from}</span>, <span class="Special">{to}</span>)            <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.replace()" name="Vital.Data.String.replace()">Vital.Data.String.replace()</a>
+        Returns string replaced <span class="Special">{from}</span> to <span class="Special">{to}</span> from <span class="Special">{str}</span>.
+
+<span class="helpExample">        echo s:S.replace(&quot;fooba.bazbar&quot;, &quot;ba.&quot;, &quot;zzz&quot;)</span>
+<span class="helpExample">        &quot; foozzzbazbar</span>
+
+replace_first(<span class="Special">{str}</span>, <span class="Special">{from}</span>, <span class="Special">{to}</span>)      <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.replace_first()" name="Vital.Data.String.replace_first()">Vital.Data.String.replace_first()</a>
+        Returns string replaced <span class="Special">{from}</span> to <span class="Special">{to}</span> from <span class="Special">{str}</span> only about the
+        first-match.
+
+<span class="helpExample">        echo s:S.replace(&quot;foobarbazbar&quot;, &quot;bar&quot;, &quot;zzz&quot;)</span>
+<span class="helpExample">        &quot; foozzzbazzzz</span>
+<span class="helpExample">        echo s:S.replace_first(&quot;foobarbazbar&quot;, &quot;bar&quot;, &quot;zzz&quot;)</span>
+<span class="helpExample">        &quot; foozzzbazbar</span>
+
+scan(<span class="Special">{str}</span>, <span class="Special">{pattern}</span>)                  <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.scan()" name="Vital.Data.String.scan()">Vital.Data.String.scan()</a>
+        Returns <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> which matched <span class="Special">{pattern}</span> in <span class="Special">{str}</span>.
+
+reverse(<span class="Special">{str}</span>)                          <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.reverse()" name="Vital.Data.String.reverse()">Vital.Data.String.reverse()</a>
+        Returns a reversed string.  This works on character base.
+
+<span class="helpExample">        echo s:S.reverse(&quot;string&quot;)</span>
+<span class="helpExample">        &quot; gnirts</span>
+
+starts_with(<span class="Special">{str}</span>, <span class="Special">{prefix}</span>)            <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.starts_with()" name="Vital.Data.String.starts_with()">Vital.Data.String.starts_with()</a>
+        Returns true when <span class="Special">{str}</span> starts with <span class="Special">{prefix}</span>.
+
+<span class="helpExample">        echo s:S.starts_with('vital.vim', 'vi')</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:S.starts_with('vital.vim', 'vim')</span>
+<span class="helpExample">        &quot; 0</span>
+
+ends_with(<span class="Special">{str}</span>, <span class="Special">{suffix}</span>)              <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.ends_with()" name="Vital.Data.String.ends_with()">Vital.Data.String.ends_with()</a>
+        Returns true when <span class="Special">{str}</span> ends with <span class="Special">{suffix}</span>.
+
+<span class="helpExample">        echo s:S.ends_with('vital.vim', 'vim')</span>
+<span class="helpExample">        &quot; 1</span>
+<span class="helpExample">        echo s:S.ends_with('vital.vim', 'vi')</span>
+<span class="helpExample">        &quot; 0</span>
+
+common_head(<span class="Special">{strs}</span>)                     <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.common_head()" name="Vital.Data.String.common_head()">Vital.Data.String.common_head()</a>
+        Returns a common part of head of strings.
+
+<span class="helpExample">        echo s:S.common_head(['neocomplcache', 'neosnippet', 'neobundle'])</span>
+<span class="helpExample">        &quot; 'neo'</span>
+
+split_leftright(<span class="Special">{expr}</span>, <span class="Special">{pattern}</span>)      <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.split_leftright()" name="Vital.Data.String.split_leftright()">Vital.Data.String.split_leftright()</a>
+        Returns <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> that contains two <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> split by <span class="Special">{pattern}</span>.
+
+<span class="helpExample">        echo s:S.split_leftright('neocomplcache', 'neo\zs.....')</span>
+<span class="helpExample">        &quot; ['neo', 'cache']</span>
+
+split3(<span class="Special">{expr}</span>, <span class="Special">{pattern}</span>)               <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.split3()" name="Vital.Data.String.split3()">Vital.Data.String.split3()</a>
+        Like <a class="Identifier" href="./../../vital/Data/String.html#Vital.Data.String.split_leftright()">Vital.Data.String.split_leftright()</a>, but this function returns
+        [left, middle, right] not only [left, right].
+
+<span class="helpExample">        echo s:S.split3('neocomplcache', 'neo\zs.....')</span>
+<span class="helpExample">        &quot; ['neo', 'compl', 'cache']</span>
+
+                                        <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.nsplit()" name="Vital.Data.String.nsplit()">Vital.Data.String.nsplit()</a>
+nsplit(<span class="Special">{expr}</span>, <span class="Special">{n}</span> [, <span class="Special">{pattern}</span> [, <span class="Special">{keepempty}</span>]])
+        Behaves like <a href="https://www.google.com/search?q=vim+%22split()%22&lr=lang_en"><span class="MissingTag">split()</span></a>.  Returns a list which is limited as <span class="Special">{n}</span>'th
+        elements.
+
+chop(<span class="Special">{str}</span>)                             <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.chop()" name="Vital.Data.String.chop()">Vital.Data.String.chop()</a>
+        Removes last character from <span class="Special">{str}</span>.
+
+chomp(<span class="Special">{str}</span>)                            <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.chomp()" name="Vital.Data.String.chomp()">Vital.Data.String.chomp()</a>
+        Removes last \r,\n,\r\n from <span class="Special">{str}</span>.
+
+trim(<span class="Special">{str}</span>)                             <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.trim()" name="Vital.Data.String.trim()">Vital.Data.String.trim()</a>
+        Returns <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> removed spaces (<a href="https://www.google.com/search?q=vim+%22[:space:]%22&lr=lang_en"><span class="MissingTag">[:space:]</span></a>) from the beginning and end of a <span class="Special">{str}</span>.
+
+trim_start(<span class="Special">{str}</span>)                       <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.trim_start()" name="Vital.Data.String.trim_start()">Vital.Data.String.trim_start()</a>
+        Returns <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> removed spaces (<a href="https://www.google.com/search?q=vim+%22[:space:]%22&lr=lang_en"><span class="MissingTag">[:space:]</span></a>) from the beginning of a <span class="Special">{str}</span>.
+
+trim_end(<span class="Special">{str}</span>)                         <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.trim_end()" name="Vital.Data.String.trim_end()">Vital.Data.String.trim_end()</a>
+        Returns <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> removed spaces (<a href="https://www.google.com/search?q=vim+%22[:space:]%22&lr=lang_en"><span class="MissingTag">[:space:]</span></a>) from the end of a <span class="Special">{str}</span>.
+
+wrap(<span class="Special">{str}</span> [, <span class="Special">{columns}</span>])               <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.wrap()" name="Vital.Data.String.wrap()">Vital.Data.String.wrap()</a>
+        Returns <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> wrapped to fit to <a href="https://www.google.com/search?q=vim+%22columns%22&lr=lang_en"><span class="MissingTag">columns</span></a> width.
+        Default: <span class="Special">{columns}</span> = &amp;columns
+
+nr2byte(<span class="Special">{nr}</span>)                           <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.nr2byte()" name="Vital.Data.String.nr2byte()">Vital.Data.String.nr2byte()</a>
+        Returns utf-8 bytes which has the number value <span class="Special">{nr}</span>.
+
+nr2enc_char(<span class="Special">{charcode}</span>)                 <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.nr2enc_char()" name="Vital.Data.String.nr2enc_char()">Vital.Data.String.nr2enc_char()</a>
+        Returns a string which has the number value <span class="Special">{nr}</span>.  This function
+        depends on <a href="https://www.google.com/search?q=vim+%22encoding%22&lr=lang_en"><span class="MissingTag">encoding</span></a> option.
+
+nr2hex(<span class="Special">{nr}</span>)                            <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.nr2hex()" name="Vital.Data.String.nr2hex()">Vital.Data.String.nr2hex()</a>
+        Returns a hex string which has the number value <span class="Special">{nr}</span>.
+
+diffidx(<span class="Special">{str1}</span>, <span class="Special">{str2}</span>)                 <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.diffidx()" name="Vital.Data.String.diffidx()">Vital.Data.String.diffidx()</a>
+        Returns first index of different character if two strings are not
+        equal, otherwise returns number -1 if the strings are equal.
+
+substitute_last(<span class="Special">{expr}</span>, <span class="Special">{pat}</span>, <span class="Special">{sub}</span>)   <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.substitute_last()" name="Vital.Data.String.substitute_last()">Vital.Data.String.substitute_last()</a>
+        Behaves like <a href="https://www.google.com/search?q=vim+%22substitute()%22&lr=lang_en"><span class="MissingTag">substitute()</span></a>, but it only replaces the last matched
+        string.
+
+dstring(<span class="Special">{expr}</span>)                         <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.dstring()" name="Vital.Data.String.dstring()">Vital.Data.String.dstring()</a>
+        Behaves like <a href="https://www.google.com/search?q=vim+%22string()%22&lr=lang_en"><span class="MissingTag">string()</span></a>, but this wraps the result string not with
+        single-quotes but with double-quotes.
+
+<span class="helpExample">        echo s:S.dstring(123)</span>
+<span class="helpExample">        &quot; 123</span>
+<span class="helpExample">        echo s:S.dstring('abc')</span>
+<span class="helpExample">        &quot; '&quot;abc&quot;'</span>
+<span class="helpExample">        echo s:S.dstring(&quot;abc&quot;)</span>
+<span class="helpExample">        &quot; '&quot;abc&quot;'</span>
+
+lines(<span class="Special">{str}</span>)                            <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.lines()" name="Vital.Data.String.lines()">Vital.Data.String.lines()</a>
+        Splits into list of strings of each line of <span class="Special">{str}</span>.
+
+strchars(<span class="Special">{str}</span>)                         <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.strchars()" name="Vital.Data.String.strchars()">Vital.Data.String.strchars()</a>
+        Returns the number of characters in String <span class="Special">{str}</span>.
+        This is a polyfill of <a href="https://www.google.com/search?q=vim+%22strchars()%22&lr=lang_en"><span class="MissingTag">strchars()</span></a> when it was not provided.
+
+contains_multibyte(<span class="Special">{str}</span>)       <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.contains_multibyte()" name="Vital.Data.String.contains_multibyte()">Vital.Data.String.contains_multibyte()</a>
+        Return Number 1 if String <span class="Special">{str}</span> contains a multi-byte character,
+        otherwise zero.
+
+pad_left(<span class="Special">{str}</span>, <span class="Special">{width}</span> [, <span class="Special">{char}</span>])     <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.pad_left()" name="Vital.Data.String.pad_left()">Vital.Data.String.pad_left()</a>
+        It returns a string padded <span class="Special">{str}</span>'s left side until given
+        <span class="Special">{width}</span> with the given half-width <span class="Special">{char}</span> or white-space,
+        considering non-half-width characters.
+        Default: <span class="Special">{char}</span> = ' '
+
+<span class="helpExample">        echo s:S.pad_left('test', 11)</span>
+<span class="helpExample">        &quot; '       test'</span>
+
+
+pad_right(<span class="Special">{str}</span>, <span class="Special">{width}</span> [, <span class="Special">{char}</span>])    <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.pad_right()" name="Vital.Data.String.pad_right()">Vital.Data.String.pad_right()</a>
+        It returns a string padded <span class="Special">{str}</span>'s right side until given
+        <span class="Special">{width}</span> with the given half-width <span class="Special">{char}</span> or white-space,
+        considering non-half-width characters.
+        Default: <span class="Special">{char}</span> = ' '
+
+<span class="helpExample">        echo s:S.pad_right('test', 11)</span>
+<span class="helpExample">        &quot; 'test       '</span>
+
+
+                                        <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.pad_both_sides()" name="Vital.Data.String.pad_both_sides()">Vital.Data.String.pad_both_sides()</a>
+pad_both_sides(<span class="Special">{str}</span>, <span class="Special">{width}</span> [, <span class="Special">{char}</span>])
+        It returns a string padded <span class="Special">{str}</span>'s left and right side until given
+        <span class="Special">{width}</span> with the given half-width <span class="Special">{char}</span> or white-space,
+        considering non-half-width characters.
+        Default: <span class="Special">{char}</span> = ' '
+
+<span class="helpExample">        echo s:S.pad_both_sides('test', 11)</span>
+<span class="helpExample">        &quot; '   test    '</span>
+
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.pad_between_letters()" name="Vital.Data.String.pad_between_letters()">Vital.Data.String.pad_between_letters()</a>
+pad_between_letters(<span class="Special">{str}</span>, <span class="Special">{width}</span> [, <span class="Special">{char}</span>])
+        It returns a string padded between <span class="Special">{str}</span>'s letters until given
+        <span class="Special">{width}</span> with the given half-width <span class="Special">{char}</span> or white-space,
+        considering non-half-width characters.
+        Default: <span class="Special">{char}</span> = ' '
+
+<span class="helpExample">        echo s:S.pad_between_letters('test', 11)</span>
+<span class="helpExample">        &quot; '  t e s t  '</span>
+
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.justify_equal_spacing()" name="Vital.Data.String.justify_equal_spacing()">Vital.Data.String.justify_equal_spacing()</a>
+justify_equal_spacing(<span class="Special">{str}</span>, <span class="Special">{width}</span> [, <span class="Special">{char}</span>])
+        It returns a string justified equal spacing until given
+        <span class="Special">{width}</span> with the given half-width <span class="Special">{char}</span> or white-space,
+        considering non-half-width characters.
+        Default: <span class="Special">{char}</span> = ' '
+
+<span class="helpExample">        echo s:S.justify_equal_spacing('test', 11)</span>
+<span class="helpExample">        &quot; 't   e  s  t'</span>
+
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.levenshtein_distance()" name="Vital.Data.String.levenshtein_distance()">Vital.Data.String.levenshtein_distance()</a>
+levenshtein_distance(<span class="Special">{str1}</span>, <span class="Special">{str2}</span>)
+        It returns a minimum edit distance of two given strings <span class="Special">{str1}</span> and
+        <span class="Special">{str2}</span>.
+
+<span class="helpExample">        echo s:S.levenshtein_distance('kitten', 'sitting')</span>
+<span class="helpExample">        &quot; 3</span>
+
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.padding_by_displaywidth()" name="Vital.Data.String.padding_by_displaywidth()">Vital.Data.String.padding_by_displaywidth()</a>
+padding_by_displaywidth(<span class="Special">{expr}</span>, <span class="Special">{width}</span>, <span class="Special">{float}</span>)
+        It returns a string padding <span class="Special">{expr}</span> with spaces of <span class="Special">{width}</span>.
+        <span class="Special">{float}</span>:
+          left padding: <span class="Comment">-1</span>
+          center padding: <span class="Comment">0</span>
+          right padding: <span class="Comment">1</span>
+
+<span class="helpExample">        echo s:S.padding_by_displaywidth('abc', 5, -1)</span>
+<span class="helpExample">        &quot; 'abc  '</span>
+<span class="helpExample">        echo s:S.padding_by_displaywidth('abc', 5, 0)</span>
+<span class="helpExample">        &quot; ' abc '</span>
+<span class="helpExample">        echo s:S.padding_by_displaywidth('abc', 5, 1)</span>
+<span class="helpExample">        &quot; '  abc'</span>
+
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.split_by_displaywidth()" name="Vital.Data.String.split_by_displaywidth()">Vital.Data.String.split_by_displaywidth()</a>
+split_by_displaywidth(<span class="Special">{expr}</span>, <span class="Special">{width}</span>, <span class="Special">{float}</span>, {is_wrap})
+        It returns a list of string that split <span class="Special">{expr}</span> by line feed(LF)
+        and apply <span class="Comment">padding_by_displaywidth(v:val,{width},{float})</span> to these.
+        <span class="Special">{float}</span>:
+          left padding: <span class="Comment">-1</span>
+          center padding: <span class="Comment">0</span>
+          right padding: <span class="Comment">1</span>
+
+<span class="helpExample">        echo s:S.split_by_displaywidth('あaいbうcえdおe', 5, -1, 1)</span>
+<span class="helpExample">        &quot; ['あaい', 'bうc ', 'えdお', 'e    ']</span>
+<span class="helpExample">        echo s:S.split_by_displaywidth('あaいbうcえdおe', 5, -1, 0)</span>
+<span class="helpExample">        &quot; ['あaい']</span>
+<span class="helpExample">        echo s:S.split_by_displaywidth('1234567890', 5, -1, 1)</span>
+<span class="helpExample">        &quot; ['12345', '67890']</span>
+<span class="helpExample">        echo s:S.split_by_displaywidth(&quot;123\n4567890&quot;, 5, 1, 1)</span>
+<span class="helpExample">        &quot; ['  123', '45678', '   90']</span>
+
+
+        {is_wrap}:
+          <span class="Comment">1</span>: Considers line feed(LF) and does not consider wrap.
+
+<span class="helpExample">               &quot; expr: &quot;abcde\nfghijk&quot;</span>
+<span class="helpExample">               &quot; width: 4</span>
+<span class="helpExample">               &quot; is_wrap: 1</span>
+<span class="helpExample">               +----+</span>
+<span class="helpExample">               |abcd|</span>
+<span class="helpExample">               |e   |</span>
+<span class="helpExample">               |fghi|</span>
+<span class="helpExample">               |jk  |</span>
+<span class="helpExample">               +----+</span>
+
+          <span class="Comment">0</span>: Considers line feed(LF) and considers wrap.
+
+<span class="helpExample">               &quot; expr: &quot;abcde\nfghijk&quot;</span>
+<span class="helpExample">               &quot; width: 4</span>
+<span class="helpExample">               &quot; is_wrap: 0</span>
+<span class="helpExample">               +----+</span>
+<span class="helpExample">               |abcd|</span>
+<span class="helpExample">               |fghi|</span>
+<span class="helpExample">               +----+</span>
+
+
+<span class="helpExample">                                                *Vital.Data.String.hash()*</span>
+hash(<span class="Special">{str}</span>)
+        This maps from arbitrary length string <span class="Special">{str}</span> to another string.
+
+<span class="helpExample">        echo s:S.hash('All your base are belong to us')</span>
+<span class="helpExample">        &quot; 'c46ec1b18ce8a878725a37e780dfb7351f68ed2e194c79fbc6aebee1a667975d'</span>
+
+        If the vim that evaluates this function has <a href="https://www.google.com/search?q=vim+%22sha256()%22&lr=lang_en"><span class="MissingTag">sha256()</span></a> function, this
+        uses it, otherwise it uses the algorithm to hash the string.
+
+<span class="helpExample">        let sum = 0</span>
+<span class="helpExample">        for i in range(len(a:str))</span>
+<span class="helpExample">          let sum += char2nr(a:str[i]) * (i + 1)</span>
+<span class="helpExample">        endfor</span>
+<span class="helpExample">        </span>
+<span class="helpExample">        return printf('%x', sum)</span>
+
+truncate(<span class="Special">{str}</span>, <span class="Special">{width}</span>)                        <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.truncate()" name="Vital.Data.String.truncate()">Vital.Data.String.truncate()</a>
+        This function truncates the string <span class="Special">{str}</span> to the specified <span class="Special">{width}</span>.
+        The width of the string is calculated as it is displayed.
+
+<span class="helpExample">        echo s:S.truncate('this is a pen', 2)</span>
+<span class="helpExample">        &quot; 'th'</span>
+<span class="helpExample">        echo s:S.truncate('あいうえお', 2)</span>
+<span class="helpExample">        &quot; 'あ'</span>
+
+        If <span class="Special">{width}</span> is larger than the width <span class="Special">{str}</span> is displayed, spaces are
+        appended.
+
+<span class="helpExample">        echo s:S.truncate('this is a pen', 20)</span>
+<span class="helpExample">        &quot; 'this is a pen       '</span>
+
+                                        <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.truncate_skipping()" name="Vital.Data.String.truncate_skipping()">Vital.Data.String.truncate_skipping()</a>
+truncate_skipping(<span class="Special">{str}</span>, <span class="Special">{max}</span>, <span class="Special">{footer-width}</span>, <span class="Special">{separator}</span>)
+        This function splits the string <span class="Special">{str}</span> into two parts and joins with
+        the given <span class="Special">{separator}</span>. The second argument <span class="Special">{max}</span> specifies the
+        displayed width of the result string and the third argument
+        <span class="Special">{footer-width}</span> specifies the displayed width of the string after the
+        separator.
+
+<span class="helpExample">        echo s:S.truncate_skipping('this is a pen', 10, 3, '...')</span>
+<span class="helpExample">        &quot; 'this...pen'</span>
+<span class="helpExample">        echo s:S.truncate_skipping('あいうえおかきくけこ', 10, 2, ' .. ')</span>
+<span class="helpExample">        &quot; 'あい .. こ'</span>
+
+strwidthpart(<span class="Special">{str}</span>, <span class="Special">{width}</span>)            <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.strwidthpart()" name="Vital.Data.String.strwidthpart()">Vital.Data.String.strwidthpart()</a>
+        This function returns the part of the string <span class="Special">{str}</span> the displayed width
+        of which is narrower than the given <span class="Special">{width}</span>. This function does not
+        append spaces as opposed to <a class="Identifier" href="./../../vital/Data/String.html#Vital.Data.String.truncate()">Vital.Data.String.truncate()</a>.
+
+<span class="helpExample">        echo s:S.strwidthpart('this is a pen', 5)</span>
+<span class="helpExample">        &quot; 'this '</span>
+<span class="helpExample">        echo s:S.strwidthpart('this is a pen', 20)</span>
+<span class="helpExample">        &quot; 'this is a pen'</span>
+<span class="helpExample">        echo s:S.strwidthpart('あいうえお', 5)</span>
+<span class="helpExample">        &quot; 'あい'</span>
+<span class="helpExample">        echo s:S.strwidthpart('あいうえお', 20)</span>
+<span class="helpExample">        &quot; 'あいうえお'</span>
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.strwidthpart_reverse()" name="Vital.Data.String.strwidthpart_reverse()">Vital.Data.String.strwidthpart_reverse()</a>
+strwidthpart_reverse(<span class="Special">{str}</span>, <span class="Special">{width}</span>)
+        This function returns the part of the string <span class="Special">{str}</span> like the function
+        <a class="Identifier" href="./../../vital/Data/String.html#Vital.Data.String.strwidthpart()">Vital.Data.String.strwidthpart()</a>, but this function takes the part of
+        the string from the right.
+
+<span class="helpExample">        echo s:S.strwidthpart_reverse('this is a pen', 5)</span>
+<span class="helpExample">        &quot; 'a pen'</span>
+<span class="helpExample">        echo s:S.strwidthpart_reverse('this is a pen', 20)</span>
+<span class="helpExample">        &quot; 'this is a pen'</span>
+<span class="helpExample">        echo s:S.strwidthpart_reverse('あいうえお', 5)</span>
+<span class="helpExample">        &quot; 'えお'</span>
+<span class="helpExample">        echo s:S.strwidthpart_reverse('あいうえお', 20)</span>
+<span class="helpExample">        &quot; 'あいうえお'</span>
+
+wcswidth(<span class="Special">{str}</span>)                                 <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.wcswidth()" name="Vital.Data.String.wcswidth()">Vital.Data.String.wcswidth()</a>
+        This function returns the displayed width of the string <span class="Special">{str}</span>.
+
+<span class="helpExample">        echo s:S.wcswidth('this is a pen')</span>
+<span class="helpExample">        &quot; 13</span>
+<span class="helpExample">        echo s:S.wcswidth('あいうえお')</span>
+<span class="helpExample">        &quot; 10</span>
+
+remove_ansi_sequences(<span class="Special">{text}</span>)   <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.remove_ansi_sequences()" name="Vital.Data.String.remove_ansi_sequences()">Vital.Data.String.remove_ansi_sequences()</a>
+        Remove ANSI sequences from <span class="Special">{text}</span>
+
+<span class="helpExample">        echo s:S.remove_ansi_sequences(&quot;\033[47m\033[32mGreen\033[0m&quot;)</span>
+<span class="helpExample">        &quot; 'Green'</span>
+
+escape_pattern(<span class="Special">{str}</span>)           <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.escape_pattern()" name="Vital.Data.String.escape_pattern()">Vital.Data.String.escape_pattern()</a>
+        Escape pattern involved characters (&quot;^$~.*[]\) in <span class="Special">{str}</span>.
+        <span class="Todo">Note</span> that it over escape characters when <span class="Special">{str}</span> contains escaped
+        characters.
+
+<span class="helpExample">        echo s:S.escape_pattern('^\a\b.*$')</span>
+<span class="helpExample">        &quot; '\^\\a\\b\.\*\$'</span>
+<span class="helpExample">        echo s:S.escape_pattern(s:S.escape_pattern('^\a\b.*$'))</span>
+<span class="helpExample">        &quot; '\\\^\\\\a\\\\b\\\.\\\*\\\$'</span>
+
+unescape_pattern(<span class="Special">{str}</span>)         <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.unescape_pattern()" name="Vital.Data.String.unescape_pattern()">Vital.Data.String.unescape_pattern()</a>
+        Unescape pattern involved characters, namely characters escaped by
+        <a class="Identifier" href="./../../vital/Data/String.html#Vital.Data.String.escape_pattern()">Vital.Data.String.escape_pattern()</a> function.
+
+<span class="helpExample">        echo s:S.unescape_pattern('\\\^\\\\a\\\\b\\\.\\\*\\\$')</span>
+<span class="helpExample">        &quot; '\^\\a\\b\.\*\$'</span>
+<span class="helpExample">        echo s:S.unescape_pattern('\^\\a\\b\.\*\$')</span>
+<span class="helpExample">        &quot; '^\a\b.*$'</span>
+<span class="helpExample">        echo s:S.unescape_pattern('^\a\b.*$')</span>
+<span class="helpExample">        &quot; '^\a\b.*$'</span>
+
+unescape(<span class="Special">{str}</span>, <span class="Special">{chars}</span>)        <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.unescape()" name="Vital.Data.String.unescape()">Vital.Data.String.unescape()</a>
+        Unescape <span class="Special">{chars}</span> in <span class="Special">{str}</span>.
+
+<span class="helpExample">        echo s:S.unescape('\*n\n\\n', '*\')</span>
+<span class="helpExample">        &quot; '*n\n\n'</span>
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.iconv()" name="Vital.Data.String.iconv()">Vital.Data.String.iconv()</a>
+iconv(<span class="Special">{expr}</span>, <span class="Special">{from}</span>, <span class="Special">{to}</span>)
+        An alternate function of builtin <a href="https://www.google.com/search?q=vim+%22iconv()%22&lr=lang_en"><span class="MissingTag">iconv()</span></a> which fail silently.
+        It returns <span class="Special">{expr}</span> when conversion has failed.
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.repair_posix_text()" name="Vital.Data.String.repair_posix_text()">Vital.Data.String.repair_posix_text()</a>
+repair_posix_text(<span class="Special">{text}</span>[, <span class="Special">{newline}</span>])
+        It returns <span class="Special">{text}</span> with a trailing <span class="Special">{newline}</span> if no trailing <span class="Special">{newline}</span>
+        exists. If <span class="Special">{newline}</span> is omitted, &quot;\n&quot; will be used.
+
+<span class="helpExample">        echo s:S.repair_posix_text(&quot;A\nB\nC&quot;)</span>
+<span class="helpExample">        &quot; =&gt; A\nB\nC\n</span>
+<span class="helpExample">        echo s:S.repair_posix_text(&quot;A\nB\nC\n&quot;)</span>
+<span class="helpExample">        &quot; =&gt; A\nB\nC\n</span>
+<span class="helpExample">        echo s:S.repair_posix_text(&quot;A\nB\nC\n\n&quot;)</span>
+<span class="helpExample">        &quot; =&gt; A\nB\nC\n\n</span>
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.join_posix_lines()" name="Vital.Data.String.join_posix_lines()">Vital.Data.String.join_posix_lines()</a>
+join_posix_lines(<span class="Special">{lines}</span>[, <span class="Special">{newline}</span>])
+        It returns a <span class="Special">{newline}</span> joined <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> of <span class="Special">{lines}</span> with a trailing
+        <span class="Special">{newline}</span>. If <span class="Special">{newline}</span> is omitted, &quot;\n&quot; will be used.
+
+<span class="helpExample">        echo s:S.join_posix_lines(['A', 'B', 'C'])</span>
+<span class="helpExample">        &quot; =&gt; A\nB\nC\n</span>
+<span class="helpExample">        echo s:S.join_posix_lines(['A', 'B', 'C', ''])</span>
+<span class="helpExample">        &quot; =&gt; A\nB\nC\n\n</span>
+
+                                <a class="String" href="./../../vital/Data/String.html#Vital.Data.String.split_posix_text()" name="Vital.Data.String.split_posix_text()">Vital.Data.String.split_posix_text()</a>
+split_posix_text(<span class="Special">{text}</span>[, <span class="Special">{newline}</span>])
+        It returns a <span class="Special">{newline}</span> separated <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of <span class="Special">{text}</span> without an item for
+        trailing <span class="Special">{newline}</span> in <span class="Special">{text}</span>.
+        While POSIX text has a trailing <span class="Special">{newline}</span>, splitting text directly
+        with <a href="https://www.google.com/search?q=vim+%22split()%22&lr=lang_en"><span class="MissingTag">split()</span></a> function returns a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> with an additional empty
+        line. This function automatically remove a trailing <span class="Special">{newline}</span> when
+        exists, indicating that if <span class="Special">{text}</span> does not have a trailing <span class="Special">{newline}</span>,
+        it is equal to 'split(<span class="Special">{text}</span>, <span class="Special">{newline}</span>, 1)'.
+        If <span class="Special">{newline}</span> is omitted, &quot;\r\?\n&quot; will be used.
+
+<span class="helpExample">        echo s:S.split_posix_text(&quot;A\nB\nC\n&quot;)</span>
+<span class="helpExample">        &quot; =&gt; ['A', 'B', 'C']</span>
+<span class="helpExample">        echo s:S.split_posix_text(&quot;A\nB\nC&quot;)</span>
+<span class="helpExample">        &quot; =&gt; ['A', 'B', 'C']</span>
+<span class="helpExample">        echo s:S.split_posix_text(&quot;A\nB\nC\n\n&quot;)</span>
+<span class="helpExample">        &quot; =&gt; ['A', 'B', 'C', '']</span>
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

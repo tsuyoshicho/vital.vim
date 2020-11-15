@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Vim/Compat</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Vim/Compat</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Vim/Compat.html" name="vital/Vim/Compat.txt">vital/Vim/Compat.txt</a>  Vim compatibility wrapper functions.
+
+Maintainer: thinca      &lt;thinca+vim@gmail.com&gt;
+            tyru        &lt;tyru.exe@gmail.com&gt;
+            lambdalisue &lt;lambdalisue@hashnote.net&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat-contents" name="Vital.Vim.Compat-contents">Vital.Vim.Compat-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat-introduction">Vital.Vim.Compat-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat-interface">Vital.Vim.Compat-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat-functions">Vital.Vim.Compat-functions</a>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat-introduction" name="Vital.Vim.Compat-introduction">Vital.Vim.Compat-introduction</a>
+
+<a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat" name="Vital.Vim.Compat">Vital.Vim.Compat</a> provides vim compatibility wrapper functions for different
+versions/patchlevels of Vim.
+
+This module is not for multiple OS compatibilities or workarounds for known
+bugs but for versions of Vim itself.
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat-interface" name="Vital.Vim.Compat-interface">Vital.Vim.Compat-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat-functions" name="Vital.Vim.Compat-functions">Vital.Vim.Compat-functions</a>
+
+has_version(<span class="Special">{version}</span>)                  <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat.has_version()" name="Vital.Vim.Compat.has_version()">Vital.Vim.Compat.has_version()</a>
+        Returns true if the version of Vim is same or larger than <span class="Special">{version}</span>.
+        <span class="Special">{version}</span> is a string like &quot;7.3.123&quot; or &quot;7.3&quot;.
+
+shiftwidth()                            <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat.shiftwidth()" name="Vital.Vim.Compat.shiftwidth()">Vital.Vim.Compat.shiftwidth()</a>
+        Compatibility function of <a href="https://www.google.com/search?q=vim+%22shiftwidth()%22&lr=lang_en"><span class="MissingTag">shiftwidth()</span></a> available from Vim 7.3.694.
+
+writefile(<span class="Special">{list}</span>, <span class="Special">{fname}</span>[, <span class="Special">{flags}</span>])   <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat.writefile()" name="Vital.Vim.Compat.writefile()">Vital.Vim.Compat.writefile()</a>
+        Compatibility function of <a href="https://www.google.com/search?q=vim+%22writefile()%22&lr=lang_en"><span class="MissingTag">writefile()</span></a> which supports 'a' flag from
+        Vim 7.4.503.
+
+doautocmd(<span class="Special">{expr}</span>[, <span class="Special">{nomodeline}</span>])       <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat.doautocmd()" name="Vital.Vim.Compat.doautocmd()">Vital.Vim.Compat.doautocmd()</a>
+        Compatibility function of <a href="https://www.google.com/search?q=vim+%22doautocmd%22&lr=lang_en"><span class="MissingTag">doautocmd</span></a> which supports '<span class="Special">&lt;nomodeline&gt;</span>'
+        from Vim 7.3.438.
+        If <span class="Special">{nomodeline}</span> is 1, it calls <span class="Special">{expr}</span> with '<span class="Special">&lt;nomodeline&gt;</span>' option,
+        otherwise it calls <span class="Special">{expr}</span>.
+
+<span class="helpExample">        &quot; Call 'vital_compat_doautocmd_test' without &lt;nomodeline&gt;</span>
+<span class="helpExample">        call s:Compat.doautocmd('User vital_compat_doautocmd_test')</span>
+<span class="helpExample">        &quot; Call 'vital_compat_doautocmd_test' with &lt;nomodeline&gt; if available</span>
+<span class="helpExample">        call s:Compat.doautocmd('User vital_compat_doautocmd_test', 1)</span>
+
+getbufvar(<span class="Special">{expr}</span>, <span class="Special">{varname}</span>[, <span class="Special">{def}</span>])   <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat.getbufvar()" name="Vital.Vim.Compat.getbufvar()">Vital.Vim.Compat.getbufvar()</a>
+        Compatibility function of <a href="https://www.google.com/search?q=vim+%22getbufvar()%22&lr=lang_en"><span class="MissingTag">getbufvar()</span></a> which supports a default value
+        <span class="Special">{def}</span> from Vim 7.3.831.
+
+getwinvar(<span class="Special">{winnr}</span>, <span class="Special">{varname}</span>[, <span class="Special">{def}</span>])  <a class="String" href="./../../vital/Vim/Compat.html#Vital.Vim.Compat.getwinvar()" name="Vital.Vim.Compat.getwinvar()">Vital.Vim.Compat.getwinvar()</a>
+        Compatibility function of <a href="https://www.google.com/search?q=vim+%22getwinvar()%22&lr=lang_en"><span class="MissingTag">getwinvar()</span></a> which supports a default value
+        <span class="Special">{def}</span> from Vim 7.3.831.
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/OptionParser</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.String { color: #032f62; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/OptionParser</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/OptionParser.html" name="vital/OptionParser.txt">vital/OptionParser.txt</a>        Option parser library for Vim.
+
+Maintainer: rhysd &lt;lin90162@yahoo.co.jp&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-contents" name="Vital.OptionParser-contents">Vital.OptionParser-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-introduction">Vital.OptionParser-introduction</a>
+USAGE                           <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-usage">Vital.OptionParser-usage</a>
+INTERFACE                       <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-interface">Vital.OptionParser-interface</a>
+  FUNCTIONS                     <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-functions">Vital.OptionParser-functions</a>
+OBJECTS                         <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-objects">Vital.OptionParser-objects</a>
+  PARSER OBJECT                 <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-Parser">Vital.OptionParser-Parser</a>
+SPECIAL OPTIONS                 <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-special-options">Vital.OptionParser-special-options</a>
+BUILT-IN COMPLETERS             <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-built-in-completer">Vital.OptionParser-built-in-completer</a>
+REAL WORLD EXAMPLES             <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-real-world-examples">Vital.OptionParser-real-world-examples</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-introduction" name="Vital.OptionParser-introduction">Vital.OptionParser-introduction</a>
+
+<a class="String" href="./../vital/OptionParser.html#Vital.OptionParser" name="Vital.OptionParser">Vital.OptionParser</a> is an option parser library for Vim script.
+It can parse key-value style options (like --foo=bar) in Vim commands and
+<a href="https://www.google.com/search?q=vim+%22:command%22&lr=lang_en"><span class="MissingTag">:command</span></a> attributes like <span class="Special">&lt;count&gt;</span>, <span class="Special">&lt;bang&gt;</span>, <span class="Special">&lt;range&gt;</span> and so on.
+A great advantage of key-value type options is that you need not take care of
+the order of options.  And it provides completion for option names and you can
+add your own completion for the option values.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                                   <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-usage" name="Vital.OptionParser-usage">Vital.OptionParser-usage</a>
+
+At first, make a new instance of a parser with <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser.new()">Vital.OptionParser.new()</a>, then
+define options you want to parse with <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.on()">Vital.OptionParser-Parser.on()</a>.  At last,
+define a command with <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.parse()">Vital.OptionParser-Parser.parse()</a>.
+This library's interface is inspired by OptionParser in Ruby.
+
+<span class="helpExample">  &quot; make option parser instance</span>
+<span class="helpExample">  let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">  let s:O = s:V.import('OptionParser')</span>
+<span class="helpExample">  let s:parser = s:O.new()</span>
+
+<span class="helpExample">  &quot; user-defined option completion (see :help :command-completion-customlist)</span>
+<span class="helpExample">  &quot;   Note: optlead is NOT arglead (when '--baz=h', 'h' is optlead.)</span>
+<span class="helpExample">  function! CompleteBazOption(optlead, cmdline, cursorpos)</span>
+<span class="helpExample">    return filter(['sushi', 'yakiniku', 'yakitori'],</span>
+<span class="helpExample">            \ 'a:optlead == &quot;&quot; ? 1 : (v:val =~# a:optlead)')</span>
+<span class="helpExample">  endfunction</span>
+
+<span class="helpExample">  &quot; define options</span>
+<span class="helpExample">  call s:parser.on('--hoge=VALUE', 'description of hoge, must have value')</span>
+<span class="helpExample">  call s:parser.on('--foo', 'description of foo')</span>
+<span class="helpExample">  &quot; Note: definitions can chain</span>
+<span class="helpExample">  call s:parser.on('--[no-]bar', 'description of bar, deniable', {'completion' : 'file'})</span>
+<span class="helpExample">              \.on('--baz', 'description of baz, has short option',</span>
+<span class="helpExample">                      \ {'short' : '-b', 'completion' : function('CompleteBazOption')})</span>
+<span class="helpExample">              \.on('--qux', 'description of qux, defaults to &quot;aaa&quot;', {'default' : 'aaa'})</span>
+
+<span class="helpExample">  &quot; set complete function for unknown options</span>
+<span class="helpExample">  let s:parser.unknown_options_completion = 'file'</span>
+
+<span class="helpExample">  &quot; prepare for a completion function</span>
+<span class="helpExample">  function! CompleteHoge(arglead, cmdline, cursorpos)</span>
+<span class="helpExample">    return s:parser.complete(a:arglead, a:cmdline, a:cursorpos)</span>
+<span class="helpExample">  endfunction</span>
+
+<span class="helpExample">  &quot; define command with the parser</span>
+<span class="helpExample">  command! -nargs=* -count -bang -complete=customlist,CompleteHoge</span>
+<span class="helpExample">                  \ Hoge echo s:parser.parse(&lt;q-args&gt;, &lt;count&gt;, &lt;q-bang&gt;)</span>
+
+<span class="helpExample">  &quot; execute!</span>
+<span class="helpExample">  Hoge! --hoge=huga --no-bar poyo -b</span>
+<span class="helpExample">  &quot; =&gt; {</span>
+<span class="helpExample">  &quot;      '__count__' : 0,</span>
+<span class="helpExample">  &quot;      '__bang__' : '!',</span>
+<span class="helpExample">  &quot;      'hoge' : 'huga',</span>
+<span class="helpExample">  &quot;      'bar' : 0,</span>
+<span class="helpExample">  &quot;      'baz' : 1,</span>
+<span class="helpExample">  &quot;      'qux' : 'aaa',</span>
+<span class="helpExample">  &quot;      '__unknown_args__' : ['poyo'],</span>
+<span class="helpExample">  &quot;    }</span>
+
+<span class="helpExample">  &quot; show help</span>
+<span class="helpExample">  Hoge --help</span>
+<span class="helpExample">  &quot; echo following message</span>
+<span class="helpExample">  &quot;   Options:</span>
+<span class="helpExample">  &quot;     --hoge=VALUE : description of hoge, must have value</span>
+<span class="helpExample">  &quot;     --foo        : description of foo</span>
+<span class="helpExample">  &quot;     --[no-]bar   : description of bar, deniable</span>
+<span class="helpExample">  &quot;     --baz, -b    : description of baz, has short option</span>
+<span class="helpExample">  &quot;     --qux        : description of qux, defaults to &quot;aaa&quot; (DEFAULT: 'aaa')</span>
+<span class="helpExample">  &quot;</span>
+<span class="helpExample">  &quot; =&gt; {</span>
+<span class="helpExample">  &quot;      '__count__' : 0,</span>
+<span class="helpExample">  &quot;      'help' : 1,</span>
+<span class="helpExample">  &quot;    }</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-interface" name="Vital.OptionParser-interface">Vital.OptionParser-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-functions" name="Vital.OptionParser-functions">Vital.OptionParser-functions</a>
+
+new()                                   <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser.new()" name="Vital.OptionParser.new()">Vital.OptionParser.new()</a>
+
+        Make an option parser instance.  It returns <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> which is like
+        an object in OOP.  You can define options in this instance and parse
+        arguments with this instance.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">OBJECTS</span>                                 <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-objects" name="Vital.OptionParser-objects">Vital.OptionParser-objects</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">PARSER OBJECT</span>                           <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-Parser" name="Vital.OptionParser-Parser">Vital.OptionParser-Parser</a>
+
+                                        <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.on()" name="Vital.OptionParser-Parser.on()">Vital.OptionParser-Parser.on()</a>
+Parser.on(<span class="Special">{name}</span>, <span class="Special">{description}</span> [, <span class="Special">{extra}</span>])
+
+        Define an option to parse.  You should call this function every option.
+
+        - <span class="Special">{name}</span> (required)
+          <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> value.  A name of option.
+          <span class="Special">{name}</span> can be one of the below patterns.  foo is an example of
+          option name.
+
+                - &quot;--foo&quot;
+                  Option whose name is &quot;foo&quot;.  If it is used with value like
+                  &quot;--foo=bar&quot;, value of &quot;foo&quot; will be &quot;bar&quot;.  If a value is
+                  omitted,  value of &quot;foo&quot; will be 1.
+
+                - &quot;--foo=VALUE&quot;
+                  Option whose name is &quot;foo&quot; and it must have a value with
+                  &quot;--foo=bar&quot; style.  In that case, Value of &quot;foo&quot; will be
+                  &quot;bar&quot;.  Name of value, VALUE is only an example of names.
+                  It can be any names.  If a value is omitted, it occurs an
+                  error.
+
+                - &quot;--[no-]foo&quot;
+                  Option whose name is &quot;foo&quot; and it is deniable with &quot;no-&quot;
+                  prefix.  When it is used like &quot;--no-foo&quot;, value of &quot;foo&quot;
+                  will be 0.
+
+        - <span class="Special">{description}</span> (required)
+          <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> value.  Description of option.  This is used for &quot;--help&quot;
+          argument.
+
+        - <span class="Special">{extra}</span> (optional)
+          If <span class="Special">{extra}</span> is <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> value, it can contain below keys; &quot;short&quot;,
+          &quot;default&quot;, &quot;completion&quot;, &quot;required&quot; or &quot;pattern&quot;.
+          Otherwise, <span class="Special">{extra}</span> is dealt with a default value of the option.
+
+          - &quot;short&quot;
+            If <span class="Special">{extra}</span> has &quot;short&quot; key, its value should be <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> and means
+            an alias of <span class="Special">{name}</span>.  It must start with &quot;-&quot; and one alphabet must
+            follow it like &quot;-f&quot;.
+
+          - &quot;default&quot;
+            If <span class="Special">{extra}</span> has &quot;default&quot; key, its value means a default value of the
+            option.  When the option is omitted, the default value would be
+            used.
+
+          - &quot;completion&quot;
+          Value of &quot;completion&quot; key must be <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> or <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.  If <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>, it
+          means a name of default completer.  See
+          <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-built-in-completer">Vital.OptionParser-built-in-completer</a> to know default completers.  If
+          <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>, it is called when the value of the option should be completed.
+          The <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> should have 3 arguments, <span class="Special">{optlead}</span>, <span class="Special">{cmdline}</span>, <span class="Special">{cursorpos}</span>.
+          <span class="Special">{optlead}</span> is the lead portion of the VALUE of the option.  <span class="Special">{cmdline}</span>
+          is the <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> of command line.  <span class="Special">{cursorpos}</span> is the place of cursor.
+          For example, if you set <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> for &quot;--hoge=VALUE&quot; option, it will be
+          called when a user inputs &quot;--hoge=&quot;.  When the user inputs &quot;--hoge=h&quot;,
+          &quot;h&quot; will be passed to <span class="Special">{optlead}</span>.  <span class="Special">{optlead}</span> is NOT ArgLead of
+          <a href="https://www.google.com/search?q=vim+%22:command-completion-custom%22&lr=lang_en"><span class="MissingTag">:command-completion-custom</span></a>.
+
+          - &quot;required&quot;
+            Value of &quot;required&quot; key must be 1 or 0.
+            1 means this option must be specified. If not specified, Vital
+            throws an exception.
+            And 0 means this option is optional.
+            If &quot;default&quot; key is specified, &quot;required&quot; value is ignored.
+
+          - &quot;pattern&quot;
+            If <span class="Special">{extra}</span> has &quot;pattern&quot; key, its value must be <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> and means
+            this option must match the value.
+            If it doesn't match &quot;pattern&quot; value, Vital throws an exception.
+
+                                        <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.parse()" name="Vital.OptionParser-Parser.parse()">Vital.OptionParser-Parser.parse()</a>
+Parser.parse(<span class="Special">{q-args}</span> [, <span class="Special">{cmd-attributes}</span>...])
+
+        Parse command options.
+        <span class="Special">{q-args}</span> is <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> value and you must pass <span class="Special">&lt;q-arg&gt;</span> to this argument.
+        <span class="Special">{cmd-attributes}</span> are command attributes like <span class="Special">&lt;range&gt;</span>, <span class="Special">&lt;count&gt;</span>, <span class="Special">&lt;bang&gt;</span>
+        and so on.  You need not take care of the order of attributes.
+        Arguments not parsed result in &quot;__unknown_args__&quot; key's value as <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>
+        of <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+
+        - <span class="Special">{range}</span>
+          You must use <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of <span class="Special">&lt;line1&gt;</span> and <span class="Special">&lt;line2&gt;</span>.
+          &quot;__range__&quot; key's value is parsed result for <span class="Special">{range}</span>.
+
+        - <span class="Special">{count}</span>
+          You must use <span class="Special">&lt;count&gt;</span>.
+          &quot;__count__&quot; key's value is parsed result for <span class="Special">{count}</span>.
+
+        - <span class="Special">{bang}</span>
+          You must use <span class="Special">&lt;q-bang&gt;</span>.
+          &quot;__bang__&quot; key's value is parsed result for <span class="Special">{bang}</span>.
+
+        - <span class="Special">{reg}</span>
+          You must use <span class="Special">&lt;reg&gt;</span> or <span class="Special">&lt;register&gt;</span>.
+          &quot;__reg__&quot; key's value is parsed result for <span class="Special">{reg}</span>.
+
+<span class="helpExample">  command! -range -bang -register Foo</span>
+<span class="helpExample">      \ echo OptionParser.parse(&lt;q-args&gt;, [&lt;line1&gt;, &lt;line2&gt;], &lt;q-bang&gt;, &lt;reg&gt;)</span>
+
+Parser.help()                           <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.help()" name="Vital.OptionParser-Parser.help()">Vital.OptionParser-Parser.help()</a>
+
+        Make output for &quot;--help&quot; option and return it as <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>.
+
+                                        <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.complete()" name="Vital.OptionParser-Parser.complete()">Vital.OptionParser-Parser.complete()</a>
+Parser.complete(<span class="Special">{arglead}</span>, <span class="Special">{cmdline}</span>, <span class="Special">{cursorpos}</span>)
+
+        It is <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> to complete options in command line.  This function is
+        assumed to pass to the function for customlist of command.  You must
+        wrap it with a global or autoload function like below.
+
+<span class="helpExample">  function! CompleteFunctionForHoge(arglead, cmdline, cursorpos)</span>
+<span class="helpExample">      return s:opt.complete(a:arglead, a:cmdline, a:cursorpos)</span>
+<span class="helpExample">  endfunction</span>
+<span class="helpExample">  command! -complete=customlist,CompleteFunctionForHoge Hoge ...</span>
+
+        This is because &quot;customlist&quot; cannot take <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>.
+        And this function return <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of candidates.  You must use &quot;customlist&quot;
+        and must not use &quot;custom&quot; in <a href="https://www.google.com/search?q=vim+%22:command%22&lr=lang_en"><span class="MissingTag">:command</span></a>.
+
+                                <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.complete_greedily()" name="Vital.OptionParser-Parser.complete_greedily()">Vital.OptionParser-Parser.complete_greedily()</a>
+Parser.complete_greedily(<span class="Special">{arglead}</span>, <span class="Special">{cmdline}</span>, <span class="Special">{cursorpos}</span>)
+
+        It is <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> to complete options in command line.  This <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> is
+        different from <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.complete()">Vital.OptionParser-Parser.complete()</a> in terms of
+        candidates of the completion.  This <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> shows all possible
+        candidates greedily.
+
+                        <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-Parser.unknown_options_completion" name="Vital.OptionParser-Parser.unknown_options_completion">Vital.OptionParser-Parser.unknown_options_completion</a>
+Parser.unknown_options_completion
+
+        It is <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> or <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> and used when options which OptionParser doesn't
+        know should be completed.  If <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>, it means a name of default
+        completer.  See <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser-built-in-completer">Vital.OptionParser-built-in-completer</a> to know default
+        completers.  If <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>, it is used directly when the value of the
+        option should be completed.  The interface of the function is the same
+        as &quot;completion&quot; of <span class="Special">{extra}</span>.  For example, when a user input
+        &quot;:SomeCommand unknown&quot;, &quot;unknown&quot; will be passed to <span class="Special">{optlead}</span> of the
+        complete function.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">SPECIAL OPTIONS</span>                         <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-special-options" name="Vital.OptionParser-special-options">Vital.OptionParser-special-options</a>
+
+&quot;--help&quot; option is a special option which is available in all commands
+parsed by <a class="Identifier" href="./../vital/OptionParser.html#Vital.OptionParser">Vital.OptionParser</a>.  If &quot;--help&quot; echoes usage of the command.
+Below is an output example.
+
+<span class="helpExample">  Options:</span>
+<span class="helpExample">    --foo=VALUE : description of foo, must have value</span>
+<span class="helpExample">    --foo       : description of foo</span>
+<span class="helpExample">    --[no-]bar  : description of bar, deniable</span>
+<span class="helpExample">    --baz, -b   : description of baz, has short option</span>
+<span class="helpExample">    --qux       : description of qux, defaults to &quot;aaa&quot; (DEFAULT: 'aaa')</span>
+
+If you don't want to use &quot;--help&quot;, set OptionParser.disable_auto_help to 1.
+
+<span class="helpExample">  let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">  let s:O = s:V.import('OptionParser')</span>
+<span class="helpExample">  let s:parser = s:O.new()</span>
+<span class="helpExample">  let s:parser.disable_auto_help = 1</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">BUILT-IN COMPLETERS</span>                     <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-built-in-completer" name="Vital.OptionParser-built-in-completer">Vital.OptionParser-built-in-completer</a>
+
+- <a href="https://www.google.com/search?q=vim+%22'file'%22&lr=lang_en"><span class="MissingTag">'file'</span></a>
+  It completes file or directory names.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">REAL WORLD EXAMPLES</span>                     <a class="String" href="./../vital/OptionParser.html#Vital.OptionParser-real-world-examples" name="Vital.OptionParser-real-world-examples">Vital.OptionParser-real-world-examples</a>
+
+- wandbox-vim
+<span class="String"><a href="https://github.com/rhysd/wandbox-vim">https://github.com/rhysd/wandbox-vim</a></span>
+
+- vim-duzzle
+<span class="String"><a href="https://github.com/deris/vim-duzzle">https://github.com/deris/vim-duzzle</a></span>
+
+- translategoogle.vim
+<span class="String"><a href="https://github.com/daisuzu/translategoogle.vim">https://github.com/daisuzu/translategoogle.vim</a></span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

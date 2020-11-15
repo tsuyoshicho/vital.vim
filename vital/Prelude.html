@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Prelude</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Prelude</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/Prelude.html" name="vital/Prelude.txt">vital/Prelude.txt</a>             crucial functions
+
+Maintainer: ujihisa &lt;ujihisa at gmail com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../vital/Prelude.html#Vital.Prelude-contents" name="Vital.Prelude-contents">Vital.Prelude-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/Prelude.html#Vital.Prelude-introduction">Vital.Prelude-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../vital/Prelude.html#Vital.Prelude-interface">Vital.Prelude-interface</a>
+  Functions                       <a class="Identifier" href="./../vital/Prelude.html#Vital.Prelude-functions">Vital.Prelude-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../vital/Prelude.html#Vital.Prelude-introduction" name="Vital.Prelude-introduction">Vital.Prelude-introduction</a>
+
+<a class="String" href="./../vital/Prelude.html#Vital.Prelude" name="Vital.Prelude">Vital.Prelude</a> is a module for basic functions in Vim script.
+
+<span class="Todo">NOTE</span>: Some Vital modules implicitly depend on Prelude, because this was used
+to be a special module that you could use anywhere without having to
+explicitly import.
+
+functions:
+See #140 for the details (Japanese).
+<span class="String"><a href="https://github.com/vim-jp/vital.vim/issues/140">https://github.com/vim-jp/vital.vim/issues/140</a></span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../vital/Prelude.html#Vital.Prelude-interface" name="Vital.Prelude-interface">Vital.Prelude-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../vital/Prelude.html#Vital.Prelude-functions" name="Vital.Prelude-functions">Vital.Prelude-functions</a>
+
+glob(<span class="Special">{expr}</span>)                                    <a class="String" href="./../vital/Prelude.html#Vital.Prelude.glob()" name="Vital.Prelude.glob()">Vital.Prelude.glob()</a>
+        A <a href="https://www.google.com/search?q=vim+%22glob()%22&lr=lang_en"><span class="MissingTag">glob()</span></a> wrapper which returns List and <a href="https://www.google.com/search?q=vim+%22'wildignore'%22&lr=lang_en"><span class="MissingTag">'wildignore'</span></a> does not affect
+        this function's return value.
+
+globpath(<span class="Special">{path}</span>, <span class="Special">{expr}</span>)                        <a class="String" href="./../vital/Prelude.html#Vital.Prelude.globpath()" name="Vital.Prelude.globpath()">Vital.Prelude.globpath()</a>
+        globpath() wrapper which returns List and <a href="https://www.google.com/search?q=vim+%22'suffixes'%22&lr=lang_en"><span class="MissingTag">'suffixes'</span></a> and <a href="https://www.google.com/search?q=vim+%22'wildignore'%22&lr=lang_en"><span class="MissingTag">'wildignore'</span></a>
+        does not affect this function's return value.
+
+is_numeric(<span class="Special">{value}</span>)                             <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_numeric()" name="Vital.Prelude.is_numeric()">Vital.Prelude.is_numeric()</a>
+        Returns non-zero if <span class="Special">{value}</span> is a <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a> or a <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a>, zero otherwise.
+                Examples:
+<span class="helpExample">                :let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">                :let s:P = s:V.import('Prelude')</span>
+<span class="helpExample">                :echo s:P.is_numeric(123)</span>
+               1
+<span class="helpExample">                :echo s:P.is_numeric(1.23)</span>
+               1
+<span class="helpExample">                :echo s:P.is_numeric(&quot;hoge&quot;)</span>
+               0
+
+is_number(<span class="Special">{value}</span>)                              <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_number()" name="Vital.Prelude.is_number()">Vital.Prelude.is_number()</a>
+        Returns non-zero if <span class="Special">{value}</span> is a <a href="https://www.google.com/search?q=vim+%22Number%22&lr=lang_en"><span class="MissingTag">Number</span></a>, zero otherwise.
+                Examples:
+<span class="helpExample">                :let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">                :let s:P = s:V.import('Prelude')</span>
+<span class="helpExample">                :echo s:P.is_number(123)</span>
+               1
+<span class="helpExample">                :echo s:P.is_number(1.23)</span>
+               0
+<span class="helpExample">                :echo s:P.is_number(&quot;hoge&quot;)</span>
+               0
+
+is_float(<span class="Special">{value}</span>)                               <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_float()" name="Vital.Prelude.is_float()">Vital.Prelude.is_float()</a>
+        Returns non-zero if <span class="Special">{value}</span> is a <a href="https://www.google.com/search?q=vim+%22Float%22&lr=lang_en"><span class="MissingTag">Float</span></a>, zero otherwise.
+                Examples:
+<span class="helpExample">                :let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">                :let s:P = s:V.import('Prelude')</span>
+<span class="helpExample">                :echo s:P.is_float(123)</span>
+               0
+<span class="helpExample">                :echo s:P.is_float(1.23)</span>
+               1
+<span class="helpExample">                :echo s:P.is_float(&quot;hoge&quot;)</span>
+               0
+
+is_infinity(<span class="Special">{value}</span>)                            <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_infinity()" name="Vital.Prelude.is_infinity()">Vital.Prelude.is_infinity()</a>
+        Return 1 if <span class="Special">{expr}</span> is a positive infinity, or -1 a negative
+        infinity, otherwise 0.
+                Examples:
+<span class="helpExample">                :let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">                :let s:P = s:V.import('Prelude')</span>
+<span class="helpExample">                :echo s:P.is_infinity(1.0 / 0)</span>
+               1
+<span class="helpExample">                :echo s:P.is_infinity(-1.0 / 0)</span>
+               -1
+<span class="helpExample">                :echo s:P.is_infinity(123.0)</span>
+               0
+
+is_string(<span class="Special">{value}</span>)                              <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_string()" name="Vital.Prelude.is_string()">Vital.Prelude.is_string()</a>
+        Returns non-zero if <span class="Special">{value}</span> is a String (<a href="https://www.google.com/search?q=vim+%22expr-string%22&lr=lang_en"><span class="MissingTag">expr-string</span></a>), zero otherwise.
+
+is_funcref(<span class="Special">{value}</span>)                             <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_funcref()" name="Vital.Prelude.is_funcref()">Vital.Prelude.is_funcref()</a>
+        Returns non-zero if <span class="Special">{value}</span> is a <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>, zero otherwise.
+
+is_list(<span class="Special">{value}</span>)                                <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_list()" name="Vital.Prelude.is_list()">Vital.Prelude.is_list()</a>
+        Returns non-zero if <span class="Special">{value}</span> is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>, zero otherwise.
+
+is_dict(<span class="Special">{value}</span>)                                <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_dict()" name="Vital.Prelude.is_dict()">Vital.Prelude.is_dict()</a>
+        Returns non-zero if <span class="Special">{value}</span> is a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>, zero otherwise.
+
+                                        <a class="String" href="./../vital/Prelude.html#Vital.Prelude.truncate_skipping()" name="Vital.Prelude.truncate_skipping()">Vital.Prelude.truncate_skipping()</a>
+truncate_skipping(<span class="Special">{str}</span>, <span class="Special">{max}</span>, <span class="Special">{footer-width}</span>, <span class="Special">{separator}</span>)
+        This function is deprecated. Please use
+        <a class="Identifier" href="./../vital/Data/String.html#Vital.Data.String.truncate_skipping()">Vital.Data.String.truncate_skipping()</a> instead.
+
+truncate(<span class="Special">{str}</span>, <span class="Special">{width}</span>)                        <a class="String" href="./../vital/Prelude.html#Vital.Prelude.truncate()" name="Vital.Prelude.truncate()">Vital.Prelude.truncate()</a>
+        This function is deprecated. Please use <a class="Identifier" href="./../vital/Data/String.html#Vital.Data.String.truncate()">Vital.Data.String.truncate()</a>
+        instead.
+
+strwidthpart(<span class="Special">{str}</span>, <span class="Special">{width}</span>)                    <a class="String" href="./../vital/Prelude.html#Vital.Prelude.strwidthpart()" name="Vital.Prelude.strwidthpart()">Vital.Prelude.strwidthpart()</a>
+        This function is deprecated. Please use
+        <a class="Identifier" href="./../vital/Data/String.html#Vital.Data.String.strwidthpart()">Vital.Data.String.strwidthpart()</a> instead.
+
+strwidthpart_reverse(<span class="Special">{str}</span>, <span class="Special">{width}</span>)    <a class="String" href="./../vital/Prelude.html#Vital.Prelude.strwidthpart_reverse()" name="Vital.Prelude.strwidthpart_reverse()">Vital.Prelude.strwidthpart_reverse()</a>
+        This function is deprecated. Please use
+        <a class="Identifier" href="./../vital/Data/String.html#Vital.Data.String.strwidthpart_reverse()">Vital.Data.String.strwidthpart_reverse()</a> instead.
+
+wcswidth(<span class="Special">{str}</span>)                                 <a class="String" href="./../vital/Prelude.html#Vital.Prelude.wcswidth()" name="Vital.Prelude.wcswidth()">Vital.Prelude.wcswidth()</a>
+        This function is deprecated. Please use <a class="Identifier" href="./../vital/Data/String.html#Vital.Data.String.wcswidth()">Vital.Data.String.wcswidth()</a>
+        instead.
+
+is_windows()                                    <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_windows()" name="Vital.Prelude.is_windows()">Vital.Prelude.is_windows()</a>
+        Returns non-zero if Vim is a MS-Windows version, zero otherwise.
+        <span class="Todo">Note</span> that this returns zero if Vim is a Cygwin version.
+
+is_cygwin()                                     <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_cygwin()" name="Vital.Prelude.is_cygwin()">Vital.Prelude.is_cygwin()</a>
+        Returns non-zero if Vim is a Cygwin version, zero otherwise.
+
+is_mac()                                        <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_mac()" name="Vital.Prelude.is_mac()">Vital.Prelude.is_mac()</a>
+        Returns non-zero if Vim is a Macintosh version, zero otherwise.
+
+is_unix()                                       <a class="String" href="./../vital/Prelude.html#Vital.Prelude.is_unix()" name="Vital.Prelude.is_unix()">Vital.Prelude.is_unix()</a>
+        Returns non-zero if Vim is a MS-Windows version, zero otherwise.
+        <span class="Todo">Note</span> that this returns non-zero if Vim is a Cygwin version.
+
+smart_execute_command(<span class="Special">{action}</span>, <span class="Special">{word}</span>) <a class="String" href="./../vital/Prelude.html#Vital.Prelude.smart_execute_command()" name="Vital.Prelude.smart_execute_command()">Vital.Prelude.smart_execute_command()</a>
+        Like a combination of <a href="https://www.google.com/search?q=vim+%22printf()%22&lr=lang_en"><span class="MissingTag">printf()</span></a> and <a href="https://www.google.com/search?q=vim+%22:execute%22&lr=lang_en"><span class="MissingTag">:execute</span></a>.
+
+<span class="helpExample">        let x = 123</span>
+<span class="helpExample">        call smart_execute_command('echo', x)</span>
+
+        becomes
+
+<span class="helpExample">        execute 'echo' 123</span>
+
+
+escape_pattern(<span class="Special">{str}</span>)                   <a class="String" href="./../vital/Prelude.html#Vital.Prelude.escape_pattern()" name="Vital.Prelude.escape_pattern()">Vital.Prelude.escape_pattern()</a>
+        Use <a class="Identifier" href="./../vital/Data/String.html#Vital.Data.String.escape_pattern()">Vital.Data.String.escape_pattern()</a> instead.
+        <span class="Todo">Note</span> that <a class="Identifier" href="./../vital/Data/String.html#Vital.Data.String.escape_pattern()">Vital.Data.String.escape_pattern()</a> does not escape a
+        double quotation mark (&quot;) while it is not a part of regex pattern.
+
+getchar(...)                                    <a class="String" href="./../vital/Prelude.html#Vital.Prelude.getchar()" name="Vital.Prelude.getchar()">Vital.Prelude.getchar()</a>
+        This is like builtin <a href="https://www.google.com/search?q=vim+%22getchar()%22&lr=lang_en"><span class="MissingTag">getchar()</span></a> but always returns string.
+
+getchar_safe(...)                               <a class="String" href="./../vital/Prelude.html#Vital.Prelude.getchar_safe()" name="Vital.Prelude.getchar_safe()">Vital.Prelude.getchar_safe()</a>
+        This is like builtin <a href="https://www.google.com/search?q=vim+%22getchar()%22&lr=lang_en"><span class="MissingTag">getchar()</span></a> but always returns string,
+        and also does <a href="https://www.google.com/search?q=vim+%22inputsave()%22&lr=lang_en"><span class="MissingTag">inputsave()</span></a><a href="https://www.google.com/search?q=vim+%22/%22&lr=lang_en"><span class="MissingTag">/</span></a><a href="https://www.google.com/search?q=vim+%22inputrestore()%22&lr=lang_en"><span class="MissingTag">inputrestore()</span></a> before/after <a href="https://www.google.com/search?q=vim+%22getchar()%22&lr=lang_en"><span class="MissingTag">getchar()</span></a>.
+
+input_safe(...)                                 <a class="String" href="./../vital/Prelude.html#Vital.Prelude.input_safe()" name="Vital.Prelude.input_safe()">Vital.Prelude.input_safe()</a>
+        Like builtin getchar() but do <a href="https://www.google.com/search?q=vim+%22inputsave()%22&lr=lang_en"><span class="MissingTag">inputsave()</span></a><a href="https://www.google.com/search?q=vim+%22/%22&lr=lang_en"><span class="MissingTag">/</span></a><a href="https://www.google.com/search?q=vim+%22inputrestore()%22&lr=lang_en"><span class="MissingTag">inputrestore()</span></a>
+        before/after <a href="https://www.google.com/search?q=vim+%22input()%22&lr=lang_en"><span class="MissingTag">input()</span></a>.
+
+input_helper(<span class="Special">{funcname}</span>, <span class="Special">{args}</span>)                <a class="String" href="./../vital/Prelude.html#Vital.Prelude.input_helper()" name="Vital.Prelude.input_helper()">Vital.Prelude.input_helper()</a>
+        Do <a href="https://www.google.com/search?q=vim+%22inputsave()%22&lr=lang_en"><span class="MissingTag">inputsave()</span></a><a href="https://www.google.com/search?q=vim+%22/%22&lr=lang_en"><span class="MissingTag">/</span></a><a href="https://www.google.com/search?q=vim+%22inputrestore()%22&lr=lang_en"><span class="MissingTag">inputrestore()</span></a> before/after calling <a href="https://www.google.com/search?q=vim+%22a:funcname%22&lr=lang_en"><span class="MissingTag">a:funcname</span></a>.
+
+set_default(<span class="Special">{var}</span>, <span class="Special">{val}</span>)                       <a class="String" href="./../vital/Prelude.html#Vital.Prelude.set_default()" name="Vital.Prelude.set_default()">Vital.Prelude.set_default()</a>
+        Assign a <span class="Special">{val}</span> to a variable which name is <span class="Special">{var}</span> if the <span class="Special">{var}</span> is
+        undefined. Even if the <span class="Special">{var}</span> is already defined, if the type of <span class="Special">{val}</span>
+        is different to the value of <span class="Special">{var}</span>, it'll assign anyways.
+
+        For example,
+
+<span class="helpExample">        &quot; not exactly same!</span>
+<span class="helpExample">        call set_default('g:aaa', 'bbb')</span>
+
+        Is similar to
+
+<span class="helpExample">        &quot; not exactly same!</span>
+<span class="helpExample">        let g:aaa = get(g:, 'aaa', 'bbb')</span>
+
+        But not exactly same when the type of aaa is not <a href="https://www.google.com/search?q=vim+%22expr-string%22&lr=lang_en"><span class="MissingTag">expr-string</span></a>.
+
+                                <a class="String" href="./../vital/Prelude.html#Vital.Prelude.substitute_path_separator()" name="Vital.Prelude.substitute_path_separator()">Vital.Prelude.substitute_path_separator()</a>
+substitute_path_separator(<span class="Special">{path}</span>)
+        TODO
+
+<span class="helpExample">        echo V.substitute_path_separator('a/b/c')</span>
+
+        is same to
+
+<span class="helpExample">        echo 'a/b/c'</span>
+
+        in most cases but only on Windows it is same to the following.
+
+<span class="helpExample">        echo 'a\\b\\c'</span>
+
+
+path2directory(<span class="Special">{path}</span>)                  <a class="String" href="./../vital/Prelude.html#Vital.Prelude.path2directory()" name="Vital.Prelude.path2directory()">Vital.Prelude.path2directory()</a>
+        TODO
+
+<span class="helpExample">        P.path2directory('a/b/c.txt')</span>
+
+        is equivalent to
+
+<span class="helpExample">        P.substitute_path_separator(fnamemodify('a/b/c.txt', ':p:h'))</span>
+
+        and
+
+<span class="helpExample">        P.path2directory('a/b/d') &quot; d is a directory</span>
+
+        is equivalent to
+
+<span class="helpExample">        P.substitute_path_separator('a/b/d')</span>
+
+
+                                <a class="String" href="./../vital/Prelude.html#Vital.Prelude.path2project_directory()" name="Vital.Prelude.path2project_directory()">Vital.Prelude.path2project_directory()</a>
+path2project_directory(<span class="Special">{path}</span>[, {is_allow_empty}])
+        Look up project root path and return it.
+
+        Project root = &lt;VCS directory&gt; or &lt;Project directory&gt;
+        VCS directory = The directory which has
+                        &quot;.git&quot; or &quot;.bzr&quot; or &quot;.hg&quot; or &quot;.svn&quot;
+        Project directory = The directory which has
+                        &quot;build.xml&quot; or &quot;prj.el&quot; or &quot;.project&quot;
+                        or &quot;pom.xml&quot; or &quot;package.json&quot; or &quot;Makefile&quot;
+                        or &quot;configure&quot; or &quot;Rakefile&quot; or &quot;NAnt.build&quot;
+                        or &quot;P4CONFIG&quot; or &quot;tags&quot; or &quot;gtags&quot;
+
+        After failing looking up directory,
+        And if {is_allow_empty} was given and non-zero,
+        returns <span class="Special">{path}</span> which is:
+                1. Full Path
+                2. On MS Windows, all path separator
+                   is replaced by '/'
+        Otherwise, empty string was returned.
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vitalizer</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vitalizer</h1>
+<a href="./index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="././vitalizer.html" name="vitalizer.txt">vitalizer.txt</a> vital.vim for you.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                        <a class="String" href="././vitalizer.html#vitalizer-contents" name="vitalizer-contents">vitalizer-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="././vitalizer.html#vitalizer-introduction">vitalizer-introduction</a>
+INTERFACE                       <a class="Identifier" href="././vitalizer.html#vitalizer-interface">vitalizer-interface</a>
+  COMMANDS                        <a class="Identifier" href="././vitalizer.html#vitalizer-commands">vitalizer-commands</a>
+  FUNCTIONS                       <a class="Identifier" href="././vitalizer.html#vitalizer-functions">vitalizer-functions</a>
+CUSTOMIZING                     <a class="Identifier" href="././vitalizer.html#vitalizer-customizing">vitalizer-customizing</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                                    <a class="String" href="././vitalizer.html#vitalizer-introduction" name="vitalizer-introduction">vitalizer-introduction</a>
+
+<a class="String" href="././vitalizer.html#Vitalizer" name="Vitalizer">Vitalizer</a> is a Vim plugin to vitalize the <a href="https://www.google.com/search?q=vim+%22Vital%22&lr=lang_en"><span class="MissingTag">Vital</span></a> to your plugin.
+
+
+                                                <a class="String" href="././vitalizer.html#vitalizer-synopsis" name="vitalizer-synopsis">vitalizer-synopsis</a>
+
+<span class="helpExample">        :cd /path/to/my-plugin</span>
+
+<span class="helpExample">        &quot; First, install the Vital to your plugin with some modules.</span>
+<span class="helpExample">        :Vitalize --name=my_plugin . Data.List DateTime</span>
+
+<span class="helpExample">        &quot; You can update the Vital by omitting modules the 2nd time and</span>
+<span class="helpExample">        &quot; afterwards.</span>
+<span class="helpExample">        :Vitalize .</span>
+
+<span class="helpExample">        &quot; If you specify a module list, all modules are replaced.</span>
+<span class="helpExample">        :Vitalize . Data.Dict</span>
+<span class="helpExample">        &quot; =&gt; Data.List and DateTime will be removed!</span>
+
+<span class="helpExample">        &quot; Specifies a module with '+' prefix to add a module.</span>
+<span class="helpExample">        :Vitalize . +Data.List +DateTime</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                                       <a class="String" href="././vitalizer.html#vitalizer-interface" name="vitalizer-interface">vitalizer-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">COMMANDS</span>                                        <a class="String" href="././vitalizer.html#vitalizer-commands" name="vitalizer-commands">vitalizer-commands</a>
+
+:Vitalize <span class="Special">[options]</span> <span class="Special">{target-dir}</span> [<span class="Special">{module}</span> ...] <a class="String" href="././vitalizer.html#:Vitalize" name=":Vitalize">:Vitalize</a>
+        <span class="Special">{target-dir}</span> is root directory of your plugin.  It must be like a
+        one of <a href="https://www.google.com/search?q=vim+%22'runtimepath'%22&lr=lang_en"><span class="MissingTag">'runtimepath'</span></a>.
+        List of <span class="Special">{module}</span> is module names you want.  It is necessary to
+        specify one or more.
+        <span class="Special">{name}</span>(see below) and list of <span class="Special">{module}</span> is recorded to your Vital.
+        This is used after next time if they are omitted.
+        You can use +/- prefix to <span class="Special">{module}</span>.  This adds or removes the
+        specified module.
+
+<span class="helpExample">        :Vitalize path/to/plugin +Web.HTTP -DateTime</span>
+
+        <span class="PreProc">options</span>
+        --name=<span class="Special">{name}</span>
+                Specifies a name of your Vital.  If omitted, name of
+                <span class="Special">{target-dir}</span> is used.
+        --hash=<span class="Special">{hash}</span>
+                Specifies a hash of git.
+        --help
+                Shows a simple help text.
+
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                                       <a class="String" href="././vitalizer.html#vitalizer-functions" name="vitalizer-functions">vitalizer-functions</a>
+
+                                                <a class="String" href="././vitalizer.html#vitalizer#vitalize()" name="vitalizer#vitalize()">vitalizer#vitalize()</a>
+vitalizer#vitalize(<span class="Special">{name}</span>, <span class="Special">{target-dir}</span>, <span class="Special">{modules}</span>, <span class="Special">{hash}</span>)
+        Function version of <a class="Identifier" href="././vitalizer.html#:Vitalize">:Vitalize</a>.
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CUSTOMIZING</span>                                     <a class="String" href="././vitalizer.html#vitalizer-customizing" name="vitalizer-customizing">vitalizer-customizing</a>
+
+g:vitalizer#vital_dir                           <a class="String" href="././vitalizer.html#g:vitalizer#vital_dir" name="g:vitalizer#vital_dir">g:vitalizer#vital_dir</a>
+        Base directory of Vital.  This is usually set automatically.
+        When you are using the Vital by Git submodule and symbolic link on MS
+        Windows, it may be necessary to set this.
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./index.html">main help file</a> - <a href="./tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

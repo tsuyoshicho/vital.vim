@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Vim/Guard</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Vim/Guard</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Vim/Guard.html" name="vital/Vim/Guard.txt">vital/Vim/Guard.txt</a>           Vim options/variables guard utility
+
+Maintainer: lambdalisue &lt;lambdalisue@hashnote.net&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-contents" name="Vital.Vim.Guard-contents">Vital.Vim.Guard-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-introduction">Vital.Vim.Guard-introduction</a>
+USAGE                           <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-usage">Vital.Vim.Guard-usage</a>
+INTERFACE                       <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-interface">Vital.Vim.Guard-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-functions">Vital.Vim.Guard-functions</a>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-introduction" name="Vital.Vim.Guard-introduction">Vital.Vim.Guard-introduction</a>
+
+<a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard" name="Vital.Vim.Guard">Vital.Vim.Guard</a> is used to restore previous values of options/variables.
+The followings are supported
+
+- Restoring values of options
+  - <a href="https://www.google.com/search?q=vim+%22options%22&lr=lang_en"><span class="MissingTag">options</span></a>
+  - <a href="https://www.google.com/search?q=vim+%22global-local%22&lr=lang_en"><span class="MissingTag">global-local</span></a>
+  - <a href="https://www.google.com/search?q=vim+%22local-options%22&lr=lang_en"><span class="MissingTag">local-options</span></a>
+- Restoring values of existing environmental variables
+  - <a href="https://www.google.com/search?q=vim+%22let-environment%22&lr=lang_en"><span class="MissingTag">let-environment</span></a>
+- Restoring values of registers
+  - <a href="https://www.google.com/search?q=vim+%22let-register%22&lr=lang_en"><span class="MissingTag">let-register</span></a>
+- Restoring values of variables
+  - <a href="https://www.google.com/search?q=vim+%22buffer-variable%22&lr=lang_en"><span class="MissingTag">buffer-variable</span></a> (b:)
+  - <a href="https://www.google.com/search?q=vim+%22window-variable%22&lr=lang_en"><span class="MissingTag">window-variable</span></a> (w:)
+  - <a href="https://www.google.com/search?q=vim+%22tabpage-variable%22&lr=lang_en"><span class="MissingTag">tabpage-variable</span></a> (t:)
+  - <a href="https://www.google.com/search?q=vim+%22global-variable%22&lr=lang_en"><span class="MissingTag">global-variable</span></a> (g:)
+- Restoring values in a dictionary
+  - <a href="https://www.google.com/search?q=vim+%22local-variable%22&lr=lang_en"><span class="MissingTag">local-variable</span></a> (l:), in Vim 7.3.560 or later
+  - <a href="https://www.google.com/search?q=vim+%22script-variable%22&lr=lang_en"><span class="MissingTag">script-variable</span></a> (s:)
+  - <a href="https://www.google.com/search?q=vim+%22dict%22&lr=lang_en"><span class="MissingTag">dict</span></a>
+- Restoring instance
+  - <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>
+  - <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">USAGE</span>                                   <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-usage" name="Vital.Vim.Guard-usage">Vital.Vim.Guard-usage</a>
+
+Specify options/variables to <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard.store()">Vital.Vim.Guard.store()</a> and restore previous
+values with <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-instance.restore()">Vital.Vim.Guard-instance.restore()</a> like:
+
+
+<span class="helpExample">        let s:G = s:V.import('Vim.Guard')</span>
+<span class="helpExample">        let g:foo = 'foo'</span>
+
+<span class="helpExample">        function! s:foobar() abort</span>
+<span class="helpExample">          call setreg('a', 'foo')</span>
+<span class="helpExample">          let $EDITOR = 'vim'</span>
+<span class="helpExample">          let foo = 'foo'</span>
+<span class="helpExample">          let l:list1 = ['foo']</span>
+<span class="helpExample">          let l:dict1 = {'foo': 'bar'}</span>
+<span class="helpExample">          let l:list2 = [['foo']]</span>
+<span class="helpExample">          let l:dict2 = {'foo': ['bar']}</span>
+
+<span class="helpExample">          &quot; Guard options/variables</span>
+<span class="helpExample">          let guard = s:G.store([</span>
+<span class="helpExample">            \ '&amp;backup',</span>
+<span class="helpExample">            \ '@a',</span>
+<span class="helpExample">            \ '$EDITOR',</span>
+<span class="helpExample">            \ 'g:foo',</span>
+<span class="helpExample">            \ ['foo', l:],</span>
+<span class="helpExample">            \ [l:list1],</span>
+<span class="helpExample">            \ [l:dict1],</span>
+<span class="helpExample">            \ [l:list2, 1],</span>
+<span class="helpExample">            \ [l:dict2, 1],</span>
+<span class="helpExample">            \])</span>
+
+<span class="helpExample">          &quot; Assign temporary values</span>
+<span class="helpExample">          set nobackup</span>
+<span class="helpExample">          call setreg('a', 'bar')</span>
+<span class="helpExample">          let $EDITOR = 'nvim'</span>
+<span class="helpExample">          unlet g:foo</span>
+<span class="helpExample">          let g:foo = 1</span>
+<span class="helpExample">          unlet foo</span>
+<span class="helpExample">          let foo = []</span>
+<span class="helpExample">          call remove(l:list1, 0)</span>
+<span class="helpExample">          unlet l:dict1['foo']</span>
+<span class="helpExample">          call remove(l:list2, 0)</span>
+<span class="helpExample">          unlet l:dict2['foo']</span>
+
+<span class="helpExample">          &quot; restore previous values</span>
+<span class="helpExample">          call guard.restore()</span>
+
+<span class="helpExample">          &quot; Check if the value is restored</span>
+<span class="helpExample">          echo &amp;backup</span>
+<span class="helpExample">          &quot; =&gt; 1</span>
+<span class="helpExample">          echo getreg('a')</span>
+<span class="helpExample">          &quot; =&gt; foo</span>
+<span class="helpExample">          echo $EDITOR</span>
+<span class="helpExample">          &quot; =&gt; vim</span>
+<span class="helpExample">          echo g:foo</span>
+<span class="helpExample">          &quot; =&gt; 'foo'</span>
+<span class="helpExample">          echo foo</span>
+<span class="helpExample">          &quot; =&gt; foo</span>
+<span class="helpExample">          echo l:list1</span>
+<span class="helpExample">          &quot; =&gt; ['foo']</span>
+<span class="helpExample">          echo l:dict1</span>
+<span class="helpExample">          &quot; =&gt; {'foo': 'bar'}</span>
+<span class="helpExample">          echo l:list2</span>
+<span class="helpExample">          &quot; =&gt; [['foo']]</span>
+<span class="helpExample">          echo l:dict2</span>
+<span class="helpExample">          &quot; =&gt; {'foo': ['bar']}</span>
+<span class="helpExample">        endfunction</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-interface" name="Vital.Vim.Guard-interface">Vital.Vim.Guard-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">CONSTANTS</span>                               <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-constants" name="Vital.Vim.Guard-constants">Vital.Vim.Guard-constants</a>
+
+                        <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard.is_local_variable_supported" name="Vital.Vim.Guard.is_local_variable_supported">Vital.Vim.Guard.is_local_variable_supported</a>
+is_local_variable_supported
+        1 or 0 to indicate whether the <a href="https://www.google.com/search?q=vim+%22local-variable%22&lr=lang_en"><span class="MissingTag">local-variable</span></a> is supported.
+        A <a href="https://www.google.com/search?q=vim+%22lockvar%22&lr=lang_en"><span class="MissingTag">lockvar</span></a> flag of <a href="https://www.google.com/search?q=vim+%22local-variable%22&lr=lang_en"><span class="MissingTag">local-variable</span></a> in Vim 7.3.559 or earlier is not
+        initialized and the value of the flag is undetermined. That mean the
+        method <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-instance.restore()">Vital.Vim.Guard-instance.restore()</a> may fail due to <a href="https://www.google.com/search?q=vim+%22E741%22&lr=lang_en"><span class="MissingTag">E741</span></a>.
+        Developers should not use this module to store/restore <a href="https://www.google.com/search?q=vim+%22local-variable%22&lr=lang_en"><span class="MissingTag">local-variable</span></a>
+        when this constant is 0.
+
+                        <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard.is_third_argument_of_getreg_supported" name="Vital.Vim.Guard.is_third_argument_of_getreg_supported">Vital.Vim.Guard.is_third_argument_of_getreg_supported</a>
+is_third_argument_of_getreg_supported
+        1 or 0 to indicate whether the third argument of <a href="https://www.google.com/search?q=vim+%22getreg()%22&lr=lang_en"><span class="MissingTag">getreg()</span></a> function.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-functions" name="Vital.Vim.Guard-functions">Vital.Vim.Guard-functions</a>
+
+store(<span class="Special">{targets}</span>)        <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard.store()" name="Vital.Vim.Guard.store()">Vital.Vim.Guard.store()</a>
+        Create a new guard instance. Values of options/variables listed in
+        <span class="Special">{targets}</span> <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> will be stored in the instance and can be restored by
+        calling .restore() method of the instance.
+
+        The following type of value is allowed for items (<span class="Special">{target}</span>) of the
+        <span class="Special">{targets}</span>:
+
+        <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>
+        If the <span class="Special">{target}</span> contains:
+        - One item, the item is assumed as an instance of <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> or <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>
+          and the instance will be guarded. <span class="Todo">Note</span> that if you assign a
+          different instance after store, it won't restore the values.
+          It works equal to [<span class="Special">{instance}</span>, 0] explained below.
+        - Two items, the list is assumed as 1.) [<span class="Special">{attr}</span>, <span class="Special">{namespace}</span>] or 2.)
+          [<span class="Special">{instance}</span>, <span class="Special">{shallow}</span>] described individually below:
+          1.) Where <span class="Special">{attr}</span> is a name of attribute in <span class="Special">{namespace}</span> <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a>.
+          If <span class="Special">{attr}</span> does not exist in <span class="Special">{namespace}</span>, The <span class="Special">{attr}</span> in <span class="Special">{namespace}</span>
+          will be removed from <span class="Special">{namespace}</span> if exists when
+          .restore() method of the guard instance is called.
+          Use this type to guard <a href="https://www.google.com/search?q=vim+%22local-variable%22&lr=lang_en"><span class="MissingTag">local-variable</span></a> (<a href="https://www.google.com/search?q=vim+%22l:%22&lr=lang_en"><span class="MissingTag">l:</span></a>), <a href="https://www.google.com/search?q=vim+%22script-variable%22&lr=lang_en"><span class="MissingTag">script-variable</span></a> (<a href="https://www.google.com/search?q=vim+%22s:%22&lr=lang_en"><span class="MissingTag">s:</span></a>),
+          or attributes in <a href="https://www.google.com/search?q=vim+%22dict%22&lr=lang_en"><span class="MissingTag">dict</span></a>.
+          See <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard.is_local_variable_supported">Vital.Vim.Guard.is_local_variable_supported</a> if you would like
+          to store/restore <a href="https://www.google.com/search?q=vim+%22local-variable%22&lr=lang_en"><span class="MissingTag">local-variable</span></a> in Vim 7.3.559 or earlier.
+          2.) Where <span class="Special">{instance}</span> is an instance of <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> or <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> and
+          <span class="Special">{shallow}</span> is a flag to use <a href="https://www.google.com/search?q=vim+%22copy%22&lr=lang_en"><span class="MissingTag">copy</span></a> instead of <a href="https://www.google.com/search?q=vim+%22deepcopy%22&lr=lang_en"><span class="MissingTag">deepcopy</span></a> to store
+          contents of the instance. When <span class="Special">{shallow}</span> is 1, the content of the
+          instance is copied rather than deepcopied, indicating that values
+          could not be restored when user changes the contents inside the
+          contents of the instance. Use <span class="Special">{shallow}</span> when the reference of the
+          each contents are prior to the content itself.
+        It will raise an exception when <span class="Special">{target}</span> contains less or more number
+        of items than expect.
+
+        <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>
+        If the <span class="Special">{target}</span> starts from:
+        - &amp;, &amp;g:, or &amp;l:, the named option would be guarded. <span class="Todo">Note</span> that
+          individual assignment of option does not work on Vim 7.3.
+        - @, the named register would be guarded. <span class="Todo">Note</span> that unnamed register
+          should use @@ instead of @, which is explained in <a href="https://www.google.com/search?q=vim+%22let-register%22&lr=lang_en"><span class="MissingTag">let-register</span></a>.
+        - $, the named environment variable would be guarded. <span class="Todo">Note</span> that Vim
+          does not allow to unlet environment variables so Vim.Guard cannot
+          guard non existing environment variable and will throw an exception
+          when the variable is going to be guarded.
+        - b:, w:, t:, or g:, a named <a href="https://www.google.com/search?q=vim+%22buffer-variable%22&lr=lang_en"><span class="MissingTag">buffer-variable</span></a>, <a href="https://www.google.com/search?q=vim+%22window-variable%22&lr=lang_en"><span class="MissingTag">window-variable</span></a>,
+          <a href="https://www.google.com/search?q=vim+%22tabpage-variable%22&lr=lang_en"><span class="MissingTag">tabpage-variable</span></a>, or <a href="https://www.google.com/search?q=vim+%22global-variable%22&lr=lang_en"><span class="MissingTag">global-variable</span></a> would be guarded
+        <span class="Todo">Note</span> that the guard instance is insensible of the change of the
+        current buffer, mean that <a href="https://www.google.com/search?q=vim+%22buffer-variable%22&lr=lang_en"><span class="MissingTag">buffer-variable</span></a>, <a href="https://www.google.com/search?q=vim+%22window-variable%22&lr=lang_en"><span class="MissingTag">window-variable</span></a>, or
+        <a href="https://www.google.com/search?q=vim+%22tabpage-variable%22&lr=lang_en"><span class="MissingTag">tabpage-variable</span></a> would not be correctly re-stored when users move the
+        buffer to the other before <a class="Identifier" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-instance.restore()">Vital.Vim.Guard-instance.restore()</a>.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">INSTANCE</span>                                <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-instance" name="Vital.Vim.Guard-instance">Vital.Vim.Guard-instance</a>
+
+restore()               <a class="String" href="./../../vital/Vim/Guard.html#Vital.Vim.Guard-instance.restore()" name="Vital.Vim.Guard-instance.restore()">Vital.Vim.Guard-instance.restore()</a>
+        Restore guarded values.
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Stream</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Stream</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/Stream.html" name="vital/Stream.txt">vital/Stream.txt</a>      A streaming library
+
+Maintainer: tyru &lt;tyru.exe@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../vital/Stream.html#Vital.Stream-contents" name="Vital.Stream-contents">Vital.Stream-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-introduction">Vital.Stream-introduction</a>
+EXAMPLES                        <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-examples">Vital.Stream-examples</a>
+LIMITATION                      <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-limitation">Vital.Stream-limitation</a>
+INTERFACE                       <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-interface">Vital.Stream-interface</a>
+  FUNCTIONS                       <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-functions">Vital.Stream-functions</a>
+STREAM OBJECT                   <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-Stream-object">Vital.Stream-Stream-object</a>
+  INTERMEDIATE OPERATIONS         <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-intermediate-operations">Vital.Stream-intermediate-operations</a>
+  TERMINAL OPERATIONS             <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-terminal-operations">Vital.Stream-terminal-operations</a>
+TODO                            <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-todo">Vital.Stream-todo</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../vital/Stream.html#Vital.Stream-introduction" name="Vital.Stream-introduction">Vital.Stream-introduction</a>
+
+<a class="String" href="./../vital/Stream.html#Vital.Stream" name="Vital.Stream">Vital.Stream</a> is a streaming library, that its APIs are made to resemble Java 8
+Stream API (+ Ruby's Enumerable methods, and so on).
+<span class="String"><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html">https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html</a></span>
+
+This module provides:
+
+- Laziness like <a class="Identifier" href="./../vital/Data/LazyList.html#Vital.Data.LazyList">Vital.Data.LazyList</a>
+- Chaining like underscore.vim
+  - <span class="String"><a href="https://github.com/haya14busa/underscore.vim">https://github.com/haya14busa/underscore.vim</a></span>
+- Functional interface focusing what you want than how you solve a problem
+  - Stream module builds execution plan instead of you
+- An interface of stream generation function like Java's Spliterator
+  See <a class="Identifier" href="./../vital/Stream.html#Vital.Stream.generator()">Vital.Stream.generator()</a>
+- Higher-order functions that support only <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>
+  - Lambda: <span class="Comment">s:Stream.of(1,2,3).map({n -&gt; n * 2})</span>
+  - Built-in function: <span class="Comment">s:Stream.of(&quot;a&quot;,&quot;bb&quot;,&quot;ccc&quot;).map(function('len'))</span>
+
+Some methods are not in Java 8 Stream API and vice versa (skip() -&gt; drop(),
+limit() -&gt; take(), and slice_before() is not in Stream API). This module does
+not aim to be like Java 8 Stream API.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">EXAMPLES</span>                                <a class="String" href="./../vital/Stream.html#Vital.Stream-examples" name="Vital.Stream-examples">Vital.Stream-examples</a>
+
+FizzBuzz                                <a class="String" href="./../vital/Stream.html#Vital.Stream-example-fizzbuzz" name="Vital.Stream-example-fizzbuzz">Vital.Stream-example-fizzbuzz</a>
+<span class="PreProc">--------</span>
+
+<span class="helpExample">        let s:Stream = vital#{plugin-name}#import('Stream')</span>
+
+<span class="helpExample">        function! s:fizzbuzz(n) abort</span>
+<span class="helpExample">          return a:n % 15 == 0 ? 'FizzBuzz' :</span>
+<span class="helpExample">          \      a:n % 5  == 0 ? 'Buzz' :</span>
+<span class="helpExample">          \      a:n % 3  == 0 ? 'Fizz' : a:n</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        echo s:Stream.range(1, 100)</span>
+<span class="helpExample">                    \.map(function('s:fizzbuzz'))</span>
+<span class="helpExample">                    \.to_list()</span>
+
+Random number generator                 <a class="String" href="./../vital/Stream.html#Vital.Stream-example-rng" name="Vital.Stream-example-rng">Vital.Stream-example-rng</a>
+<span class="PreProc">-----------------------</span>
+
+<span class="helpExample">        &quot; Random number generator (linear congruential generators)</span>
+<span class="helpExample">        function! s:make_rand() abort</span>
+<span class="helpExample">          let seed = reltime()[1]</span>
+<span class="helpExample">          let max = float2nr(pow(2, 31) - 1)</span>
+<span class="helpExample">          &quot; rand generates random numbers.</span>
+<span class="helpExample">          &quot; drop(): the first number seems too small...</span>
+<span class="helpExample">          &quot; map(): limits to 0.0 &lt;= val &lt; 1.0</span>
+<span class="helpExample">          &quot; distinct(): gets rid of the same second decimal place of numbers</span>
+<span class="helpExample">          return s:Stream.iterate(seed, {n -&gt; (48271 * n) % max})</span>
+<span class="helpExample">                        \.drop(1)</span>
+<span class="helpExample">                        \.map({n -&gt; n / (max + 0.0)})</span>
+<span class="helpExample">                        \.distinct({n -&gt; float2nr(round(n * 100))})</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        &quot; echo 20 random numbers</span>
+<span class="helpExample">        for d in s:make_rand().take(20).to_list()</span>
+<span class="helpExample">          echo d</span>
+<span class="helpExample">        endfor</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">LIMITATION</span>                              <a class="String" href="./../vital/Stream.html#Vital.Stream-limitation" name="Vital.Stream-limitation">Vital.Stream-limitation</a>
+
+<span class="Todo">NOTE</span>: A stream is not reusable as same as Java Stream API. This limitation
+allows internal optimization in the point of view of immutability.
+
+<span class="helpExample">  let s = Stream.of([1,2,3,4,5])</span>
+<span class="helpExample">  call s.map({n -&gt; n + 1}).to_list()</span>
+<span class="helpExample">  &quot; This throws 'vital: Stream: stream has already been operated upon or closed'</span>
+<span class="helpExample">  call s.map({n -&gt; n + 1}).to_list()</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../vital/Stream.html#Vital.Stream-interface" name="Vital.Stream-interface">Vital.Stream-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../vital/Stream.html#Vital.Stream-functions" name="Vital.Stream-functions">Vital.Stream-functions</a>
+
+empty()                                 <a class="String" href="./../vital/Stream.html#Vital.Stream.empty()" name="Vital.Stream.empty()">Vital.Stream.empty()</a>
+        Shortcut for <span class="Comment">s:Stream.from_list([])</span> .
+
+of(<span class="Special">{elem1}</span> [, <span class="Special">{elem2}</span> ...])             <a class="String" href="./../vital/Stream.html#Vital.Stream.of()" name="Vital.Stream.of()">Vital.Stream.of()</a>
+        Shortcut for <span class="Comment">s:Stream.from_list([elem1, elem2, ...])</span> .
+
+chars(<span class="Special">{str}</span>)    <a class="String" href="./../vital/Stream.html#Vital.Stream.chars()" name="Vital.Stream.chars()">Vital.Stream.chars()</a>
+        Shortcut for <span class="Comment">s:Stream.from_list(split(str, '\zs'))</span> .
+
+lines(<span class="Special">{str}</span>)    <a class="String" href="./../vital/Stream.html#Vital.Stream.lines()" name="Vital.Stream.lines()">Vital.Stream.lines()</a>
+        Shortcut for <span class="Comment">s:Stream.from_list(split(str, '\r\?\n', 1))</span> .
+        But this makes empty stream for empty string.
+
+from_dict(<span class="Special">{dict}</span>)       <a class="String" href="./../vital/Stream.html#Vital.Stream.from_dict()" name="Vital.Stream.from_dict()">Vital.Stream.from_dict()</a>
+        Shortcut for <span class="Comment">s:Stream.from_list(map({_,item -&gt; {&quot;key&quot;: item[0], &quot;value&quot;: item[1]}}))</span> .
+        Each element is <span class="Comment">{&quot;key&quot;: key, &quot;value&quot;: value}</span> .
+
+from_list(<span class="Special">{list}</span>)       <a class="String" href="./../vital/Stream.html#Vital.Stream.from_list()" name="Vital.Stream.from_list()">Vital.Stream.from_list()</a>
+        This makes a stream of elements of <span class="Special">{list}</span>.
+
+                        <a class="String" href="./../vital/Stream.html#Vital.Stream.zip()" name="Vital.Stream.zip()">Vital.Stream.zip()</a>
+zip(<span class="Special">{streams}</span>)
+        Combines given streams with the minimum number of elements.
+
+<span class="helpExample">        &quot; Output: [[1,3], [2,4]]</span>
+<span class="helpExample">        echo s:Stream.zip([s:Stream.of(1,2), s:Stream.of(3,4)]).to_list()</span>
+
+<span class="helpExample">        &quot; Output: [[1,3]]</span>
+<span class="helpExample">        echo s:Stream.zip([s:Stream.of(1,2), s:Stream.of(3)]).to_list()</span>
+
+<span class="helpExample">        &quot; Output: [[1,3,5], [2,4,6]]</span>
+<span class="helpExample">        echo s:Stream.zip([</span>
+<span class="helpExample">              \s:Stream.of(1,2),</span>
+<span class="helpExample">              \s:Stream.of(3,4),</span>
+<span class="helpExample">              \s:Stream.of(5,6)])</span>
+<span class="helpExample">                \.to_list()</span>
+
+<span class="helpExample">        &quot; You can zip infinite stream and finite stream</span>
+<span class="helpExample">        &quot; Output: [[1,'foo'], [2,'bar'], [3,'baz']]</span>
+<span class="helpExample">        echo s:Stream.zip([</span>
+<span class="helpExample">              \s:Stream.iterate(1, {n -&gt; n + 1}),</span>
+<span class="helpExample">              \s:Stream.of('foo', 'bar', 'baz)])</span>
+<span class="helpExample">                \.to_list()</span>
+
+<span class="helpExample">        &quot; You can zip two infinite streams</span>
+<span class="helpExample">        &quot; NOTE: .take(3) prohibits infinite loop</span>
+<span class="helpExample">        &quot; Output: [[1,-1], [2,-2], [3,-3]]</span>
+<span class="helpExample">        echo s:Stream.zip([</span>
+<span class="helpExample">              \s:Stream.iterate(1, {n -&gt; n + 1}),</span>
+<span class="helpExample">              \s:Stream.iterate(-1, {n -&gt; n - 1})])</span>
+<span class="helpExample">                \.take(3).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream.concat()" name="Vital.Stream.concat()">Vital.Stream.concat()</a>
+concat(<span class="Special">{streams}</span>)
+        Concatenates given streams.  If any of stream is an infinite stream,
+        a result stream is an infinite stream.
+
+<span class="helpExample">        &quot; Output: [1,2,3,4]</span>
+<span class="helpExample">        echo s:Stream.concat([s:Stream.of(1,2), s:Stream.of(3,4)]).to_list()</span>
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.concat([s:Stream.of(1,2), s:Stream.of(3)]).to_list()</span>
+
+<span class="helpExample">        &quot; Output: [1,2,3,4,5,6]</span>
+<span class="helpExample">        echo s:Stream.concat([</span>
+<span class="helpExample">              \s:Stream.of(1,2),</span>
+<span class="helpExample">              \s:Stream.of(3,4),</span>
+<span class="helpExample">              \s:Stream.of(5,6)])</span>
+<span class="helpExample">                \.to_list()</span>
+
+<span class="helpExample">        &quot; You can combine infinite stream and finite stream</span>
+<span class="helpExample">        &quot; Output: [1,2,3,4,5]</span>
+<span class="helpExample">        echo s:Stream.concat([</span>
+<span class="helpExample">              \s:Stream.of(1,2,3),</span>
+<span class="helpExample">              \s:Stream.iterate(4, {n -&gt; n + 1})])</span>
+<span class="helpExample">                \.take(5).to_list()</span>
+
+<span class="helpExample">        &quot; You can combine two infinite streams</span>
+<span class="helpExample">        &quot; NOTE: .take(3) prohibits infinite loop</span>
+<span class="helpExample">        &quot; Output: [[1,-1], [2,-2], [3,-3]]</span>
+<span class="helpExample">        echo s:Stream.concat([</span>
+<span class="helpExample">              \s:Stream.iterate(1, {n -&gt; n + 1}),</span>
+<span class="helpExample">              \s:Stream.iterate(-1, {n -&gt; n - 1})])</span>
+<span class="helpExample">                \.take(3).to_list()</span>
+
+iterate(<span class="Special">{init}</span>, <span class="Special">{func}</span>)         <a class="String" href="./../vital/Stream.html#Vital.Stream.iterate()" name="Vital.Stream.iterate()">Vital.Stream.iterate()</a>
+        Generates an infinite stream. <span class="Special">{init}</span> is the first element of a stream.
+        The second element of a stream is the value that <span class="Special">{init}</span> is applied to
+        <span class="Special">{func}</span>. And the result is applied to <span class="Special">{func}</span> until the end (if
+        downstream limited the number of elements, otherwise it results in an
+        infinite loop).
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.iterate(1, {n -&gt; n + 1}).take(3).to_list()</span>
+
+generate(<span class="Special">{func}</span>)                <a class="String" href="./../vital/Stream.html#Vital.Stream.generate()" name="Vital.Stream.generate()">Vital.Stream.generate()</a>
+        Generates an infinite stream. This is normally used for a constant
+        stream.
+
+<span class="helpExample">        &quot; Output: [42,42,42]</span>
+<span class="helpExample">        echo s:Stream.generate('42').take(3).to_list()</span>
+
+        But this can be also used for random number generation if <span class="Special">{func}</span>
+        returns random values each time.
+
+<span class="helpExample">        &quot; Simple (but not so randomized?) implementation</span>
+<span class="helpExample">        echo s:Stream.generate('reltime()[0] % reltime()[1]').first()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream.range()" name="Vital.Stream.range()">Vital.Stream.range()</a>
+range(<span class="Special">{expr}</span> [, <span class="Special">{max}</span> [, <span class="Special">{stride}</span>]])
+        Unlike Vim script's <a href="https://www.google.com/search?q=vim+%22range()%22&lr=lang_en"><span class="MissingTag">range()</span></a>, this function does not create the large
+        number of elements of List like Vim script's <a href="https://www.google.com/search?q=vim+%22range()%22&lr=lang_en"><span class="MissingTag">range()</span></a>.
+
+<span class="helpExample">        &quot; In Vim script, 1/0 is evaluated to the max value of number</span>
+<span class="helpExample">        let very_big_number = 1/0</span>
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.range(1, very_big_number).take(3).to_list()</span>
+
+generator(<span class="Special">{dict}</span>)               <a class="String" href="./../vital/Stream.html#Vital.Stream.generator()" name="Vital.Stream.generator()">Vital.Stream.generator()</a>
+        Creates a stream from generator object <span class="Special">{dict}</span>.
+        <span class="Special">{dict}</span> must have the following method:
+
+        yield(<span class="Special">{n}</span>, <span class="Special">{none}</span>)
+          Returns a value used for an element of a stream. If the return value
+          is same as <span class="Special">{none}</span>, the stream ends. <span class="Special">{n}</span> is 0 or positive value that
+          means the number of called times. At the first time, <span class="Special">{n}</span> is 0.
+
+<span class="helpExample">        &quot; This generator creates an infinite stream</span>
+<span class="helpExample">        let dict = {}</span>
+<span class="helpExample">        function! dict.yield(times, NONE) abort</span>
+<span class="helpExample">          return a:times</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        &quot; Output: [0,1,2]</span>
+<span class="helpExample">        echo s:Stream.generator(dict).take(3).to_list()</span>
+
+<span class="helpExample">        &quot; This generator creates a finite stream</span>
+<span class="helpExample">        let dict = {}</span>
+<span class="helpExample">        function! dict.yield(times, NONE) abort</span>
+<span class="helpExample">          if a:times &gt;= 3</span>
+<span class="helpExample">            return a:NONE</span>
+<span class="helpExample">          endif</span>
+<span class="helpExample">          return a:times</span>
+<span class="helpExample">        endfunction</span>
+
+<span class="helpExample">        &quot; Output: [0,1,2]</span>
+<span class="helpExample">        echo s:Stream.generator(dict).to_list()</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">STREAM OBJECT</span>                           <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream-object" name="Vital.Stream-Stream-object">Vital.Stream-Stream-object</a>
+
+Intermediate operations                 <a class="String" href="./../vital/Stream.html#Vital.Stream-intermediate-operations" name="Vital.Stream-intermediate-operations">Vital.Stream-intermediate-operations</a>
+<span class="PreProc">----------------------</span>
+
+Intermediate operations return <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-Stream-object">Vital.Stream-Stream-object</a>.
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.zip()" name="Vital.Stream-Stream.zip()">Vital.Stream-Stream.zip()</a>
+Stream.zip(<span class="Special">{stream1}</span> [, <span class="Special">{stream2}</span> ...])
+        Shortcut for <span class="Comment">s:Stream.zip(self, stream1, stream2, ...)</span> .
+        See <a class="Identifier" href="./../vital/Stream.html#Vital.Stream.zip()">Vital.Stream.zip()</a>.
+
+Stream.zip_with_index()         <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.zip_with_index()" name="Vital.Stream-Stream.zip_with_index()">Vital.Stream-Stream.zip_with_index()</a>
+        Shortcut for <span class="Comment">s:Stream.zip(s:Stream.iterate(1, {n -&gt; n + 1}), self)</span> .
+        See <a class="Identifier" href="./../vital/Stream.html#Vital.Stream.zip()">Vital.Stream.zip()</a>.
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.concat()" name="Vital.Stream-Stream.concat()">Vital.Stream-Stream.concat()</a>
+Stream.concat(<span class="Special">{stream1}</span> [, <span class="Special">{stream2}</span> ...])
+        Shortcut for <span class="Comment">s:Stream.concat(self, stream1, stream2, ...)</span> .
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.peek()" name="Vital.Stream-Stream.peek()">Vital.Stream-Stream.peek()</a>
+Stream.peek(<span class="Special">{func}</span>)
+        Peeks elements of stream and does not change the values of elements.
+        This method is useful for debugging. You can pass a function which
+        causes side effect. <span class="Special">{func}</span> is a function of 1 arity.
+
+<span class="helpExample">        let g:peek = []</span>
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).peek({n -&gt; add(g:peek, n)}).to_list()</span>
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo g:peek</span>
+
+<span class="helpExample">        let g:peek = []</span>
+<span class="helpExample">        &quot; Output: [2,4,6]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).peek({n -&gt; add(g:peek, n)}).map({n -&gt; n * 2}).to_list()</span>
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo g:peek</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.map()" name="Vital.Stream-Stream.map()">Vital.Stream-Stream.map()</a>
+Stream.map(<span class="Special">{func}</span>)
+        Creates a stream applying <span class="Special">{func}</span> to each element. <span class="Special">{func}</span> is a function
+        of 1 arity.
+
+<span class="helpExample">        &quot; Output: [2,4,6]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).map({n -&gt; n * 2}).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.flat_map()" name="Vital.Stream-Stream.flat_map()">Vital.Stream-Stream.flat_map()</a>
+Stream.flat_map(<span class="Special">{func}</span>)
+        Creates a flattened stream applying <span class="Special">{func}</span> to each element.
+        <span class="Special">{func}</span> returns <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>, and is a function of 1 arity.
+
+<span class="helpExample">        &quot; Output: [1,2,2,3,3,3]</span>
+<span class="helpExample">        echo s:Stream.of(0,1,2,3).flat_map({n -&gt; repeat([n], n)}).to_list()</span>
+
+<span class="helpExample">        &quot; Output: [0,4,8]</span>
+<span class="helpExample">        echo s:Stream.of(0,1,2,3,4).flat_map({n -&gt; n % 2 == 0 ? [n * 2] : []}).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.filter()" name="Vital.Stream-Stream.filter()">Vital.Stream-Stream.filter()</a>
+Stream.filter(<span class="Special">{func}</span>)
+        Creates a stream filtering elements with <span class="Special">{func}</span>
+        <span class="Special">{func}</span> is a function of 1 arity.
+
+<span class="helpExample">        &quot; Output: [0,2,4]</span>
+<span class="helpExample">        echo s:Stream.of(0,1,2,3,4).map({n -&gt; n % 2 == 0}).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.slice_before()" name="Vital.Stream-Stream.slice_before()">Vital.Stream-Stream.slice_before()</a>
+Stream.slice_before(<span class="Special">{func}</span>)
+        Slices a stream into each element before <span class="Special">{func}</span> returns non-zero. <span class="Special">{func}</span> is
+        a function of 1 arity. (this method was inspired by Ruby's
+        Enumerable#slice_before())
+
+<span class="helpExample">        &quot; Output: [[0,1], [2,3], [4,5]]</span>
+<span class="helpExample">        echo s:Stream.of(0,1,2,3,4,5).slice_before({n -&gt; n % 2 == 0}).to_list()</span>
+
+<span class="helpExample">        &quot; Output: [[1], [2,3], [4,5]]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,4,5).slice_before({n -&gt; n % 2 == 0}).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.drop()" name="Vital.Stream-Stream.drop()">Vital.Stream-Stream.drop()</a>
+Stream.drop(<span class="Special">{n}</span>)
+        Drops the first <span class="Special">{n}</span> elements.
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.of(42,1,2,3).drop(1).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.take()" name="Vital.Stream-Stream.take()">Vital.Stream-Stream.take()</a>
+Stream.take(<span class="Special">{n}</span>)
+        Takes the first <span class="Special">{n}</span> elements.
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,42).take(3).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.take_while()" name="Vital.Stream-Stream.take_while()">Vital.Stream-Stream.take_while()</a>
+Stream.take_while(<span class="Special">{func}</span>)
+        Takes the first elements while <span class="Special">{func}</span> returns non-zero value. <span class="Special">{func}</span> is a
+        function of 1 arity.
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,42,4,5,6).take_while({n -&gt; n &lt; 10}).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.drop_while()" name="Vital.Stream-Stream.drop_while()">Vital.Stream-Stream.drop_while()</a>
+Stream.drop_while(<span class="Special">{func}</span>)
+        Drops the first elements while <span class="Special">{func}</span> returns non-zero value. <span class="Special">{func}</span> is a
+        function of 1 arity.
+
+<span class="helpExample">        &quot; Output: [42,4,5,6]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,42,4,5,6).drop_while({n -&gt; n &lt; 10}).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.distinct()" name="Vital.Stream-Stream.distinct()">Vital.Stream-Stream.distinct()</a>
+Stream.distinct([<span class="Special">{hashfunc}</span>])
+        Gets rid of duplicate elements. <span class="Special">{hashfunc}</span> is a function of 1 arity
+        which is used for stringification of an element to a key string. If
+        the key string is same, only the first element is returned. Default
+        <span class="Special">{hashfunc}</span> is <a href="https://www.google.com/search?q=vim+%22string()%22&lr=lang_en"><span class="MissingTag">string()</span></a>.
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,2,3,3).distinct().to_list()</span>
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,2,1).distinct().to_list()</span>
+
+<span class="helpExample">        &quot; Output: [&quot;a&quot;, &quot;bb&quot;, &quot;ccc&quot;]</span>
+<span class="helpExample">        echo s:Stream.of('a', 'bb', 'ccc', 'ddd', 'ee').distinct({s -&gt; len(s)}).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.sorted()" name="Vital.Stream-Stream.sorted()">Vital.Stream-Stream.sorted()</a>
+Stream.sorted([<span class="Special">{comparator}</span>])
+        Gets all elements from upstream and sorts all elements.
+        <span class="Special">{comparator}</span> is a function of 2 arity.
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.of(2,1,3).sorted().to_list()</span>
+
+<span class="helpExample">        &quot; Output: [3,2,1]</span>
+<span class="helpExample">        let l:ByDesc = {a,b -&gt; a &gt; b ? -1 : a ==# b ? 0 : 1}</span>
+<span class="helpExample">        echo s:Stream.of(2,1,3).sorted(l:ByDesc).to_list()</span>
+
+Terminal operations                     <a class="String" href="./../vital/Stream.html#Vital.Stream-terminal-operations" name="Vital.Stream-terminal-operations">Vital.Stream-terminal-operations</a>
+<span class="PreProc">------------------</span>
+
+Terminal operations do not return <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-Stream-object">Vital.Stream-Stream-object</a>. And the stream
+cannot be called twice (because stream is already closed).
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.foreach()" name="Vital.Stream-Stream.foreach()">Vital.Stream-Stream.foreach()</a>
+Stream.foreach(<span class="Special">{func}</span>)
+        Iterates each element and returns 0. <span class="Special">{func}</span> is a function of
+        1 arity.
+
+<span class="helpExample">        function! Echo(n)</span>
+<span class="helpExample">          echo a:n</span>
+<span class="helpExample">        endfunction</span>
+<span class="helpExample">        call s:Stream.of(1,2,3).foreach({n -&gt; Echo(n)})</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.to_list()" name="Vital.Stream-Stream.to_list()">Vital.Stream-Stream.to_list()</a>
+Stream.to_list()
+        Returns <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> of elements.
+
+<span class="helpExample">        &quot; Output: [1,2,3]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).to_list()</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.count()" name="Vital.Stream-Stream.count()">Vital.Stream-Stream.count()</a>
+Stream.count([<span class="Special">{func}</span>])
+        Returns the number of elements. If <span class="Special">{func}</span> was given, it counts
+        elements only which <span class="Special">{func}</span> returns non-zero. <span class="Special">{func}</span> is a function of 1
+        arity.
+
+<span class="helpExample">        &quot; Output: 3</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).count()</span>
+
+<span class="helpExample">        &quot; Output: 1</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).count({n -&gt; n % 2 == 0})</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.reduce()" name="Vital.Stream-Stream.reduce()">Vital.Stream-Stream.reduce()</a>
+Stream.reduce(<span class="Special">{func}</span> [, <span class="Special">{init}</span>])
+        Accumulates each element by applying <span class="Special">{func}</span>. <span class="Special">{func}</span> is a function of 2
+        arity. If <span class="Special">{init}</span> was given, <span class="Special">{init}</span> is passed to the first argument of
+        <span class="Special">{func}</span>. Otherwise, the first element is passed. If <span class="Special">{init}</span> was not
+        given and stream is empty, an exception is thrown.
+
+<span class="helpExample">        &quot; Output: 6</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).reduce({a,b -&gt; a + b}, 0)</span>
+
+<span class="helpExample">        &quot; Throws an exception</span>
+<span class="helpExample">        echo s:Stream.empty().reduce({a,b -&gt; a + b})</span>
+
+<span class="helpExample">        &quot; Output: [3,2,1]</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).reduce({a,b -&gt; insert(a, b)}, [])</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).reduce(function('insert'), [])</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.first()" name="Vital.Stream-Stream.first()">Vital.Stream-Stream.first()</a>
+Stream.first([<span class="Special">{default}</span>])
+        Returns the first element. When the stream is empty and if <span class="Special">{default}</span> was
+        given, returns <span class="Special">{default}</span>. Or if <span class="Special">{default}</span> was not given, throws an
+        exception.
+
+<span class="helpExample">        &quot; Output: 42</span>
+<span class="helpExample">        echo s:Stream.of(42,1,2,3).first()</span>
+
+<span class="helpExample">        &quot; Throws an exception</span>
+<span class="helpExample">        echo s:Stream.empty().first()</span>
+
+<span class="helpExample">        &quot; Output: 42</span>
+<span class="helpExample">        echo s:Stream.empty().first(42)</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.last()" name="Vital.Stream-Stream.last()">Vital.Stream-Stream.last()</a>
+Stream.last([<span class="Special">{default}</span>])
+        Returns the last element. When the stream is empty and if <span class="Special">{default}</span> was
+        given, returns <span class="Special">{default}</span>. Or if <span class="Special">{default}</span> was not given, throws an
+        exception.
+
+<span class="helpExample">        &quot; Output: 42</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,42).last()</span>
+
+<span class="helpExample">        &quot; Throws an exception</span>
+<span class="helpExample">        echo s:Stream.empty().last()</span>
+
+<span class="helpExample">        &quot; Output: 42</span>
+<span class="helpExample">        echo s:Stream.empty().last(42)</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.find()" name="Vital.Stream-Stream.find()">Vital.Stream-Stream.find()</a>
+Stream.find(<span class="Special">{func}</span> [, <span class="Special">{default}</span>])
+        Shortcut for <span class="Comment">filter(func).first(default)</span> .
+        See <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-Stream.filter()">Vital.Stream-Stream.filter()</a> and <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-Stream.first()">Vital.Stream-Stream.first()</a>.
+
+<span class="helpExample">        &quot; Output: 42</span>
+<span class="helpExample">        echo s:Stream.of(1,2,42,3).find({n -&gt; n &gt; 10})</span>
+
+<span class="helpExample">        &quot; Throws an exception</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).find({n -&gt; n &gt; 10})</span>
+
+<span class="helpExample">        &quot; Output: 42</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).find({n -&gt; n &gt; 10}, 42)</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.any()" name="Vital.Stream-Stream.any()">Vital.Stream-Stream.any()</a>
+Stream.any(<span class="Special">{func}</span>)
+        Returns 1 if any of the result value(s) which <span class="Special">{func}</span> returns are
+        non-zero. Otherwise returns 0. if a stream is empty, returns 0.
+
+<span class="helpExample">        &quot; Output: 1</span>
+<span class="helpExample">        echo s:Stream.of(1,2,42,3).any({n -&gt; n &gt; 10})</span>
+
+<span class="helpExample">        &quot; Output: 0</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).any({n -&gt; n &gt; 10})</span>
+
+<span class="helpExample">        &quot; Output: 0</span>
+<span class="helpExample">        echo s:Stream.empty().any({n -&gt; n &gt; 10})</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.all()" name="Vital.Stream-Stream.all()">Vital.Stream-Stream.all()</a>
+Stream.all(<span class="Special">{func}</span>)
+        Returns 1 if all of the result value(s) which <span class="Special">{func}</span> returns are
+        non-zero. Otherwise returns 0. if a stream is empty, returns 1.
+
+<span class="helpExample">        &quot; Output: 1</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).all({n -&gt; n &gt; 0})</span>
+
+<span class="helpExample">        &quot; Output: 0</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,-1).all({n -&gt; n &gt; 0})</span>
+
+<span class="helpExample">        &quot; Output: 1</span>
+<span class="helpExample">        echo s:Stream.empty().all({n -&gt; n &gt; 0})</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.none()" name="Vital.Stream-Stream.none()">Vital.Stream-Stream.none()</a>
+Stream.none(<span class="Special">{func}</span>)
+        Returns 1 if none of the result value(s) which <span class="Special">{func}</span> returns
+        are non-zero. Otherwise returns 0. if a stream is empty, returns
+        1.
+
+<span class="helpExample">        &quot; Output: 1</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3).none({n -&gt; n &lt; 0})</span>
+
+<span class="helpExample">        &quot; Output: 0</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,-1).none({n -&gt; n &lt; 0})</span>
+
+<span class="helpExample">        &quot; Output: 1</span>
+<span class="helpExample">        echo s:Stream.empty().none({n -&gt; n &lt; 0})</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.to_dict()" name="Vital.Stream-Stream.to_dict()">Vital.Stream-Stream.to_dict()</a>
+Stream.to_dict(<span class="Special">{keymapper}</span>, <span class="Special">{valuemapper}</span> [, <span class="Special">{mergefunc}</span>])
+        Accumulates elements into a <a href="https://www.google.com/search?q=vim+%22Dictionary%22&lr=lang_en"><span class="MissingTag">Dictionary</span></a> whose keys and values are the
+        result of applying the provided mapping functions to the input
+        elements. <span class="Special">{keymapper}</span> / <span class="Special">{valuemapper}</span> create key / value pair. And If
+        <span class="Special">{mergefunc}</span> was given, <span class="Special">{mergefunc}</span> is invoked when the key is
+        duplicate to merge 2 values. If <span class="Special">{mergefunc}</span> was not given and met the
+        duplicate key, throws an exception. <span class="Special">{keymapper}</span> and <span class="Special">{valuemapper}</span> are
+        a function of 1 arity. <span class="Special">{mergefunc}</span> is a function of 2 arity.
+        See also <a class="Identifier" href="./../vital/Stream.html#Vital.Stream-Stream.group_by()">Vital.Stream-Stream.group_by()</a>.
+
+<span class="helpExample">        &quot; Output: {'1': 2, '2': 4, '3': 6}</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3)</span>
+<span class="helpExample">                    \.to_dict({n -&gt; n}, {n -&gt; n * 2})</span>
+
+<span class="helpExample">        &quot; Throws an exception</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,3)</span>
+<span class="helpExample">                    \.to_dict({n -&gt; n}, {n -&gt; n})</span>
+
+<span class="helpExample">        &quot; Output: {'1': 1, '2': 2, '3': 6}</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,3)</span>
+<span class="helpExample">                    \.to_dict({n -&gt; n}, {n -&gt; n}, {a,b -&gt; a + b})</span>
+
+                                <a class="String" href="./../vital/Stream.html#Vital.Stream-Stream.group_by()" name="Vital.Stream-Stream.group_by()">Vital.Stream-Stream.group_by()</a>
+Stream.group_by(<span class="Special">{func}</span>)
+        Grouping elements of a stream with <span class="Special">{func}</span>. Shortcut for
+        <span class="Comment">stream.to_dict(func, {n -&gt; [n]}, {a,b -&gt; a + b})</span> .
+
+<span class="helpExample">        &quot; Output: {'even': [2,4], 'odd': [1,3,5]}</span>
+<span class="helpExample">        echo s:Stream.of(1,2,3,4,5).group_by({n -&gt; n % 2 == 0 ? &quot;even&quot; : &quot;odd&quot;})</span>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">TODO</span>                                    <a class="String" href="./../vital/Stream.html#Vital.Stream-todo" name="Vital.Stream-todo">Vital.Stream-todo</a>
+
+- Build an AST at each creation / intermediate operation.
+  And make an execution plan and unroll a stream flow (do not create a s:Stream
+  object each time functions / methods are called)
+  - <span class="Comment">s:Stream.of(1,2,3).drop(1).take(1)</span> should create slice operation like
+    <span class="Comment">[1,2,3][1:1]</span>
+  - <span class="Comment">s:Stream.range(1, 100).take(10).sorted()</span> should skip sorted() operation
+  - Java Stream API has &quot;characteristics&quot; like SORTED, DISTINCT which
+    represent the stream is already sorted(), or distinct(). But this module
+    should take essentially a different approach because Vim script is
+    interpreter language, that means, an execution of Ex command is slow even
+    just creating object
+- Better examples (<a class="Identifier" href="./../vital/Stream.html#Vital.Stream-examples">Vital.Stream-examples</a>) to show the power of this module
+- Provides a way to extend methods like underscore.vim
+- .peek() should accept the number of element to peek
+- Support Stream.tap(f): f receives stream object and its return value is used
+  as the return value of Stream.tap(f)
+- Support Stream.reversed(): reverse elements order
+- Check types of arguments at each method
+  - When invalid types were passed to each method, it's hard to debug
+    (methods in stacktrace are unnamed functions / lambda)
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

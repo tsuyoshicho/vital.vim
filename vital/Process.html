@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Process</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Process</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/Process.html" name="vital/Process.txt">vital/Process.txt</a>             Utilities for process.
+
+Maintainer: tyru    &lt;tyru.exe@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                <a class="String" href="./../vital/Process.html#Vital.Process-contents" name="Vital.Process-contents">Vital.Process-contents</a>
+
+INTRODUCTION                    <a class="Identifier" href="./../vital/Process.html#Vital.Process-introduction">Vital.Process-introduction</a>
+INTERFACE                       <a class="Identifier" href="./../vital/Process.html#Vital.Process-interface">Vital.Process-interface</a>
+  Functions                       <a class="Identifier" href="./../vital/Process.html#Vital.Process-functions">Vital.Process-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                            <a class="String" href="./../vital/Process.html#Vital.Process-introduction" name="Vital.Process-introduction">Vital.Process-introduction</a>
+
+<a class="String" href="./../vital/Process.html#Vital.Process" name="Vital.Process">Vital.Process</a> provides utility functions which manipulates process.
+
+<span class="Todo">Note</span>: this module is pre-obsolete. Check if you can use <a href="https://www.google.com/search?q=vim+%22Vital.System.Process%22&lr=lang_en"><span class="MissingTag">Vital.System.Process</span></a>
+instead.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                               <a class="String" href="./../vital/Process.html#Vital.Process-interface" name="Vital.Process-interface">Vital.Process-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                               <a class="String" href="./../vital/Process.html#Vital.Process-functions" name="Vital.Process-functions">Vital.Process-functions</a>
+
+spawn(<span class="Special">{command}</span> [, <span class="Special">{special}</span>])          <a class="String" href="./../vital/Process.html#Vital.Process.spawn()" name="Vital.Process.spawn()">Vital.Process.spawn()</a>
+        Execute program in the background from Vim.  Always return an empty
+        string.
+
+        <span class="Special">{command}</span> is <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> or <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> to run as background process.
+        If <span class="Special">{command}</span> is a <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>, it'll <a href="https://www.google.com/search?q=vim+%22shellescape()%22&lr=lang_en"><span class="MissingTag">shellescape()</span></a> each argument.
+        If <span class="Special">{command}</span> is <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> and <span class="Special">{special}</span> was given and non-zero,
+        escape special characters.
+
+        Windows:
+        Using :!start , execute program without via cmd.exe.
+        Spawning <a href="https://www.google.com/search?q=vim+%22'expr'%22&lr=lang_en"><span class="MissingTag">'expr'</span></a> with <a href="https://www.google.com/search?q=vim+%22'noshellslash'%22&lr=lang_en"><span class="MissingTag">'noshellslash'</span></a>
+        keep special characters from unwanted expansion.
+        (see :help shellescape())
+
+        Unix:
+        using :! , execute program in the background by shell.
+
+        See <a href="https://www.google.com/search?q=vim+%22shellescape()%22&lr=lang_en"><span class="MissingTag">shellescape()</span></a>'s <span class="Special">{special}</span> argument for the details.
+
+iconv(<span class="Special">{expr}</span>, <span class="Special">{from}</span>, <span class="Special">{to}</span>)             <a class="String" href="./../vital/Process.html#Vital.Process.iconv()" name="Vital.Process.iconv()">Vital.Process.iconv()</a>
+        <a href="https://www.google.com/search?q=vim+%22iconv()%22&lr=lang_en"><span class="MissingTag">iconv()</span></a> wrapper for safety.
+        Built-in <a href="https://www.google.com/search?q=vim+%22iconv()%22&lr=lang_en"><span class="MissingTag">iconv()</span></a> returns an empty string when the conversion
+        completely fails.
+        But this function won't return an original string not an empty string
+        when failure.
+
+has_vimproc()                           <a class="String" href="./../vital/Process.html#Vital.Process.has_vimproc()" name="Vital.Process.has_vimproc()">Vital.Process.has_vimproc()</a>
+        Returns non-zero if <a href="https://www.google.com/search?q=vim+%22vimproc%22&lr=lang_en"><span class="MissingTag">vimproc</span></a> is installed, zero otherwise.
+        You can download the <a href="https://www.google.com/search?q=vim+%22vimproc%22&lr=lang_en"><span class="MissingTag">vimproc</span></a> from
+        <span class="String"><a href="https://github.com/Shougo/vimproc.vim">https://github.com/Shougo/vimproc.vim</a></span>.
+
+                                        <a class="String" href="./../vital/Process.html#Vital.Process.system()" name="Vital.Process.system()">Vital.Process.system()</a>
+system(<span class="Special">{command}</span> [, <span class="Special">{input}</span> [, <span class="Special">{timeout}</span>]])
+system(<span class="Special">{command}</span> [, <span class="Special">{dict}</span>])
+        Gets the output of the shell command <span class="Special">{expr}</span>.
+        This function calls <a href="https://www.google.com/search?q=vim+%22vimproc#system()%22&lr=lang_en"><span class="MissingTag">vimproc#system()</span></a> if <a href="https://www.google.com/search?q=vim+%22has_vimproc()%22&lr=lang_en"><span class="MissingTag">has_vimproc()</span></a> returns
+        non-zero, otherwise <a href="https://www.google.com/search?q=vim+%22system()%22&lr=lang_en"><span class="MissingTag">system()</span></a>.
+        If <span class="Special">{timeout}</span> is specified, the command will be killed after <span class="Special">{timeout}</span>
+        milliseconds.  <span class="Todo">Note</span> that <span class="Special">{timeout}</span> is available only when
+        <a href="https://www.google.com/search?q=vim+%22has_vimproc()%22&lr=lang_en"><span class="MissingTag">has_vimproc()</span></a> returns non-zero.
+        <span class="Todo">Note</span> NeoVim cannot use system() with '&amp;',
+        Please See :h system() on NeoVim.
+
+        When the 2nd argument is Dictionary, you can specify more options.
+        <span class="Special">{dict}</span> structure is:
+
+<span class="helpExample">        {dict} = {</span>
+<span class="helpExample">                use_vimproc: bool,</span>
+<span class="helpExample">                input: string,</span>
+<span class="helpExample">                timeout: bool,</span>
+<span class="helpExample">                background: bool,</span>
+<span class="helpExample">        }</span>
+
+get_last_status()                       <a class="String" href="./../vital/Process.html#Vital.Process.get_last_status()" name="Vital.Process.get_last_status()">Vital.Process.get_last_status()</a>
+        Returns the result of the last shell command either via <a href="https://www.google.com/search?q=vim+%22vimproc%22&lr=lang_en"><span class="MissingTag">vimproc</span></a> or
+        not.
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

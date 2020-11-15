@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Data/Set</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.Todo { color: #6f42c1; text-decoration: underline; }
+.helpExample { font-weight: bold; }
+.String { color: #032f62; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Data/Set</h1>
+<a href="./../../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../../vital/Data/Set.html" name="vital/Data/Set.txt">vital/Data/Set.txt</a>    set library.
+
+Maintainer: haya14busa &lt;hayabusa1419@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                            <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-contents" name="Vital.Data.Set-contents">Vital.Data.Set-contents</a>
+
+INTRODUCTION            <a class="Identifier" href="./../../vital/Data/Set.html#Vital.Data.Set-introduction">Vital.Data.Set-introduction</a>
+INTERFACE               <a class="Identifier" href="./../../vital/Data/Set.html#Vital.Data.Set-interface">Vital.Data.Set-interface</a>
+  FUNCTIONS               <a class="Identifier" href="./../../vital/Data/Set.html#Vital.Data.Set-functions">Vital.Data.Set-functions</a>
+  Set Object              <a class="Identifier" href="./../../vital/Data/Set.html#Vital.Data.Set-Set">Vital.Data.Set-Set</a>
+
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                                    <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-introduction" name="Vital.Data.Set-introduction">Vital.Data.Set-introduction</a>
+
+<a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set" name="Vital.Data.Set">Vital.Data.Set</a> is Collection Utilities Library.
+It provides set and frozenset data structure ported from python.
+  <span class="String"><a href="https://docs.python.org/3.4/library/stdtypes.html#set-types-set-frozenset">https://docs.python.org/3.4/library/stdtypes.html#set-types-set-frozenset</a></span>
+
+
+<span class="helpExample">        let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">        let s:Set = s:V.import(&quot;Data.Set&quot;)</span>
+
+<span class="helpExample">        let set = s:Set.set([1,1,2,3,4,4,5])</span>
+<span class="helpExample">        echo set.to_list()              | &quot; =&gt; [1,2,3,4,5]</span>
+<span class="helpExample">        call set.add(4)</span>
+<span class="helpExample">        echo set.to_list()              | &quot; =&gt; [1,2,3,4,5]</span>
+<span class="helpExample">        call set.add(6)</span>
+<span class="helpExample">        echo set.to_list()              | &quot; =&gt; [1,2,3,4,5,6]</span>
+<span class="helpExample">        echo set.sub([1,2,3]).to_list() | &quot; =&gt; [4,5,6]</span>
+
+<span class="helpExample">        let frozenset = s:Set.frozenset([1,1,2,3,4,4,5])</span>
+<span class="helpExample">        echo frozenset.to_list() | &quot; =&gt; [1,2,3,4,5]</span>
+<span class="helpExample">        &quot; frozenset does not have mutable methods</span>
+<span class="helpExample">        call frozenset.add(6)</span>
+<span class="helpExample">        &quot; =&gt; E716: Key not present in Dictionary: add</span>
+
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                                       <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-interface" name="Vital.Data.Set-interface">Vital.Data.Set-interface</a>
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                                       <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-functions" name="Vital.Data.Set-functions">Vital.Data.Set-functions</a>
+
+set([<span class="Special">{list}</span>], [<span class="Special">{hashfunc}</span>])                     <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set.set()" name="Vital.Data.Set.set()">Vital.Data.Set.set()</a>
+        Returns a new 'Set' object.
+
+frozenset([<span class="Special">{list}</span>], [<span class="Special">{hashfunc}</span>])               <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set.frozen()" name="Vital.Data.Set.frozen()">Vital.Data.Set.frozen()</a>
+        Returns a new 'Frozen' object which has not mutable methods
+        (<a class="Identifier" href="./../../vital/Data/Set.html#Vital.Data.Set-Set-mutable">Vital.Data.Set-Set-mutable</a>).
+
+        <span class="Special">{hashfunc}</span> is used to hash the value for identifying each element.
+
+        Example:
+<span class="helpExample">          function! s:my_hash_func(x) abort</span>
+<span class="helpExample">            return tolower(a:x)</span>
+<span class="helpExample">          endfunction</span>
+
+<span class="helpExample">          echo s:Set.set(['a', 'ab', 'A']).to_list()</span>
+<span class="helpExample">          &quot; =&gt; ['A', 'ab', 'a']</span>
+<span class="helpExample">          echo s:Set.set(['a', 'ab', 'A'], function('s:my_hash_func')).to_list()</span>
+<span class="helpExample">          &quot; =&gt; ['ab', 'a']</span>
+
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Set Object                                      <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set" name="Vital.Data.Set-Set">Vital.Data.Set-Set</a>
+
+Set.to_list()                           <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.to_list()" name="Vital.Data.Set-Set.to_list()">Vital.Data.Set-Set.to_list()</a>
+        Converts to <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a>.
+
+Set.in(<span class="Special">{elem}</span>)                          <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.in()" name="Vital.Data.Set-Set.in()">Vital.Data.Set-Set.in()</a>
+        Checks if there is <span class="Special">{elem}</span> in the set.  This returns boolean value.
+
+Set.union(<span class="Special">{other}</span>)                      <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.union()" name="Vital.Data.Set-Set.union()">Vital.Data.Set-Set.union()</a>
+Set.or(<span class="Special">{other}</span>)                         <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.or()" name="Vital.Data.Set-Set.or()">Vital.Data.Set-Set.or()</a>
+        Return a new set with elements from the set and <span class="Special">{other}</span>.
+
+Set.intersection(<span class="Special">{other}</span>)               <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.intersection()" name="Vital.Data.Set-Set.intersection()">Vital.Data.Set-Set.intersection()</a>
+Set.and(<span class="Special">{other}</span>)                        <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.and()" name="Vital.Data.Set-Set.and()">Vital.Data.Set-Set.and()</a>
+        Return a new set with elements common to the set and <span class="Special">{other}</span>.
+
+Set.symmetric_difference(<span class="Special">{other}</span>) <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.symmetric_difference()" name="Vital.Data.Set-Set.symmetric_difference()">Vital.Data.Set-Set.symmetric_difference()</a>
+Set.xor(<span class="Special">{other}</span>)                        <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.xor()" name="Vital.Data.Set-Set.xor()">Vital.Data.Set-Set.xor()</a>
+        Return a new set with elements in either the set or <span class="Special">{other}</span> but not
+        both.
+
+Set.difference(<span class="Special">{other}</span>)                 <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.difference()" name="Vital.Data.Set-Set.difference()">Vital.Data.Set-Set.difference()</a>
+Set.sub(<span class="Special">{other}</span>)                        <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.sub()" name="Vital.Data.Set-Set.sub()">Vital.Data.Set-Set.sub()</a>
+        Return a new set with elements in the set that are not in <span class="Special">{other}</span>.
+
+Set.issubset(<span class="Special">{other}</span>)                   <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.issubset()" name="Vital.Data.Set-Set.issubset()">Vital.Data.Set-Set.issubset()</a>
+Set.le(<span class="Special">{other}</span>)                         <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.le()" name="Vital.Data.Set-Set.le()">Vital.Data.Set-Set.le()</a>
+        Test whether every element in the set is in <span class="Special">{other}</span>.
+
+Set.lt(<span class="Special">{other}</span>)                         <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.lt()" name="Vital.Data.Set-Set.lt()">Vital.Data.Set-Set.lt()</a>
+        Test whether the set is a proper subset of <span class="Special">{other}</span>, that is,
+<span class="helpExample">            set.le(other) &amp;&amp; set != other</span>
+
+Set.issuperset(<span class="Special">{other}</span>)                 <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.issuperset()" name="Vital.Data.Set-Set.issuperset()">Vital.Data.Set-Set.issuperset()</a>
+Set.ge(<span class="Special">{other}</span>)                         <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.ge()" name="Vital.Data.Set-Set.ge()">Vital.Data.Set-Set.ge()</a>
+        Test whether every element in <span class="Special">{other}</span> is in the set.
+
+Set.gt(<span class="Special">{other}</span>)                         <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.gt()" name="Vital.Data.Set-Set.gt()">Vital.Data.Set-Set.gt()</a>
+        Test whether the set is a proper superset of <span class="Special">{other}</span>, that is,
+<span class="helpExample">            set.ge(other) &amp;&amp; set != other</span>
+
+Set.len()                               <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.len()" name="Vital.Data.Set-Set.len()">Vital.Data.Set-Set.len()</a>
+        Return the length of Set.
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+Mutable Set Object                               <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set-mutable" name="Vital.Data.Set-Set-mutable">Vital.Data.Set-Set-mutable</a>
+
+        The following methods for set do not apply to immutable instances of
+        <a class="Identifier" href="./../../vital/Data/Set.html#Vital.Data.Set.frozen()">Vital.Data.Set.frozen()</a>
+
+Set.update(<span class="Special">{other}</span>)                     <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.update()" name="Vital.Data.Set-Set.update()">Vital.Data.Set-Set.update()</a>
+Set.ior(<span class="Special">{other}</span>)                        <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.ior()" name="Vital.Data.Set-Set.ior()">Vital.Data.Set-Set.ior()</a>
+        Update the set, adding elements from <span class="Special">{other}</span>.
+
+Set.intersection_update(<span class="Special">{other}</span>)  <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.intersection_update()" name="Vital.Data.Set-Set.intersection_update()">Vital.Data.Set-Set.intersection_update()</a>
+Set.iand(<span class="Special">{other}</span>)                 <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.iand()" name="Vital.Data.Set-Set.iand()">Vital.Data.Set-Set.iand()</a>
+        Update the set, keeping only elements found in it and <span class="Special">{other}</span>.
+
+Set.difference_update(<span class="Special">{other}</span>)    <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.difference_update()" name="Vital.Data.Set-Set.difference_update()">Vital.Data.Set-Set.difference_update()</a>
+Set.isub(<span class="Special">{other}</span>)                 <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.isub()" name="Vital.Data.Set-Set.isub()">Vital.Data.Set-Set.isub()</a>
+        Update the set, removing elements found in <span class="Special">{other}</span>.
+
+Set.symmetric_difference_update(<span class="Special">{other}</span>)
+                            <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.symmetric_difference_update()" name="Vital.Data.Set-Set.symmetric_difference_update()">Vital.Data.Set-Set.symmetric_difference_update()</a>
+Set.ixor(<span class="Special">{other}</span>)           <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.ixor()" name="Vital.Data.Set-Set.ixor()">Vital.Data.Set-Set.ixor()</a>
+        Update the set, keeping only elements found in either set, but not in
+        both.
+
+Set.add(<span class="Special">{elem}</span>)                                 <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.add()" name="Vital.Data.Set-Set.add()">Vital.Data.Set-Set.add()</a>
+        Add <span class="Special">{elem}</span> to the set.
+
+Set.remove(<span class="Special">{elem}</span>)                              <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.remove()" name="Vital.Data.Set-Set.remove()">Vital.Data.Set-Set.remove()</a>
+        Remove <span class="Special">{elem}</span> from the set. Throw
+<span class="helpExample">          vital: Data.Set: the element is not a member</span>
+       if <span class="Special">{elem}</span> is not contained in the set.
+
+
+Set.discard(<span class="Special">{elem}</span>)                             <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.discard()" name="Vital.Data.Set-Set.discard()">Vital.Data.Set-Set.discard()</a>
+        Remove <span class="Special">{elem}</span> from the set if it is present.
+
+Set.pop()                                       <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.pop()" name="Vital.Data.Set-Set.pop()">Vital.Data.Set-Set.pop()</a>
+        Remove and return an arbitrary element from the set. Throw
+<span class="helpExample">          vital: Data.Set: set is empty</span>
+       if the set is empty.
+
+Set.clear()                                     <a class="String" href="./../../vital/Data/Set.html#Vital.Data.Set-Set.clear()" name="Vital.Data.Set-Set.clear()">Vital.Data.Set-Set.clear()</a>
+        Remove all elements from the set.
+
+        <span class="Todo">Note</span>: <span class="Special">{other}</span> will accept 'Set' object or <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><span class="MissingTag">List</span></a> as an argument.
+        ior(), iand(), isub(), ixor() return Set object. 'i' is short for
+        &quot;in-place&quot;, they are mutable version of or(), and(), sub(), xor()
+        respectively.
+
+        <span class="Todo">Note</span>: If return value is 'Set' object, the type of returned 'Set'
+        object is same as type of the instance. Example:
+
+<span class="helpExample">          let set = s:Set.set(['a', 'ab', 'A'], function('s:my_hash_func'))</span>
+<span class="helpExample">          echo set.to_list() | &quot; =&gt; ['ab', 'a']</span>
+<span class="helpExample">          &quot; {comparefunc} will be same as `set`</span>
+<span class="helpExample">          let set2 = set.or(['aB', 'c'])</span>
+<span class="helpExample">          echo set2.to_list() | &quot; =&gt; ['ab', 'a', 'c']</span>
+
+<span class="helpExample">          let frozenset = s:Set.frozenset([1,2,3])</span>
+<span class="helpExample">          &quot; returned 'Set' object is frozenset</span>
+<span class="helpExample">          let frozenset2 = frozenset.and(s:Set.set([2,3,4]))</span>
+<span class="helpExample">          echo frozenset2.to_list() | &quot; =&gt; [2,3]</span>
+<span class="helpExample">          call frozenset.add(6)</span>
+<span class="helpExample">          &quot; =&gt; E716: Key not present in Dictionary: add</span>
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../../index.html">main help file</a> - <a href="./../../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Vim documentation: vital/Assertion</title>
+<meta name="Generator" content="Vim/8.2">
+<meta name="plugin-version" content="vim8.1_v2">
+<meta name="syntax" content="help">
+<meta name="settings" content="no_progress,ignore_folding,use_css,no_foldcolumn,expand_tabs,ignore_conceal,prevent_copy=,use_input_for_pc=fallback">
+<meta name="colorscheme" content="github">
+<style>
+<!--
+.MissingTag { background-color: black; color: white; }
+.EnglishTag { background-color: gray; color: white; }
+pre { font-family: monospace; color: #24292e; background-color: #ffffff; }
+body { font-family: monospace; color: #24292e; background-color: #ffffff; }
+* { font-size: 1em; }
+.PreProc { color: #d73a49; }
+.helpExample { font-weight: bold; }
+.Special { color: #6f42c1; }
+.Ignore { color: #babbbc; background-color: #ffffff; padding-bottom: 1px; }
+.Statement { color: #d73a49; }
+-->
+</style>
+</head>
+<body>
+
+<a name="top"></a><h1>Vim documentation: vital/Assertion</h1>
+<a href="./../index.html">main help file</a>
+<hr>
+<pre id='vimCodeElement'>
+<a class="String" href="./../vital/Assertion.html" name="vital/Assertion.txt">vital/Assertion.txt</a>   assertion library.
+
+Maintainer: rbtnn &lt;naru123456789@gmail.com&gt;
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">CONTENTS</span>                                        <a class="String" href="./../vital/Assertion.html#Vital.Assertion-contents" name="Vital.Assertion-contents">Vital.Assertion-contents</a>
+
+INTRODUCTION                             <a class="Identifier" href="./../vital/Assertion.html#Vital.Assertion-introduction">Vital.Assertion-introduction</a>
+INTERFACE                                <a class="Identifier" href="./../vital/Assertion.html#Vital.Assertion-interface">Vital.Assertion-interface</a>
+  FUNCTIONS                              <a class="Identifier" href="./../vital/Assertion.html#Vital.Assertion-functions">Vital.Assertion-functions</a>
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTRODUCTION</span>                                    <a class="String" href="./../vital/Assertion.html#Vital.Assertion-introduction" name="Vital.Assertion-introduction">Vital.Assertion-introduction</a>
+
+<a class="String" href="./../vital/Assertion.html#Vital.Assertion" name="Vital.Assertion">Vital.Assertion</a> provides domain specific language (DSL) for assertion as a
+Vim command.
+
+<span class="PreProc">==============================================================================</span>
+<span class="Statement">INTERFACE</span>                                          <a class="String" href="./../vital/Assertion.html#Vital.Assertion-interface" name="Vital.Assertion-interface">Vital.Assertion-interface</a>
+
+<span class="PreProc">------------------------------------------------------------------------------</span>
+<span class="Statement">FUNCTIONS</span>                                          <a class="String" href="./../vital/Assertion.html#Vital.Assertion-functions" name="Vital.Assertion-functions">Vital.Assertion-functions</a>
+
+define({assert_command_name}, ...)                  <a class="String" href="./../vital/Assertion.html#Vital.Assertion.define()" name="Vital.Assertion.define()">Vital.Assertion.define()</a>
+    Define a command of Vital.Assertion that is named {assert_command_name}.
+    <span class="Special">{a:1}</span> is a bool value to enable the command defined by <span class="Comment">define()</span>.
+    Default value of <span class="Special">{a:1}</span> is <span class="Comment">0</span>.
+
+    A command defined by <span class="Comment">define()</span> has two operators.
+
+    A. &lt;=&gt;
+       It means <a href="https://www.google.com/search?q=vim+%22'equal'%22&lr=lang_en"><span class="MissingTag">'equal'</span></a>.
+
+
+       1) Succeeded
+
+<span class="helpExample">           let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">           let s:A = s:V.import('Assertion')</span>
+
+<span class="helpExample">           call s:A.define('Assert', 1)</span>
+
+<span class="helpExample">           Assert  1 &lt;=&gt; 1</span>
+
+<span class="helpExample">           &quot; Assert 2 &lt;=&gt; 2 :Succeeded</span>
+
+
+       2) Failed
+
+<span class="helpExample">           let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">           let s:A = s:V.import('Assertion')</span>
+
+<span class="helpExample">           call s:A.define('Assert', 1)</span>
+
+<span class="helpExample">           Assert  0 &lt;=&gt; 1</span>
+
+<span class="helpExample">           &quot; Assert 3 &lt;=&gt; 2 :Failed</span>
+<span class="helpExample">           &quot; &gt; assert_point: /tmp/a.vim, line 7</span>
+<span class="helpExample">           &quot; &gt; lhs: 3 </span>
+<span class="helpExample">           &quot; &gt; rhs:  2</span>
+<span class="helpExample">           &quot; function &lt;SNR&gt;140__assertion..&lt;SNR&gt;140__outputter, line 15</span>
+
+
+
+    B. &lt;!&gt;
+       It means 'not equal'.
+
+
+       1) Succeeded
+
+<span class="helpExample">           let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">           let s:A = s:V.import('Assertion')</span>
+
+<span class="helpExample">           call s:A.define('Assert', 1)</span>
+
+<span class="helpExample">           Assert 3 &lt;!&gt; 2</span>
+
+<span class="helpExample">           &quot; Assert 3 &lt;!&gt; 2 :Succeeded</span>
+
+
+       2) Failed
+
+<span class="helpExample">           let s:V = vital#{plugin-name}#new()</span>
+<span class="helpExample">           let s:A = s:V.import('Assertion')</span>
+
+<span class="helpExample">           call s:A.define('Assert', 1)</span>
+
+<span class="helpExample">           function! s:hoge()</span>
+<span class="helpExample">           endfunction</span>
+
+<span class="helpExample">           function! s:foo()</span>
+<span class="helpExample">             &quot; it can be used in a function.</span>
+<span class="helpExample">             Assert 3 &lt;!&gt; 3</span>
+
+<span class="helpExample">             &quot; a script function can not be used.</span>
+<span class="helpExample">             &quot; Assert 3 &lt;!&gt; s:hoge()</span>
+<span class="helpExample">           endfunction</span>
+
+<span class="helpExample">           call s:foo()</span>
+
+<span class="helpExample">           &quot; Assert 3 &lt;!&gt; 3 :Failed</span>
+<span class="helpExample">           &quot; &gt; assert_point: function &lt;SNR&gt;183_foo, line 1</span>
+<span class="helpExample">           &quot; &gt; lhs: 3 </span>
+<span class="helpExample">           &quot; &gt; rhs:  3</span>
+<span class="helpExample">           &quot; function &lt;SNR&gt;183_foo..&lt;SNR&gt;140__assertion..&lt;SNR&gt;140__outputter, line 15</span>
+
+
+
+<span class="PreProc">==============================================================================</span>
+vim&#0058;tw=78:fo=tcq2mM:ts=8:ft=help:norl
+</pre>
+<hr>
+<a href="#top">top</a> - <a href="./../index.html">main help file</a> - <a href="./../tags.html">tag index</a> <br>
+
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->
