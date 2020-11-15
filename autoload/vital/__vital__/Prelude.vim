@@ -24,6 +24,12 @@ let [
       \   v:t_dict,
       \   v:t_float]
 
+if has("patch-8.1.0735")
+  let s:__TYPE_BLOB = v:t_blob
+else
+  let s:__TYPE_BLOB = 10
+endif
+
 " Number or Float
 function! s:is_numeric(Value) abort
   let _ = type(a:Value)
@@ -59,6 +65,11 @@ endfunction
 " Float
 function! s:is_float(Value) abort
   return type(a:Value) ==# s:__TYPE_FLOAT
+endfunction
+
+" Blob
+function! s:is_blob(Value) abort
+  return type(a:Value) ==# s:__TYPE_BLOB
 endfunction
 
 " Infinity
