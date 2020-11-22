@@ -372,6 +372,46 @@ function! s:neg(a) abort
   return l:res
 endfunction
 
+function! s:abs(a) abort
+  let l:a = s:_of(a:a)
+  if s:sign(l:a) < 0
+    let l:a = s:neg(l:a)
+  endif
+  return l:a
+endfunction
+
+function! s:gcd(a, b) abort
+  let l:a = s:_of(a:a)
+  let l:b = s:_of(a:b)
+
+  if (s:sign(l:a) == 0) || (s:sign(l:b) == 0)
+    " 0 and other do not have gcd
+    return deepcopy(s:_ZERO)
+  endif
+
+  let a = s:abs(l:a)
+  let b = s:abs(l:b)
+
+  if 1 == s:compare(l:a, l:b)
+    " 1 is a < b, swap it
+    let [l:b, l:a] = [l:a, l:b]
+  endif
+
+  " Euclidean Algorithm
+  while (s:sign(l:b) != 0)
+    let [l:a, l:b] = [l:b, s:mod(l:a, l:b)]
+  endwhile
+
+  return l:a
+endfunction
+
+function! s:lcm(a, b) abort
+  let l:a = s:_of(a:a)
+  let l:b = s:_of(a:b)
+
+  return s:div(s:mul(l:a, l:b), s:gcd(l:a, l:b))
+endfunction
+
 function! s:_fix_form(a) abort
   let l:res = a:a
   while len(l:res.num) > 1
