@@ -58,7 +58,7 @@ manipulate <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><
 <span class="helpExample">        echo s:L.conj([2, 3], 1)</span>
 <span class="helpExample">        &quot; [2, 3, 1]</span>
 
-<span class="helpExample">        echo s:L.foldl('v:memo + v:val', 0, range(1, 10))</span>
+<span class="helpExample">        echo s:L.foldl({ memo, val -&gt; memo + val }, 0, range(1, 10))</span>
 <span class="helpExample">        &quot; 55 := 1+2+3+4+5+6+7+8+9+10</span>
 
 <span class="helpExample">        echo s:L.count({ x -&gt; x % 2 == 0 }, [1, 2, 3, 4, 5])</span>
@@ -78,8 +78,11 @@ manipulate <a href="https://www.google.com/search?q=vim+%22List%22&lr=lang_en"><
 <span class="Statement">TERM</span>                                    <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-term" name="Vital.Data.List-term">Vital.Data.List-term</a>
 
 <span class="Special">{function}</span>                              <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-term-function" name="Vital.Data.List-term-function">Vital.Data.List-term-function</a>
-        <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a> or <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a>(as expression). We recommend you just to use
-        Vim's <a href="https://www.google.com/search?q=vim+%22expr-lambda%22&lr=lang_en"><span class="MissingTag">expr-lambda</span></a> notation to pass this.
+        It's just <a href="https://www.google.com/search?q=vim+%22Funcref%22&lr=lang_en"><span class="MissingTag">Funcref</span></a>, but also <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> as expression works fine for
+        backward compatibility. <a href="https://www.google.com/search?q=vim+%22String%22&lr=lang_en"><span class="MissingTag">String</span></a> for this is <span class="Todo">DEPRECATED</span>.
+
+        For new code please always simply use Vim's <a href="https://www.google.com/search?q=vim+%22expr-lambda%22&lr=lang_en"><span class="MissingTag">expr-lambda</span></a> notation for
+        this.
 
 <span class="PreProc">==============================================================================</span>
 <span class="Statement">INTERFACE</span>                               <a class="String" href="./../../vital/Data/List.html#Vital.Data.List-interface" name="Vital.Data.List-interface">Vital.Data.List-interface</a>
@@ -196,9 +199,11 @@ map(<span class="Special">{list}</span>, <span class="Special">{function}</span>
 <span class="helpExample">          return a:x + 1</span>
 <span class="helpExample">        endfunction</span>
 
+<span class="helpExample">        echo s:L.map(range(0, 4), { x + 1 })</span>
+<span class="helpExample">        &quot; [1, 2, 3, 4, 5]</span>
 <span class="helpExample">        echo s:L.map(range(0, 4), function('Succ'))</span>
 <span class="helpExample">        &quot; [1, 2, 3, 4, 5]</span>
-<span class="helpExample">        echo s:L.map(range(0, 4), 'v:val + 1')</span>
+<span class="helpExample">        echo s:L.map(range(0, 4), 'v:val + 1') &quot; DEPRECATED</span>
 <span class="helpExample">        &quot; [1, 2, 3, 4, 5]</span>
 
         But this maybe slower than builtin <a href="https://www.google.com/search?q=vim+%22map()%22&lr=lang_en"><span class="MissingTag">map()</span></a>.
