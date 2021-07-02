@@ -346,10 +346,10 @@ wait({promise}[, {options}])		*Vital.Async.Promise.wait()*
 	The {result} is a {value} passed to |Vital.Async.Promise.resolve()|
 	when a given {promise} has resolved. Otherwise it is |v:null|.
 
-	The {error} is a {value} passed to |Vital.Async.Promise.reject()| 
+	The {error} is a {value} passed to |Vital.Async.Promise.reject()|
 	when a given {promise} has rejected or |Async.Promise.TimeoutError|
 	when a given {timeout} has passed. Otherwise it is |v:null|.
-	
+
 	The following {options} are available
 
 	"timeout"	Timeout in milliseconds. When timeout, the function
@@ -379,7 +379,7 @@ wait({promise}[, {options}])		*Vital.Async.Promise.wait()*
 >
 chain({promise_factories})		*Vital.Async.Promise.chain()*
 	Chain promises produced by {promise_factories} (|List| of |Function|)
-	and return a promise which resolves to a result |List| which contains 
+	and return a promise which resolves to a result |List| which contains
 	result of each produced	promises.
 	It is like an asynchronous sequential call. It rejects when one of
 	function in {promise_factories} has failed or produced promises
@@ -418,7 +418,8 @@ on_unhandled_rejection({callback})	*Vital.Async.Promise.on_unhandled_rejection*
  	Set callback to catch all unhandled rejected promise's result.
 	If {callback} throws error, |Async.Promise| does not handle it.
 
-	The {callback} is |Funcref|, it's argument can be unhandled thrown error or unhandled rejected value.
+	The {callback} is |Funcref|, it's argument can be unhandled thrown
+	error or unhandled rejected value.
 
 	Note:
 	This callback will called even if you using |Vital.Async.Promise.wait()|.

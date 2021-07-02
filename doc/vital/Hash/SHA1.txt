@@ -5,9 +5,9 @@ Maintainer: Tsuyoshi CHO <Tsuyoshi.CHO@Gmail.com>
 ==============================================================================
 CONTENTS				*Vital.Hash.SHA1-contents*
 
-INTRODUCTION		                |Vital.Hash.SHA1-introduction|
-INTERFACE		                |Vital.Hash.SHA1-interface|
-  Functions                             |Vital.Hash.SHA1-functions|
+INTRODUCTION				|Vital.Hash.SHA1-introduction|
+INTERFACE				|Vital.Hash.SHA1-interface|
+  Functions				|Vital.Hash.SHA1-functions|
 
 ==============================================================================
 INTRODUCTION				*Vital.Hash.SHA1-introduction*

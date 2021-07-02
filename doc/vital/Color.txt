@@ -5,10 +5,10 @@ Maintainer: tyru <tyru.exe@gmail.com>
 ==============================================================================
 CONTENTS				*Vital.Color-contents*
 
-INTRODUCTION			|Vital.Color-introduction|
-INTERFACE			|Vital.Color-interface|
-  FUNCTIONS			  |Vital.Color-functions|
-TODO				|Vital.Color-todo|
+INTRODUCTION				|Vital.Color-introduction|
+INTERFACE				|Vital.Color-interface|
+  FUNCTIONS				|Vital.Color-functions|
+TODO					|Vital.Color-todo|
 
 ==============================================================================
 INTRODUCTION				*Vital.Color-introduction*

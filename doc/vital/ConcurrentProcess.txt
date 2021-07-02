@@ -9,7 +9,7 @@ INTRODUCTION			|Vital.ConcurrentProcess-introduction|
   USAGE				|Vital.ConcurrentProcess-usage|
   PRINCIPLE			|Vital.ConcurrentProcess-principle|
 INTERFACE			|Vital.ConcurrentProcess-interface|
-  FUNCTIONS			  |Vital.ConcurrentProcess-functions|
+  FUNCTIONS			|Vital.ConcurrentProcess-functions|
 TERMS				|Vital.ConcurrentProcess-terms|
 
 

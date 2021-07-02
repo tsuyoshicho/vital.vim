@@ -82,7 +82,7 @@ FUNCTION 				*Vital.Async.Later-function*
 	Return an error handler (|Funcref|) or |v:null| if no custom error
 	handler has specified.
 	Default: |v:null|
-					
+
 				*Vital.Async.Later.set_error_handler()*
 .set_error_handler({handler})
 	Set an error handler (|Funcref|) which is called when tasks throws
